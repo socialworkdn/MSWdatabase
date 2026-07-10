@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap');
     body { font-family: 'Sarabun', sans-serif; background-color: #f0fdf4; }
@@ -34,7 +35,7 @@
      <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div class="text-center mb-6">
            <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="https://img1.pic.in.th/images/Seal.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+              <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
            </div>
            <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
            <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
@@ -57,7 +58,7 @@
         </form>
         <div class="border-t mt-5 pt-4 text-center">
            <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-500 hover:text-moph transition">
-              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติ Dashboard
+              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
            </a>
         </div>
      </div>
@@ -65,44 +66,70 @@
 
   <!-- ===================== เนื้อหาระบบ (แสดงหลังล็อกอินสำเร็จ) ===================== -->
   <div id="appContent" class="hidden">
+
   <nav class="bg-moph text-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center space-x-3">
-        <div class="bg-white p-1 rounded-full shadow-md"><img src="https://img1.pic.in.th/images/Seal.png" alt="MOPH Logo" class="h-9 w-9 object-contain"></div>
+        <div class="bg-white p-1 rounded-full shadow-md">
+           <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
+        </div>
         <div>
           <h1 class="text-xl font-bold">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
           <p class="text-xs text-green-100">สำนักปลัดกระทรวงสาธารณสุข</p>
         </div>
       </div>
+
       <div class="flex items-center gap-2 flex-wrap">
         <div class="text-xs bg-white/10 px-3 py-1.5 rounded-lg text-right">
-           <div id="userNameText" class="font-medium">-</div><span id="userRoleBadge" class="role-badge">-</span>
+           <div id="userNameText" class="font-medium">-</div>
+           <span id="userRoleBadge" class="role-badge">-</span>
         </div>
-        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง"><i class="fas fa-paper-plane"></i></button>
-        <button onclick="openChangePasswordModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="เปลี่ยนรหัสผ่าน"><i class="fas fa-key"></i></button>
-        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="จัดการบัญชีแอดมินส่วนกลาง"><i class="fas fa-user-shield"></i></button>
-        <button onclick="handleLogout()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></button>
-        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded shadow transition flex items-center"><i class="fas fa-chart-line mr-2"></i> ไปที่ Dashboard</a>
+        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง">
+           <i class="fas fa-paper-plane"></i>
+        </button>
+        <button onclick="openChangePasswordModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="เปลี่ยนรหัสผ่าน">
+           <i class="fas fa-key"></i>
+        </button>
+        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="จัดการบัญชีแอดมินส่วนกลาง">
+           <i class="fas fa-user-shield"></i>
+        </button>
+        <button onclick="handleLogout()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="ออกจากระบบ">
+           <i class="fas fa-sign-out-alt"></i>
+        </button>
+        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded shadow transition flex items-center">
+           <i class="fas fa-chart-line mr-2"></i> ไปที่ Dashboard
+        </a>
       </div>
     </div>
   </nav>
 
   <div class="bg-white shadow border-b">
     <div class="container mx-auto flex overflow-x-auto">
-      <button onclick="switchTab('hospTab')" id="btn-hospTab" class="tab-btn active px-6 py-4 whitespace-nowrap hover:bg-green-50 transition"><i class="fas fa-hospital mr-2"></i>จัดการข้อมูลโรงพยาบาล</button>
-      <button onclick="switchTab('personTab')" id="btn-personTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition"><i class="fas fa-user-nurse mr-2"></i>บันทึก/แก้ไขข้อมูลนักสังคมสงเคราะห์</button>
-      <button onclick="switchTab('statsTab')" id="btn-statsTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition"><i class="fas fa-chart-bar mr-2"></i>ภาพรวมสถิติ</button>
+      <button onclick="switchTab('hospTab')" id="btn-hospTab" class="tab-btn active px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-hospital mr-2"></i>จัดการข้อมูลโรงพยาบาล
+      </button>
+
+      <button onclick="switchTab('personTab')" id="btn-personTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-user-nurse mr-2"></i>บันทึก/แก้ไขข้อมูลนักสังคมสงเคราะห์
+      </button>
+
+      <button onclick="switchTab('statsTab')" id="btn-statsTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-chart-bar mr-2"></i>ภาพรวมสถิติ
+      </button>
     </div>
   </div>
 
   <div class="container mx-auto px-4 py-8 pb-20">
 
-    <!-- แท็บภาพรวมสถิติ -->
     <div id="statsTab" class="tab-content hidden">
        <div class="flex flex-wrap items-center justify-between gap-3 mb-6 max-w-5xl mx-auto">
-          <div id="statsLastUpdated" class="text-xs text-gray-500 bg-white px-3 py-1.5 rounded-lg border hidden"><i class="fas fa-clock mr-1"></i> อัปเดตล่าสุด: <span id="statsLastUpdatedText">-</span></div>
+          <div id="statsLastUpdated" class="text-xs text-gray-500 bg-white px-3 py-1.5 rounded-lg border hidden">
+             <i class="fas fa-clock mr-1"></i> อัปเดตล่าสุด: <span id="statsLastUpdatedText">-</span>
+          </div>
           <div class="flex items-center gap-2 ml-auto">
-             <button onclick="loadStatsOverview(true)" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-bold py-2 px-3 rounded shadow-sm transition"><i class="fas fa-sync-alt mr-1 text-blue-600"></i> รีเฟรช</button>
+             <button onclick="loadStatsOverview(true)" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-bold py-2 px-3 rounded shadow-sm transition">
+                <i class="fas fa-sync-alt mr-1 text-blue-600"></i> รีเฟรช
+             </button>
              <select id="statsRegionFilter" onchange="renderStatsOverview()" class="border-gray-300 border rounded-md p-2 text-sm shadow-sm">
                 <option value="all">แสดงข้อมูลทั่วประเทศ</option>
                 <script>for(let i=1;i<=12;i++) document.write(`<option value="${i}">เขตสุขภาพที่ ${i}</option>`);</script>
@@ -110,21 +137,49 @@
           </div>
        </div>
 
-       <div id="statsLoading" class="text-center py-16"><i class="fas fa-spinner fa-spin text-4xl text-moph"></i><p class="mt-3 text-gray-500 text-sm">กำลังโหลดข้อมูลสถิติ...</p></div>
+       <div id="statsLoading" class="text-center py-16">
+          <i class="fas fa-spinner fa-spin text-4xl text-moph"></i>
+          <p class="mt-3 text-gray-500 text-sm">กำลังโหลดข้อมูลสถิติ...</p>
+       </div>
+
        <div id="statsContent" class="hidden max-w-5xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div class="bg-white p-6 rounded-xl shadow border-t-4 border-teal-600 flex flex-col justify-center items-center"><div class="text-gray-500">จำนวนโรงพยาบาลทั้งหมด</div><div class="text-4xl font-bold text-teal-700 mt-2" id="s_statHospTotal">0</div><div class="text-xs text-gray-400 mt-1">แห่ง</div></div>
-              <div class="md:col-span-2 bg-white p-4 rounded-xl shadow border border-gray-100"><div class="font-bold text-gray-600 mb-2 text-center text-sm">สัดส่วนแยกตามระดับโรงพยาบาล</div><div style="position:relative;height:200px;"><canvas id="s_chartHospitals"></canvas></div></div>
+              <div class="bg-white p-6 rounded-xl shadow border-t-4 border-teal-600 flex flex-col justify-center items-center">
+                  <div class="text-gray-500">จำนวนโรงพยาบาลทั้งหมด</div>
+                  <div class="text-4xl font-bold text-teal-700 mt-2" id="s_statHospTotal">0</div>
+                  <div class="text-xs text-gray-400 mt-1">แห่ง</div>
+              </div>
+              <div class="md:col-span-2 bg-white p-4 rounded-xl shadow border border-gray-100">
+                  <div class="font-bold text-gray-600 mb-2 text-center text-sm">สัดส่วนแยกตามระดับโรงพยาบาล</div>
+                  <div style="position:relative;height:200px;"><canvas id="s_chartHospitals"></canvas></div>
+              </div>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
              <div class="grid grid-cols-2 gap-4 md:col-span-2">
-                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500"><div class="text-gray-500 text-xs">ผู้ปฏิบัติงานทั้งหมด</div><div class="text-2xl font-bold text-blue-700" id="s_statTotal">0</div></div>
-                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500"><div class="text-gray-500 text-xs">ข้าราชการ</div><div id="s_statCivil" class="text-2xl font-bold text-green-700">0</div></div>
-                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-purple-500"><div class="text-gray-500 text-xs">พนักงาน/ลูกจ้าง</div><div id="s_statOtherEmp" class="text-2xl font-bold text-purple-700">0</div></div>
-                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500"><div class="text-gray-500 text-xs">ตำแหน่งว่าง</div><div id="s_statVacancy" class="text-2xl font-bold text-red-700">0</div></div>
+                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
+                    <div class="text-gray-500 text-xs">ผู้ปฏิบัติงานทั้งหมด</div>
+                    <div class="text-2xl font-bold text-blue-700" id="s_statTotal">0</div>
+                 </div>
+                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500">
+                    <div class="text-gray-500 text-xs">ข้าราชการ</div>
+                    <div id="s_statCivil" class="text-2xl font-bold text-green-700">0</div>
+                 </div>
+                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-purple-500">
+                    <div class="text-gray-500 text-xs">พนักงาน/ลูกจ้าง</div>
+                    <div id="s_statOtherEmp" class="text-2xl font-bold text-purple-700">0</div>
+                 </div>
+                 <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500">
+                    <div class="text-gray-500 text-xs">ตำแหน่งว่าง</div>
+                    <div id="s_statVacancy" class="text-2xl font-bold text-red-700">0</div>
+                 </div>
              </div>
-             <div class="bg-white p-4 rounded-xl shadow border border-gray-100"><div class="font-bold text-gray-600 mb-2 text-center text-sm">ภาพรวมสถานะอัตรากำลัง</div><div style="position:relative;height:170px;"><canvas id="s_chartWorkforce"></canvas></div></div>
+             <div class="bg-white p-4 rounded-xl shadow border border-gray-100">
+                 <div class="font-bold text-gray-600 mb-2 text-center text-sm">ภาพรวมสถานะอัตรากำลัง</div>
+                 <div style="position:relative;height:170px;"><canvas id="s_chartWorkforce"></canvas></div>
+             </div>
           </div>
+
           <div class="bg-white rounded-xl shadow p-6 border border-red-100 mb-8">
               <div class="text-gray-700 font-bold mb-4 text-sm"><i class="fas fa-exclamation-circle text-red-500"></i> รายละเอียดตำแหน่งว่างแยกตามประเภท</div>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -134,31 +189,50 @@
                   <div class="p-2"><div class="text-xs text-gray-500">ลูกจ้างชั่วคราว</div><div class="text-xl font-bold text-gray-800" id="s_vacTemp">0</div></div>
               </div>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-             <div class="bg-white rounded-lg shadow p-4"><div class="font-bold text-gray-600 mb-2 text-center text-sm">กราฟแสดงจำนวนแยกตามระดับ (%)</div><div style="position:relative;height:260px;"><canvas id="s_chartPositions"></canvas></div></div>
-             <div class="bg-white rounded-lg shadow overflow-hidden h-full"><div class="bg-gray-50 px-4 py-3 border-b font-bold text-gray-700 text-sm">ตารางสรุปจำนวนและร้อยละ</div><table class="min-w-full divide-y divide-gray-200"><tbody class="divide-y divide-gray-200" id="s_tablePositions"></tbody></table></div>
+             <div class="bg-white rounded-lg shadow p-4">
+                <div class="font-bold text-gray-600 mb-2 text-center text-sm">กราฟแสดงจำนวนแยกตามระดับ (%)</div>
+                <div style="position:relative;height:260px;"><canvas id="s_chartPositions"></canvas></div>
+             </div>
+             <div class="bg-white rounded-lg shadow overflow-hidden h-full">
+                <div class="bg-gray-50 px-4 py-3 border-b font-bold text-gray-700 text-sm">ตารางสรุปจำนวนและร้อยละ</div>
+                <table class="min-w-full divide-y divide-gray-200"><tbody class="divide-y divide-gray-200" id="s_tablePositions"></tbody></table>
+             </div>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
              <div class="bg-white rounded-xl shadow p-4 border-l-4 border-green-500">
                 <div class="font-bold text-green-800 text-sm mb-2"><i class="fas fa-graduation-cap"></i> วุฒิการศึกษา (สังคมสงเคราะห์)</div>
-                <div class="flex justify-between items-center text-sm px-4"><div>มีวุฒิ: <span class="font-bold text-lg text-green-700 ml-2" id="s_statHasDegree">0</span></div><div>ไม่มี: <span class="font-bold text-lg text-red-600 ml-2" id="s_statNoDegree">0</span></div></div>
+                <div class="flex justify-between items-center text-sm px-4">
+                    <div>มีวุฒิ: <span class="font-bold text-lg text-green-700 ml-2" id="s_statHasDegree">0</span></div>
+                    <div>ไม่มี: <span class="font-bold text-lg text-red-600 ml-2" id="s_statNoDegree">0</span></div>
+                </div>
              </div>
              <div class="bg-white rounded-xl shadow overflow-hidden">
                 <div class="grid grid-cols-2 h-full">
-                    <div class="border-r p-4"><div class="font-bold text-yellow-800 text-sm mb-2"><i class="fas fa-certificate"></i> ใบประกอบวิชาชีพฯ</div><div id="s_miniTableLicense" class="text-sm space-y-2"></div></div>
-                    <div class="p-4"><div class="font-bold text-blue-800 text-sm mb-2"><i class="fas fa-users"></i> สมาชิกสภาวิชาชีพฯ</div><div id="s_miniTableCouncil" class="text-sm space-y-2"></div></div>
+                    <div class="border-r p-4">
+                        <div class="font-bold text-yellow-800 text-sm mb-2"><i class="fas fa-certificate"></i> ใบประกอบวิชาชีพฯ</div>
+                        <div id="s_miniTableLicense" class="text-sm space-y-2"></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="font-bold text-blue-800 text-sm mb-2"><i class="fas fa-users"></i> สมาชิกสภาวิชาชีพฯ</div>
+                        <div id="s_miniTableCouncil" class="text-sm space-y-2"></div>
+                    </div>
                 </div>
              </div>
           </div>
        </div>
     </div>
 
-    <!-- แท็บบันทึกข้อมูลบุคคล -->
+
     <div id="personTab" class="tab-content hidden">
       <div class="bg-white p-8 rounded-xl shadow-sm max-w-5xl mx-auto border border-gray-100">
+
         <div class="bg-green-50 border border-green-100 p-6 rounded-xl mb-8">
            <label class="block text-lg font-bold text-moph mb-2">เลือกโรงพยาบาลต้นสังกัด</label>
            <select id="hospitalSearch" class="w-full" style="width: 100%;"><option value="">ค้นหา...</option></select>
+
            <div id="hospInfoDisplay" class="hidden mt-4 p-4 bg-white rounded border border-green-200 shadow-sm text-sm mb-4">
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div><strong>รหัสโรงพยาบาล:</strong> <span id="dispCode" class="text-blue-600 font-bold">-</span></div>
@@ -167,6 +241,7 @@
                   <div><strong>ระดับ:</strong> <span id="dispLevel">-</span></div>
               </div>
            </div>
+
            <div id="personSelectSection" class="hidden border-t border-green-200 pt-4">
               <label class="block text-lg font-bold text-orange-600 mb-2">เลือกชื่อเพื่อแก้ไขข้อมูลเดิม (หรือปล่อยว่างเพื่อเพิ่มใหม่)</label>
               <select id="personSearch" class="w-full" style="width:100%"><option value="">-- เพิ่มรายชื่อใหม่ (New Entry) --</option></select>
@@ -181,7 +256,12 @@
            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
               <div>
                 <label class="label">คำนำหน้า <span class="text-red-500">*</span></label>
-                <select name="prefix" id="f_prefix" class="input-field" onchange="togglePrefix()"><option value="นาย">นาย</option><option value="นาง">นาง</option><option value="นางสาว">นางสาว</option><option value="อื่น ๆ">อื่น ๆ (ระบุ)</option></select>
+                <select name="prefix" id="f_prefix" class="input-field" onchange="togglePrefix()">
+                <option value="นาย">นาย</option>
+                <option value="นาง">นาง</option>
+                <option value="นางสาว">นางสาว</option>
+                <option value="อื่น ๆ">อื่น ๆ (ระบุ)</option>
+                </select>
                 <input type="text" name="prefixOther" id="f_prefixOther" class="input-field hidden mt-2" placeholder="ระบุคำนำหน้าของท่าน">
               </div>
               <div><label class="label">ชื่อ <span class="text-red-500">*</span></label><input type="text" name="firstName" id="f_firstName" class="input-field" required></div>
@@ -190,12 +270,22 @@
               <div><label class="label">อายุ</label><input type="text" name="age" id="age" class="input-read" readonly></div>
               <div><label class="label">เบอร์โทร</label><input type="tel" name="phone" id="f_phone" class="input-field" pattern="[0-9\-]{9,15}" placeholder="0xx-xxx-xxxx"></div>
               <div><label class="label">Email</label><input type="email" name="email" id="f_email" class="input-field"></div>
-              <div class="md:col-span-2"><label class="label">ประเภท</label><select name="empType" id="f_empType" class="input-field"><option value="ข้าราชการ">ข้าราชการ</option><option value="พนักงานราชการ">พนักงานราชการ</option><option value="พนักงานกระทรวงสาธารณสุข">พนักงานกระทรวงสาธารณสุข</option><option value="ลูกจ้างชั่วคราว">ลูกจ้างชั่วคราว</option></select></div>
+
+              <div class="md:col-span-2"><label class="label">ประเภท</label><select name="empType" id="f_empType" class="input-field">
+                <option value="ข้าราชการ">ข้าราชการ</option>
+                <option value="พนักงานราชการ">พนักงานราชการ</option>
+                <option value="พนักงานกระทรวงสาธารณสุข">พนักงานกระทรวงสาธารณสุข</option>
+                <option value="ลูกจ้างชั่วคราว">ลูกจ้างชั่วคราว</option>
+                </select></div>
+
               <div class="md:col-span-2"><label class="label">ตำแหน่ง</label><select name="position" id="f_position" class="input-field"><option value="นักสังคมสงเคราะห์เชี่ยวชาญ">นักสังคมสงเคราะห์เชี่ยวชาญ</option><option value="นักสังคมสงเคราะห์ชำนาญการพิเศษ">นักสังคมสงเคราะห์ชำนาญการพิเศษ</option><option value="นักสังคมสงเคราะห์ชำนาญการ">นักสังคมสงเคราะห์ชำนาญการ</option><option value="นักสังคมสงเคราะห์ปฏิบัติการ">นักสังคมสงเคราะห์ปฏิบัติการ</option><option value="นักสังคมสงเคราะห์">นักสังคมสงเคราะห์</option><option value="อื่น ๆ">อื่น ๆ</option></select></div>
+
               <div><label class="label">วันที่บรรจุ/เริ่มงาน (ระบุเป็น ค.ศ.)</label><input type="date" name="startDate" id="startDate" onchange="calcTenure('startDate','tenure')" class="input-field"></div>
               <div><label class="label">อายุงาน</label><input type="text" name="tenure" id="tenure" class="input-read" readonly></div>
+
               <div><label class="label">วันที่เข้าสู่ระดับปัจจุบัน (ระบุเป็น ค.ศ.)</label><input type="date" name="levelDate" id="levelDate" onchange="calcTenure('levelDate','levelDur')" class="input-field"></div>
               <div><label class="label">ระยะเวลาที่อยู่ในระดับปัจจุบัน</label><input type="text" name="levelDuration" id="levelDur" class="input-read" readonly></div>
+
               <div class="md:col-span-2 bg-blue-50 p-3 rounded border border-blue-200">
                   <label class="label text-blue-800 font-bold">ประสบการณ์สังคมสงเคราะห์ทางการแพทย์</label>
                   <div class="flex items-center gap-2">
@@ -204,6 +294,7 @@
                   </div>
                   <p class="text-xs text-gray-500 mt-1">* ระบุจำนวนปีประสบการณ์ทั้งหมดในงานสังคมสงเคราะห์ทางการแพทย์ (รวมที่ทำงานเก่า)</p>
               </div>
+
               <div class="md:col-span-2 border rounded-lg p-4 bg-gray-50">
                  <div class="font-bold text-gray-700 border-b pb-2 mb-3">ประวัติการศึกษา (ระบุชื่อวุฒิ)</div>
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,7 +310,11 @@
            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 bg-yellow-50 p-5 rounded-lg border border-yellow-100">
                <div class="md:col-span-2">
                    <label class="label font-bold text-yellow-800">สถานะสมาชิกสภาวิชาชีพสังคมสงเคราะห์</label>
-                   <select name="councilStatus" id="cStat" onchange="toggleSec('cStat','cDiv')" class="input-field"><option value="ไม่เป็น">ไม่เป็นสมาชิก</option><option value="เป็น">เป็นสมาชิก</option><option value="หมดอายุ">สมาชิกหมดอายุ</option></select>
+                   <select name="councilStatus" id="cStat" onchange="toggleSec('cStat','cDiv')" class="input-field">
+                       <option value="ไม่เป็น">ไม่เป็นสมาชิก</option>
+                       <option value="เป็น">เป็นสมาชิก</option>
+                       <option value="หมดอายุ">สมาชิกหมดอายุ</option>
+                   </select>
                    <div id="cDiv" class="hidden mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-3 rounded border border-yellow-200">
                        <div><label class="label text-xs text-gray-500">เลขที่สมาชิก</label><input type="text" name="councilNo" id="f_councilNo" class="input-field"></div>
                        <div><label class="label text-xs text-red-500 font-bold">วันที่บัตรหมดอายุ (ระบุเป็น ค.ศ.)</label><input type="date" name="councilExp" id="f_councilExp" class="input-field"></div>
@@ -227,41 +322,62 @@
                </div>
                <div class="md:col-span-2 border-t border-yellow-200 pt-4">
                    <label class="label font-bold text-yellow-800">ใบอนุญาตประกอบวิชาชีพสังคมสงเคราะห์</label>
-                   <select name="licenseStatus" id="lStat" onchange="toggleSec('lStat','lDiv')" class="input-field"><option value="ไม่มี">ไม่มีใบอนุญาต</option><option value="มี">มีใบอนุญาต</option><option value="หมดอายุ">ใบอนุญาตหมดอายุ</option><option value="กำลังต่ออายุ">อยู่ระหว่างต่ออายุ</option></select>
+                   <select name="licenseStatus" id="lStat" onchange="toggleSec('lStat','lDiv')" class="input-field">
+                       <option value="ไม่มี">ไม่มีใบอนุญาต</option>
+                       <option value="มี">มีใบอนุญาต</option>
+                       <option value="หมดอายุ">ใบอนุญาตหมดอายุ</option>
+                       <option value="กำลังต่ออายุ">อยู่ระหว่างต่ออายุ</option>
+                   </select>
                    <div id="lDiv" class="hidden mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-3 rounded border border-yellow-200">
                        <div><label class="label text-xs text-gray-500">เลขที่ใบอนุญาต</label><input type="text" name="licenseNo" id="f_licNo" class="input-field"></div>
                        <div><label class="label text-xs text-red-500 font-bold">วันที่ใบอนุญาตหมดอายุ (ระบุเป็น ค.ศ.)</label><input type="date" name="licenseExp" id="f_licExp" class="input-field"></div>
                    </div>
                </div>
            </div>
-           <div class="text-center"><button type="submit" id="btnSavePerson" class="btn-moph font-bold py-3 px-10 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล</button></div>
+
+           <div class="text-center">
+             <button type="submit" id="btnSavePerson" class="btn-moph font-bold py-3 px-10 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล</button>
+           </div>
         </form>
       </div>
     </div>
 
-    <!-- แท็บจัดการข้อมูลโรงพยาบาล -->
     <div id="hospTab" class="tab-content block">
       <div class="bg-white p-8 rounded-xl shadow-sm max-w-4xl mx-auto border border-green-100">
         <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
            <label class="block text-sm font-bold text-blue-800 mb-2">ค้นหาโรงพยาบาลเพื่อแก้ไข/อัปเดต (หรือปล่อยว่างเพื่อเพิ่มใหม่)</label>
            <select id="hospEditSearch" class="w-full" style="width: 100%;"><option></option></select>
            <p id="newHospHint" class="text-xs text-gray-500 mt-2 hidden"><i class="fas fa-info-circle mr-1"></i>เฉพาะแอดมินส่วนกลางเท่านั้นที่เพิ่มโรงพยาบาลใหม่ได้ ท่านสามารถแก้ไขได้เฉพาะโรงพยาบาลของท่านเท่านั้น</p>
-           <button type="button" id="btnResetHospPw" onclick="resetHospitalPassword()" class="hidden mt-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold py-2 px-3 rounded transition"><i class="fas fa-key mr-1"></i> รีเซ็ตรหัสผ่านโรงพยาบาลนี้กลับเป็นค่าเริ่มต้น (เฉพาะแอดมิน)</button>
+           <button type="button" id="btnResetHospPw" onclick="resetHospitalPassword()" class="hidden mt-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold py-2 px-3 rounded transition">
+              <i class="fas fa-key mr-1"></i> รีเซ็ตรหัสผ่านโรงพยาบาลนี้กลับเป็นค่าเริ่มต้น (เฉพาะแอดมิน)
+           </button>
         </div>
 
         <form id="hospForm" onsubmit="handleHospSubmit(event)" class="mb-10">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="md:col-span-2"><label class="label">รหัสโรงพยาบาล (5 หลัก) <span class="text-red-500">*</span></label><input type="text" name="hospitalCode" id="f_hospCode" maxlength="5" pattern="[0-9]{5}" class="input-field text-center font-bold text-lg text-blue-800" required placeholder="xxxxx"></div>
+            <div class="md:col-span-2">
+               <label class="label">รหัสโรงพยาบาล (5 หลัก) <span class="text-red-500">*</span></label>
+               <input type="text" name="hospitalCode" id="f_hospCode" maxlength="5" pattern="[0-9]{5}" class="input-field text-center font-bold text-lg text-blue-800" required placeholder="xxxxx">
+            </div>
             <div class="md:col-span-2"><label class="label">ชื่อโรงพยาบาล</label><input type="text" name="hospitalName" id="f_hospName" class="input-field" required></div>
             <div><label class="label"><i class="fas fa-phone-alt mr-1"></i> เบอร์โทรศัพท์หน่วยงาน</label><input type="text" name="hospPhone" id="f_hospPhone" class="input-field" placeholder="02-xxx-xxxx"></div>
             <div><label class="label"><i class="fas fa-envelope mr-1"></i> Email หน่วยงาน</label><input type="email" name="hospEmail" id="f_hospEmail" class="input-field" placeholder="example@moph.go.th"></div>
             <div><label class="label">เขตสุขภาพ</label><select name="hospitalRegion" id="f_region" class="input-field" required><option value="">เลือก</option><script>for(let i=1;i<=12;i++) document.write(`<option value="${i}">เขต ${i}</option>`);</script></select></div>
-            <div><label class="label">ระดับ</label><select name="hospitalLevel" id="f_level" class="input-field"><option value="S (โรงพยาบาลชุมชน)">S (โรงพยาบาลชุมชน)</option><option value="S+ (โรงพยาบาลชุมชนพลัส)">S+ (โรงพยาบาลชุมชนพลัส)</option><option value="A (โรงพยาบาลทั่วไป)">A (โรงพยาบาลทั่วไป)</option><option value="A+ (โรงพยาบาลทั่วไปพลัส)">A+ (โรงพยาบาลทั่วไปพลัส)</option><option value="P (โรงพยาบาลศูนย์)">P (โรงพยาบาลศูนย์)</option><option value="P+ (โรงพยาบาลศูนย์พลัส)">P+ (โรงพยาบาลศูนย์พลัส)</option></select></div>
+            <div><label class="label">ระดับ</label><select name="hospitalLevel" id="f_level" class="input-field">
+              <option value="S (โรงพยาบาลชุมชน)">S (โรงพยาบาลชุมชน)</option>
+                  <option value="S+ (โรงพยาบาลชุมชนพลัส)">S+ (โรงพยาบาลชุมชนพลัส)</option>
+                  <option value="A (โรงพยาบาลทั่วไป)">A (โรงพยาบาลทั่วไป)</option>
+                  <option value="A+ (โรงพยาบาลทั่วไปพลัส)">A+ (โรงพยาบาลทั่วไปพลัส)</option>
+                  <option value="P (โรงพยาบาลศูนย์)">P (โรงพยาบาลศูนย์)</option>
+                  <option value="P+ (โรงพยาบาลศูนย์พลัส)">P+ (โรงพยาบาลศูนย์พลัส)</option>
+              </select></div>
             <div><label class="label">จำนวนเตียง</label><input type="number" name="totalBeds" id="f_beds" class="input-field"></div>
+
             <div class="md:col-span-2 grid grid-cols-2 gap-4 bg-green-50 p-4 rounded border border-green-200">
                <div><label class="label text-green-800">กรอบ FTE (เขต)</label><input type="number" id="f_fteReg" name="fteRegion" class="input-field bg-white"></div>
                <div><label class="label text-green-800">กรอบ FTE (รพ.)</label><input type="number" id="f_fteHosp" name="fteHospital" class="input-field bg-white"></div>
             </div>
+
             <div class="md:col-span-2 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                <label class="block text-sm font-bold text-yellow-800 mb-3"><i class="fas fa-user-plus mr-2"></i>จำนวนตำแหน่งว่าง (ระบุจำนวนคน)</label>
                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -271,6 +387,7 @@
                   <div><label class="text-xs text-gray-600 mb-1 block">ลูกจ้างชั่วคราว</label><input type="number" id="f_vacTemp" name="vacTemp" class="input-field text-center"></div>
                </div>
             </div>
+
           </div>
           <div class="mt-6 text-center"><button type="submit" id="btnSaveHosp" class="btn-moph font-bold py-3 px-8 rounded shadow hover:scale-105 transition"><i class="fas fa-save mr-2"></i> บันทึกข้อมูลโรงพยาบาล</button></div>
         </form>
@@ -281,9 +398,14 @@
               <table class="min-w-full text-sm divide-y divide-gray-200 border">
                  <thead class="bg-gray-100">
                     <tr>
-                       <th onclick="sortPersonnel('name')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">ชื่อ-สกุล <i id="sortIcon-name" class="fas fa-sort text-gray-400 ml-1"></i></th>
-                       <th onclick="sortPersonnel('position')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">ตำแหน่ง <i id="sortIcon-position" class="fas fa-sort text-gray-400 ml-1"></i></th>
-                       <th class="p-2 text-left">บัญชี SW</th><th class="p-2 text-center">จัดการ</th>
+                       <th onclick="sortPersonnel('name')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">
+                          ชื่อ-สกุล <i id="sortIcon-name" class="fas fa-sort text-gray-400 ml-1"></i>
+                       </th>
+                       <th onclick="sortPersonnel('position')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">
+                          ตำแหน่ง <i id="sortIcon-position" class="fas fa-sort text-gray-400 ml-1"></i>
+                       </th>
+                       <th class="p-2 text-left">บัญชี SW</th>
+                       <th class="p-2 text-center">จัดการ</th>
                     </tr>
                  </thead>
                  <tbody id="hospPersonTableBody" class="divide-y divide-gray-200"></tbody>
@@ -294,28 +416,61 @@
     </div>
 
   </div>
-  </div> 
+  </div> <!-- /#appContent -->
 
   <script>
-    // ==========================================
-    // API CONFIGURATION (แก้ไข URL ด้านล่างนี้)
-    // ==========================================
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyJH9OAbEB8L6RlG1OW81f8znc8n4kUiBvXDRR49LkHF-d_E5r7b7brEWQHQN3uqSkL/exec'; 
+    // ==========================================================
+    //  เชื่อมต่อ Google Apps Script Web App (JSON API) แทน google.script.run เดิม
+    //  ต้องรันบนหน้าเว็บสาธารณะ (เช่น GitHub Pages) เพราะไฟล์นี้ไม่ได้ถูกเสิร์ฟจาก Apps Script อีกต่อไป
+    // ==========================================================
+    const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbyJH9OAbEB8L6RlG1OW81f8znc8n4kUiBvXDRR49LkHF-d_E5r7b7brEWQHQN3uqSkL/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
 
-    async function apiCall(action, payload = {}) {
-        payload.action = action;
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error("API Error:", error);
-            throw error;
-        }
+    function callApi(action, args) {
+      return fetch(API_BASE_URL, {
+        method: 'POST',
+        // ใช้ text/plain เพื่อให้เบราว์เซอร์ไม่ส่ง CORS preflight (OPTIONS) ซึ่ง Apps Script ไม่รองรับ
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: action, args: args || [] })
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      });
     }
+
+    /**
+     * shim จำลอง google.script.run ของ Apps Script HtmlService ให้ทำงานผ่าน fetch() แทน
+     * ทำให้โค้ดเดิมที่เขียนแบบ google.script.run.withSuccessHandler(...).withFailureHandler(...).ฟังก์ชัน(args)
+     * ใช้งานได้เหมือนเดิมทุกจุด โดยไม่ต้องแก้โค้ดส่วน UI logic ด้านล่างเลย
+     */
+    function createGasRunProxy() {
+      let successFn = null;
+      let failureFn = null;
+      const proxy = new Proxy({}, {
+        get: function (target, prop) {
+          if (prop === 'withSuccessHandler') {
+            return function (fn) { successFn = fn; return proxy; };
+          }
+          if (prop === 'withFailureHandler') {
+            return function (fn) { failureFn = fn; return proxy; };
+          }
+          // การเข้าถึง property อื่นใดถือเป็นชื่อฟังก์ชัน server-side ที่ต้องการเรียก
+          return function () {
+            const args = Array.prototype.slice.call(arguments);
+            callApi(String(prop), args)
+              .then(function (result) { if (successFn) successFn(result); })
+              .catch(function (err) { if (failureFn) failureFn(err); else console.error('[API Error]', err); });
+          };
+        }
+      });
+      return proxy;
+    }
+
+    window.google = {
+      script: {
+        get run() { return createGasRunProxy(); }
+      }
+    };
+    // ==========================================================
 
     const inputClass = "w-full border-gray-300 rounded-md shadow-sm border p-2 mt-1";
     document.querySelectorAll('.input-field').forEach(el => el.className = inputClass);
@@ -328,19 +483,29 @@
     let sessionToken = null;
     let myAccess = { role: 'GUEST', hospitalCodes: [], isAdmin: false, allowed: false, username: '', name: '' };
 
+    // --- ป้องกัน XSS: escape ข้อมูลก่อนแสดงผลใน innerHTML ---
     function escapeHtml(str) {
        if (str === null || str === undefined) return '';
-       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+       return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
     }
 
     function showConnError(err) {
        Swal.fire('เกิดข้อผิดพลาดในการเชื่อมต่อ', (err && err.message) ? err.message : 'กรุณาลองใหม่อีกครั้ง', 'error');
     }
 
+    // ===================== เข้าสู่ระบบ / เซสชัน =====================
     $(document).ready(function() {
        sessionToken = sessionStorage.getItem('mswToken');
        if (sessionToken) {
-          apiCall('verifySession', { token: sessionToken }).then(onSessionVerified).catch(() => showLoginScreen());
+          google.script.run
+            .withSuccessHandler(onSessionVerified)
+            .withFailureHandler(function() { showLoginScreen(); })
+            .verifySession(sessionToken);
        } else {
           showLoginScreen();
        }
@@ -349,60 +514,125 @@
     function onSessionVerified(access) {
        if (access && access.allowed) {
           myAccess = { role: access.role, hospitalCodes: access.hospitalCodes || [], isAdmin: access.role === 'ADMIN', allowed: true, username: access.username, name: access.name, needsPdpaConsent: !!access.needsPdpaConsent };
-          if (myAccess.needsPdpaConsent) showBlockingPdpaConsent();
-          else enterApp();
+          if (myAccess.needsPdpaConsent) {
+             showBlockingPdpaConsent();
+          } else {
+             enterApp();
+          }
        } else {
-          sessionStorage.removeItem('mswToken'); showLoginScreen();
+          sessionStorage.removeItem('mswToken');
+          showLoginScreen();
        }
     }
 
-    function showLoginScreen() { $('#loginScreen').removeClass('hidden'); $('#appContent').addClass('hidden'); }
-
-    function showBlockingPdpaConsent(afterAccept) {
-       apiCall('getPdpaConsentInfo').then(info => {
-            Swal.fire({
-               title: 'ความยินยอมในการเก็บรวบรวมข้อมูลส่วนบุคคล (PDPA)', width: 560,
-               html: `<div style="text-align:left; max-height:280px; overflow-y:auto; font-size:13px; white-space:pre-line; border:1px solid #e5e7eb; padding:12px; border-radius:6px; background:#fafafa;">${escapeHtml(info.text)}</div>`,
-               confirmButtonText: 'ยอมรับและเข้าใช้งานระบบ', showCancelButton: true, cancelButtonText: 'ไม่ยอมรับ (ออกจากระบบ)', confirmButtonColor: '#006a4e', allowOutsideClick: false, allowEscapeKey: false
-            }).then(result => {
-               if (result.isConfirmed) {
-                  apiCall('acceptPdpaConsent', { token: sessionToken }).then(() => { myAccess.needsPdpaConsent = false; (afterAccept || enterApp)(); }).catch(showConnError);
-               } else {
-                  apiCall('logout', { token: sessionToken }); sessionStorage.removeItem('mswToken'); sessionToken = null; location.reload();
-               }
-            });
-       }).catch(showConnError);
+    function showLoginScreen() {
+       $('#loginScreen').removeClass('hidden');
+       $('#appContent').addClass('hidden');
     }
 
-    function enterApp() { $('#loginScreen').addClass('hidden'); $('#appContent').removeClass('hidden'); renderUserBadge(); checkSystemStatus(); }
+    // บังคับให้บัญชี SW ที่ยังไม่เคยให้ความยินยอม PDPA (เช่น ลงทะเบียนไว้ก่อนเพิ่มระบบนี้) ต้องยอมรับก่อนใช้งานต่อ
+    function showBlockingPdpaConsent(afterAccept) {
+       google.script.run
+         .withSuccessHandler(info => {
+            Swal.fire({
+               title: 'ความยินยอมในการเก็บรวบรวมข้อมูลส่วนบุคคล (PDPA)',
+               width: 560,
+               html: `<div style="text-align:left; max-height:280px; overflow-y:auto; font-size:13px; white-space:pre-line; border:1px solid #e5e7eb; padding:12px; border-radius:6px; background:#fafafa;">${escapeHtml(info.text)}</div>`,
+               confirmButtonText: 'ยอมรับและเข้าใช้งานระบบ',
+               showCancelButton: true,
+               cancelButtonText: 'ไม่ยอมรับ (ออกจากระบบ)',
+               confirmButtonColor: '#006a4e',
+               allowOutsideClick: false,
+               allowEscapeKey: false
+            }).then(result => {
+               if (result.isConfirmed) {
+                  google.script.run
+                    .withSuccessHandler(() => {
+                       myAccess.needsPdpaConsent = false;
+                       (afterAccept || enterApp)();
+                    })
+                    .withFailureHandler(showConnError)
+                    .acceptPdpaConsent(sessionToken);
+               } else {
+                  google.script.run.logout(sessionToken);
+                  sessionStorage.removeItem('mswToken');
+                  sessionToken = null;
+                  location.reload();
+               }
+            });
+         })
+         .withFailureHandler(showConnError)
+         .getPdpaConsentInfo();
+    }
+
+    function enterApp() {
+       $('#loginScreen').addClass('hidden');
+       $('#appContent').removeClass('hidden');
+       renderUserBadge();
+       checkSystemStatus();
+    }
 
     function handleLogin(e) {
        e.preventDefault();
-       const u = $('#loginUsername').val().trim(); const p = $('#loginPassword').val();
-       $('#loginError').addClass('hidden'); $('#btnLogin').prop('disabled', true).html('<span class="inline-spinner mr-2"></span> กำลังตรวจสอบ...');
-       apiCall('login', { username: u, password: p }).then(res => {
+       const u = $('#loginUsername').val().trim();
+       const p = $('#loginPassword').val();
+       $('#loginError').addClass('hidden');
+       $('#btnLogin').prop('disabled', true).html('<span class="inline-spinner mr-2"></span> กำลังตรวจสอบ...');
+
+       google.script.run
+         .withSuccessHandler(res => {
             $('#btnLogin').prop('disabled', false).html('<i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ');
             if (res.status === 'success') {
-               sessionToken = res.token; sessionStorage.setItem('mswToken', sessionToken);
-               myAccess = { role: res.role, hospitalCodes: res.role === 'HOSPITAL' ? [u] : [], isAdmin: res.role === 'ADMIN', allowed: true, username: u, name: res.name, needsPdpaConsent: !!res.needsPdpaConsent };
+               sessionToken = res.token;
+               sessionStorage.setItem('mswToken', sessionToken);
+               myAccess = {
+                  role: res.role,
+                  hospitalCodes: res.role === 'HOSPITAL' ? [u] : [],
+                  isAdmin: res.role === 'ADMIN',
+                  allowed: true,
+                  username: u,
+                  name: res.name,
+                  needsPdpaConsent: !!res.needsPdpaConsent
+               };
                $('#loginPassword').val('');
+
                const afterAuth = () => {
                   enterApp();
-                  if (res.mustChangePassword) { Swal.fire({ icon: 'info', title: 'กรุณาตั้งรหัสผ่านใหม่', text: 'ขณะนี้ท่านเข้าสู่ระบบด้วยรหัสผ่านเริ่มต้น เพื่อความปลอดภัยกรุณาเปลี่ยนรหัสผ่านทันที', confirmButtonText: 'เปลี่ยนรหัสผ่านตอนนี้' }).then(() => openChangePasswordModal()); }
+                  if (res.mustChangePassword) {
+                     Swal.fire({
+                        icon: 'info',
+                        title: 'กรุณาตั้งรหัสผ่านใหม่',
+                        text: 'ขณะนี้ท่านเข้าสู่ระบบด้วยรหัสผ่านเริ่มต้น เพื่อความปลอดภัยกรุณาเปลี่ยนรหัสผ่านทันที',
+                        confirmButtonText: 'เปลี่ยนรหัสผ่านตอนนี้'
+                     }).then(() => openChangePasswordModal());
+                  }
                };
-               if (myAccess.needsPdpaConsent) showBlockingPdpaConsent(afterAuth); else afterAuth();
-            } else { $('#loginError').removeClass('hidden').find('span').text(res.message); }
-       }).catch(err => {
+
+               if (myAccess.needsPdpaConsent) {
+                  showBlockingPdpaConsent(afterAuth);
+               } else {
+                  afterAuth();
+               }
+            } else {
+               $('#loginError').removeClass('hidden').find('span').text(res.message);
+            }
+         })
+         .withFailureHandler(err => {
             $('#btnLogin').prop('disabled', false).html('<i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ');
             $('#loginError').removeClass('hidden').find('span').text('เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
-       });
+         })
+         .login(u, p);
     }
 
     function handleLogout() {
-       Swal.fire({ icon: 'question', title: 'ออกจากระบบ?', showCancelButton: true, confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#dc2626' }).then(result => {
+       Swal.fire({
+          icon: 'question', title: 'ออกจากระบบ?', showCancelButton: true,
+          confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#dc2626'
+       }).then(result => {
           if (result.isConfirmed) {
-             apiCall('logout', { token: sessionToken });
-             sessionStorage.removeItem('mswToken'); sessionToken = null;
+             google.script.run.logout(sessionToken);
+             sessionStorage.removeItem('mswToken');
+             sessionToken = null;
              myAccess = { role: 'GUEST', hospitalCodes: [], isAdmin: false, allowed: false, username: '', name: '' };
              location.reload();
           }
@@ -414,28 +644,62 @@
        const roleText = myAccess.role === 'ADMIN' ? 'แอดมินส่วนกลาง' : (myAccess.role === 'PERSON' ? 'นักสังคมสงเคราะห์' : 'ผู้ดูแลข้อมูลโรงพยาบาล');
        const roleClass = myAccess.role === 'ADMIN' ? 'role-admin' : (myAccess.role === 'PERSON' ? 'role-person' : 'role-hospital');
        $('#userRoleBadge').text(roleText).attr('class', 'role-badge ' + roleClass);
-       if (!myAccess.isAdmin) $('#newHospHint').removeClass('hidden');
-       if (myAccess.isAdmin) $('#btnManageAdmins').removeClass('hidden');
-       if (!myAccess.isAdmin) $('#btnNotifyAdmin').removeClass('hidden');
-       if (myAccess.role === 'PERSON') { $('#btn-hospTab').addClass('hidden'); switchTab('personTab'); }
+       if (!myAccess.isAdmin) { $('#newHospHint').removeClass('hidden'); }
+       if (myAccess.isAdmin) { $('#btnManageAdmins').removeClass('hidden'); }
+       if (!myAccess.isAdmin) { $('#btnNotifyAdmin').removeClass('hidden'); }
+
+       // บัญชีนักสังคมสงเคราะห์รายบุคคล: ไม่ให้เห็น/เข้าแท็บจัดการข้อมูลโรงพยาบาล
+       if (myAccess.role === 'PERSON') {
+          $('#btn-hospTab').addClass('hidden');
+          switchTab('personTab');
+       }
     }
 
     function openRegisterModal() {
        Swal.fire({ title: 'กำลังโหลด...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('getPdpaConsentInfo').then(info => {
-            Swal.fire({ title: 'ความยินยอมในการเก็บรวบรวมข้อมูลส่วนบุคคล (PDPA)', width: 560, html: `<div style="text-align:left; max-height:280px; overflow-y:auto; font-size:13px; white-space:pre-line; border:1px solid #e5e7eb; padding:12px; border-radius:6px; background:#fafafa;">${escapeHtml(info.text)}</div>`, confirmButtonText: 'ยอมรับและดำเนินการลงทะเบียนต่อ', showCancelButton: true, cancelButtonText: 'ไม่ยอมรับ', confirmButtonColor: '#006a4e' }).then(result => {
-               if (result.isConfirmed) openRegisterFormModal();
+       google.script.run
+         .withSuccessHandler(info => {
+            Swal.fire({
+               title: 'ความยินยอมในการเก็บรวบรวมข้อมูลส่วนบุคคล (PDPA)',
+               width: 560,
+               html: `<div style="text-align:left; max-height:280px; overflow-y:auto; font-size:13px; white-space:pre-line; border:1px solid #e5e7eb; padding:12px; border-radius:6px; background:#fafafa;">${escapeHtml(info.text)}</div>`,
+               confirmButtonText: 'ยอมรับและดำเนินการลงทะเบียนต่อ',
+               showCancelButton: true,
+               cancelButtonText: 'ไม่ยอมรับ',
+               confirmButtonColor: '#006a4e'
+            }).then(result => {
+               if (result.isConfirmed) {
+                  openRegisterFormModal();
+               }
             });
-       }).catch(showConnError);
+         })
+         .withFailureHandler(showConnError)
+         .getPdpaConsentInfo();
     }
 
     function openRegisterFormModal() {
        Swal.fire({
           title: 'ลงทะเบียนบัญชีนักสังคมสงเคราะห์',
-          html: '<div class="text-left text-xs text-gray-500 mb-2">กรอกข้อมูลให้ตรงกับที่บันทึกไว้ในระบบ (ให้โรงพยาบาลของท่านตรวจสอบได้หากมีปัญหา)</div><input id="regHospCode" class="swal2-input" placeholder="รหัสโรงพยาบาล 5 หลัก" maxlength="5"><input id="regFirstName" class="swal2-input" placeholder="ชื่อ (ไม่ต้องมีคำนำหน้า)"><input id="regLastName" class="swal2-input" placeholder="นามสกุล"><hr style="margin:12px 0;"><input id="regUsername" class="swal2-input" placeholder="ตั้ง Username (4-30 ตัวอักษร)" autocomplete="off"><input id="regPassword" type="password" class="swal2-input" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password"><input id="regPassword2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password">',
-          confirmButtonText: 'ลงทะเบียน', showCancelButton: true, cancelButtonText: 'ยกเลิก', focusConfirm: false,
+          html:
+            '<div class="text-left text-xs text-gray-500 mb-2">กรอกข้อมูลให้ตรงกับที่บันทึกไว้ในระบบ (ให้โรงพยาบาลของท่านตรวจสอบได้หากมีปัญหา)</div>' +
+            '<input id="regHospCode" class="swal2-input" placeholder="รหัสโรงพยาบาล 5 หลัก" maxlength="5">' +
+            '<input id="regFirstName" class="swal2-input" placeholder="ชื่อ (ไม่ต้องมีคำนำหน้า)">' +
+            '<input id="regLastName" class="swal2-input" placeholder="นามสกุล">' +
+            '<hr style="margin:12px 0;">' +
+            '<input id="regUsername" class="swal2-input" placeholder="ตั้ง Username (4-30 ตัวอักษร)" autocomplete="off">' +
+            '<input id="regPassword" type="password" class="swal2-input" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">' +
+            '<input id="regPassword2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password">',
+          confirmButtonText: 'ลงทะเบียน',
+          showCancelButton: true,
+          cancelButtonText: 'ยกเลิก',
+          focusConfirm: false,
           preConfirm: () => {
-             const hospCode = document.getElementById('regHospCode').value.trim(); const fName = document.getElementById('regFirstName').value.trim(); const lName = document.getElementById('regLastName').value.trim(); const uname = document.getElementById('regUsername').value.trim(); const pw = document.getElementById('regPassword').value; const pw2 = document.getElementById('regPassword2').value;
+             const hospCode = document.getElementById('regHospCode').value.trim();
+             const fName = document.getElementById('regFirstName').value.trim();
+             const lName = document.getElementById('regLastName').value.trim();
+             const uname = document.getElementById('regUsername').value.trim();
+             const pw = document.getElementById('regPassword').value;
+             const pw2 = document.getElementById('regPassword2').value;
              if (!hospCode || !fName || !lName || !uname || !pw || !pw2) { Swal.showValidationMessage('กรุณากรอกข้อมูลให้ครบทุกช่อง'); return false; }
              if (pw !== pw2) { Swal.showValidationMessage('รหัสผ่านทั้งสองช่องไม่ตรงกัน'); return false; }
              if (pw.length < 6) { Swal.showValidationMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'); return false; }
@@ -445,46 +709,109 @@
           if (result.isConfirmed) {
              Swal.fire({ title: 'กำลังลงทะเบียน...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
              const v = result.value;
-             apiCall('registerPersonAccount', { hospitalCode: v.hospCode, firstName: v.fName, lastName: v.lName, username: v.uname, password: v.pw, pdpaConsent: true }).then(res => {
-                  if (res.status === 'success') { Swal.fire('ลงทะเบียนสำเร็จ', res.message, 'success').then(() => { $('#loginUsername').val(v.uname); $('#loginPassword').val('').focus(); }); }
-                  else { Swal.fire('ลงทะเบียนไม่สำเร็จ', res.message, 'error'); }
-             }).catch(showConnError);
+             google.script.run
+               .withSuccessHandler(res => {
+                  if (res.status === 'success') {
+                     Swal.fire('ลงทะเบียนสำเร็จ', res.message, 'success').then(() => {
+                        $('#loginUsername').val(v.uname);
+                        $('#loginPassword').val('').focus();
+                     });
+                  } else {
+                     Swal.fire('ลงทะเบียนไม่สำเร็จ', res.message, 'error');
+                  }
+               })
+               .withFailureHandler(showConnError)
+               .registerPersonAccount(v.hospCode, v.fName, v.lName, v.uname, v.pw, true);
           }
        });
     }
 
     function openChangePasswordModal() {
        Swal.fire({
-          title: 'เปลี่ยนรหัสผ่าน', html: '<input id="swOldPw" type="password" class="swal2-input" placeholder="รหัสผ่านเดิม" autocomplete="current-password"><input id="swNewPw" type="password" class="swal2-input" placeholder="รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password"><input id="swNewPw2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่านใหม่" autocomplete="new-password">', confirmButtonText: 'บันทึกรหัสผ่านใหม่', showCancelButton: true, cancelButtonText: 'ยกเลิก', focusConfirm: false,
+          title: 'เปลี่ยนรหัสผ่าน',
+          html:
+            '<input id="swOldPw" type="password" class="swal2-input" placeholder="รหัสผ่านเดิม" autocomplete="current-password">' +
+            '<input id="swNewPw" type="password" class="swal2-input" placeholder="รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">' +
+            '<input id="swNewPw2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่านใหม่" autocomplete="new-password">',
+          confirmButtonText: 'บันทึกรหัสผ่านใหม่',
+          showCancelButton: true,
+          cancelButtonText: 'ยกเลิก',
+          focusConfirm: false,
           preConfirm: () => {
-             const oldPw = document.getElementById('swOldPw').value; const newPw = document.getElementById('swNewPw').value; const newPw2 = document.getElementById('swNewPw2').value;
+             const oldPw = document.getElementById('swOldPw').value;
+             const newPw = document.getElementById('swNewPw').value;
+             const newPw2 = document.getElementById('swNewPw2').value;
              if (!oldPw || !newPw || !newPw2) { Swal.showValidationMessage('กรุณากรอกข้อมูลให้ครบทุกช่อง'); return false; }
              if (newPw !== newPw2) { Swal.showValidationMessage('รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน'); return false; }
              if (newPw.length < 6) { Swal.showValidationMessage('รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร'); return false; }
-             return { oldPw, newPw };
+             return { oldPw: oldPw, newPw: newPw };
           }
        }).then(result => {
           if (result.isConfirmed) {
              Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-             apiCall('changePassword', { token: sessionToken, oldPassword: result.value.oldPw, newPassword: result.value.newPw }).then(res => {
+             google.script.run
+               .withSuccessHandler(res => {
                   if (res.status === 'success') Swal.fire('สำเร็จ', res.message, 'success');
                   else Swal.fire('ไม่สำเร็จ', res.message, 'error');
-             }).catch(showConnError);
+               })
+               .withFailureHandler(showConnError)
+               .changePassword(sessionToken, result.value.oldPw, result.value.newPw);
           }
        });
     }
 
+    // ===================== จัดการบัญชีแอดมินส่วนกลาง (ADMIN เท่านั้น) =====================
     function openManageAdminsModal() {
        Swal.fire({ title: 'กำลังโหลด...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('adminListAdmins', { token: sessionToken }).then(admins => { renderManageAdminsDialog(admins || []); }).catch(showConnError);
+       google.script.run
+         .withSuccessHandler(admins => {
+            renderManageAdminsDialog(admins || []);
+         })
+         .withFailureHandler(showConnError)
+         .adminListAdmins(sessionToken);
     }
 
     function renderManageAdminsDialog(admins) {
-       const rowsHtml = admins.map(a => `<tr class="border-b"><td class="py-1.5 text-left">${escapeHtml(a.username)}</td><td class="py-1.5 text-left text-gray-500">${escapeHtml(a.name)}</td><td class="py-1.5 text-center">${a.active ? `<span class="text-green-600 text-xs">ใช้งานอยู่</span>` : `<span class="text-red-500 text-xs">ถูกระงับ</span>`}</td><td class="py-1.5 text-center"><button onclick="toggleAdminActive('${escapeHtml(a.username)}', ${a.active ? 'false' : 'true'})" class="text-xs border px-2 py-1 rounded ${a.active ? 'text-red-600 border-red-200 hover:bg-red-50' : 'text-green-600 border-green-200 hover:bg-green-50'}">${a.active ? 'ระงับ' : 'เปิดใช้งาน'}</button></td></tr>`).join('');
+       const rowsHtml = admins.map(a => `
+          <tr class="border-b">
+             <td class="py-1.5 text-left">${escapeHtml(a.username)}</td>
+             <td class="py-1.5 text-left text-gray-500">${escapeHtml(a.name)}</td>
+             <td class="py-1.5 text-center">
+                ${a.active
+                   ? `<span class="text-green-600 text-xs">ใช้งานอยู่</span>`
+                   : `<span class="text-red-500 text-xs">ถูกระงับ</span>`}
+             </td>
+             <td class="py-1.5 text-center">
+                <button onclick="toggleAdminActive('${escapeHtml(a.username)}', ${a.active ? 'false' : 'true'})" class="text-xs border px-2 py-1 rounded ${a.active ? 'text-red-600 border-red-200 hover:bg-red-50' : 'text-green-600 border-green-200 hover:bg-green-50'}">
+                   ${a.active ? 'ระงับ' : 'เปิดใช้งาน'}
+                </button>
+             </td>
+          </tr>
+       `).join('');
+
        Swal.fire({
-          title: 'จัดการบัญชีแอดมินส่วนกลาง', width: 560, html: `<div class="text-left text-sm max-h-56 overflow-y-auto mb-4"><table class="w-full text-sm"><thead><tr class="border-b font-bold text-gray-600"><td class="py-1.5">Username</td><td class="py-1.5">ชื่อ</td><td class="py-1.5 text-center">สถานะ</td><td class="py-1.5 text-center">จัดการ</td></tr></thead><tbody>${rowsHtml || '<tr><td colspan="4" class="py-3 text-center text-gray-400">ยังไม่มีข้อมูล</td></tr>'}</tbody></table></div><hr class="mb-3"><div class="text-left text-sm font-bold text-gray-700 mb-2">เพิ่มแอดมินคนใหม่</div><input id="newAdminUsername" class="swal2-input" placeholder="Username (4-30 ตัวอักษร)" autocomplete="off"><input id="newAdminName" class="swal2-input" placeholder="ชื่อ-นามสกุล"><input id="newAdminPassword" type="password" class="swal2-input" placeholder="รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">`, confirmButtonText: 'เพิ่มแอดมิน', showCancelButton: true, cancelButtonText: 'ปิด', focusConfirm: false,
+          title: 'จัดการบัญชีแอดมินส่วนกลาง',
+          width: 560,
+          html:
+            `<div class="text-left text-sm max-h-56 overflow-y-auto mb-4">
+               <table class="w-full text-sm">
+                  <thead><tr class="border-b font-bold text-gray-600"><td class="py-1.5">Username</td><td class="py-1.5">ชื่อ</td><td class="py-1.5 text-center">สถานะ</td><td class="py-1.5 text-center">จัดการ</td></tr></thead>
+                  <tbody>${rowsHtml || '<tr><td colspan="4" class="py-3 text-center text-gray-400">ยังไม่มีข้อมูล</td></tr>'}</tbody>
+               </table>
+            </div>
+            <hr class="mb-3">
+            <div class="text-left text-sm font-bold text-gray-700 mb-2">เพิ่มแอดมินคนใหม่</div>` +
+            '<input id="newAdminUsername" class="swal2-input" placeholder="Username (4-30 ตัวอักษร)" autocomplete="off">' +
+            '<input id="newAdminName" class="swal2-input" placeholder="ชื่อ-นามสกุล">' +
+            '<input id="newAdminPassword" type="password" class="swal2-input" placeholder="รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">',
+          confirmButtonText: 'เพิ่มแอดมิน',
+          showCancelButton: true,
+          cancelButtonText: 'ปิด',
+          focusConfirm: false,
           preConfirm: () => {
-             const uname = document.getElementById('newAdminUsername').value.trim(); const name = document.getElementById('newAdminName').value.trim(); const pw = document.getElementById('newAdminPassword').value;
+             const uname = document.getElementById('newAdminUsername').value.trim();
+             const name = document.getElementById('newAdminName').value.trim();
+             const pw = document.getElementById('newAdminPassword').value;
              if (!uname || !pw) { Swal.showValidationMessage('กรุณากรอก Username และรหัสผ่านอย่างน้อย'); return false; }
              if (pw.length < 6) { Swal.showValidationMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'); return false; }
              return { uname, name, pw };
@@ -492,307 +819,756 @@
        }).then(result => {
           if (result.isConfirmed) {
              Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-             apiCall('adminCreateAdmin', { token: sessionToken, newUsername: result.value.uname, newPassword: result.value.pw, newName: result.value.name }).then(res => {
-                  if (res.status === 'success') Swal.fire('สำเร็จ', res.message, 'success').then(() => openManageAdminsModal());
-                  else Swal.fire('ไม่สำเร็จ', res.message, 'error').then(() => openManageAdminsModal());
-             }).catch(showConnError);
+             google.script.run
+               .withSuccessHandler(res => {
+                  if (res.status === 'success') {
+                     Swal.fire('สำเร็จ', res.message, 'success').then(() => openManageAdminsModal());
+                  } else {
+                     Swal.fire('ไม่สำเร็จ', res.message, 'error').then(() => openManageAdminsModal());
+                  }
+               })
+               .withFailureHandler(showConnError)
+               .adminCreateAdmin(sessionToken, result.value.uname, result.value.pw, result.value.name);
           }
        });
     }
 
     function toggleAdminActive(username, makeActive) {
        Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('adminSetAdminActive', { token: sessionToken, targetUsername: username, active: makeActive }).then(res => {
-            if (res.status === 'success') openManageAdminsModal(); else Swal.fire('ไม่สำเร็จ', res.message, 'error').then(() => openManageAdminsModal());
-       }).catch(showConnError);
+       google.script.run
+         .withSuccessHandler(res => {
+            if (res.status === 'success') {
+               openManageAdminsModal();
+            } else {
+               Swal.fire('ไม่สำเร็จ', res.message, 'error').then(() => openManageAdminsModal());
+            }
+         })
+         .withFailureHandler(showConnError)
+         .adminSetAdminActive(sessionToken, username, makeActive);
     }
 
+    // ===================== แจ้ง/ประสานงานแอดมินส่วนกลางผ่าน LINE OA =====================
     function openNotifyAdminModal() {
        Swal.fire({ title: 'กำลังโหลด...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('getNotifyTopics').then(topics => {
+       google.script.run
+         .withSuccessHandler(topics => {
             const options = (topics || []).map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
             Swal.fire({
-               title: 'แจ้ง/ประสานงานแอดมินส่วนกลาง', width: 520, html: `<div class="text-left text-sm"><label class="block text-xs font-bold text-gray-600 mb-1">เรื่องที่ต้องการแจ้ง/ประสาน</label><select id="notifyTopic" class="swal2-select" style="width:100%; display:block; margin:0 0 12px 0;"><option value="">-- เลือกเรื่อง --</option>${options}</select><label class="block text-xs font-bold text-gray-600 mb-1">รายละเอียดเพิ่มเติม (ถ้ามี)</label><textarea id="notifyDetails" class="swal2-textarea" style="width:100%; margin:0;" rows="4" placeholder="ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง..." maxlength="1000"></textarea></div>`, confirmButtonText: 'ส่งข้อความ', showCancelButton: true, cancelButtonText: 'ยกเลิก', focusConfirm: false,
+               title: 'แจ้ง/ประสานงานแอดมินส่วนกลาง',
+               width: 520,
+               html:
+                 '<div class="text-left text-sm">' +
+                 '<label class="block text-xs font-bold text-gray-600 mb-1">เรื่องที่ต้องการแจ้ง/ประสาน</label>' +
+                 `<select id="notifyTopic" class="swal2-select" style="width:100%; display:block; margin:0 0 12px 0;">
+                     <option value="">-- เลือกเรื่อง --</option>
+                     ${options}
+                  </select>` +
+                 '<label class="block text-xs font-bold text-gray-600 mb-1">รายละเอียดเพิ่มเติม (ถ้ามี)</label>' +
+                 '<textarea id="notifyDetails" class="swal2-textarea" style="width:100%; margin:0;" rows="4" placeholder="ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง..." maxlength="1000"></textarea>' +
+                 '</div>',
+               confirmButtonText: 'ส่งข้อความ',
+               showCancelButton: true,
+               cancelButtonText: 'ยกเลิก',
+               focusConfirm: false,
                preConfirm: () => {
-                  const topic = document.getElementById('notifyTopic').value; const details = document.getElementById('notifyDetails').value.trim();
+                  const topic = document.getElementById('notifyTopic').value;
+                  const details = document.getElementById('notifyDetails').value.trim();
                   if (!topic) { Swal.showValidationMessage('กรุณาเลือกเรื่องที่ต้องการแจ้ง/ประสาน'); return false; }
                   return { topic, details };
                }
             }).then(result => {
                if (result.isConfirmed) {
                   Swal.fire({ title: 'กำลังส่งข้อความ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                  apiCall('sendAdminNotification', { token: sessionToken, topic: result.value.topic, details: result.value.details }).then(res => {
-                       if (res.status === 'success') Swal.fire('ส่งสำเร็จ', res.message, 'success'); else Swal.fire('แจ้งเตือน', res.message, 'warning');
-                  }).catch(showConnError);
+                  google.script.run
+                    .withSuccessHandler(res => {
+                       if (res.status === 'success') {
+                          Swal.fire('ส่งสำเร็จ', res.message, 'success');
+                       } else {
+                          Swal.fire('แจ้งเตือน', res.message, 'warning');
+                       }
+                    })
+                    .withFailureHandler(showConnError)
+                    .sendAdminNotification(sessionToken, result.value.topic, result.value.details);
                }
             });
-       }).catch(showConnError);
+         })
+         .withFailureHandler(showConnError)
+         .getNotifyTopics();
     }
 
     function resetHospitalPassword() {
-       const code = $('#btnResetHospPw').data('code'); if (!code) return;
-       Swal.fire({ icon: 'warning', title: 'รีเซ็ตรหัสผ่านโรงพยาบาล ' + code + '?', html: 'รหัสผ่านจะถูกเปลี่ยนกลับเป็นค่าเริ่มต้น <b>sw' + code + '</b><br>โรงพยาบาลควรเปลี่ยนรหัสผ่านใหม่ทันทีหลังเข้าสู่ระบบ', showCancelButton: true, confirmButtonText: 'รีเซ็ตรหัสผ่าน', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#dc2626' }).then(result => {
+       const code = $('#btnResetHospPw').data('code');
+       if (!code) return;
+
+       Swal.fire({
+          icon: 'warning',
+          title: 'รีเซ็ตรหัสผ่านโรงพยาบาล ' + code + '?',
+          html: 'รหัสผ่านจะถูกเปลี่ยนกลับเป็นค่าเริ่มต้น <b>sw' + code + '</b><br>โรงพยาบาลควรเปลี่ยนรหัสผ่านใหม่ทันทีหลังเข้าสู่ระบบ',
+          showCancelButton: true,
+          confirmButtonText: 'รีเซ็ตรหัสผ่าน',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#dc2626'
+       }).then(result => {
           if (result.isConfirmed) {
              Swal.fire({ title: 'กำลังรีเซ็ต...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-             apiCall('adminResetHospitalPassword', { token: sessionToken, hospitalCode: code }).then(res => {
-                  if (res.status === 'success') Swal.fire('สำเร็จ', res.message, 'success'); else Swal.fire('ไม่สำเร็จ', res.message, 'error');
-             }).catch(showConnError);
+             google.script.run
+               .withSuccessHandler(res => {
+                  if (res.status === 'success') Swal.fire('สำเร็จ', res.message, 'success');
+                  else Swal.fire('ไม่สำเร็จ', res.message, 'error');
+               })
+               .withFailureHandler(showConnError)
+               .adminResetHospitalPassword(sessionToken, code);
           }
        });
     }
 
+    // ฟังก์ชันสำหรับซ่อน/แสดง ช่อง "ระบุคำนำหน้า"
     function togglePrefix() {
         const prefixValue = $('#f_prefix').val();
-        if (prefixValue === 'อื่น ๆ') { $('#f_prefixOther').removeClass('hidden').prop('required', true); } else { $('#f_prefixOther').addClass('hidden').prop('required', false).val(''); }
+        if (prefixValue === 'อื่น ๆ') {
+            $('#f_prefixOther').removeClass('hidden').prop('required', true);
+        } else {
+            $('#f_prefixOther').addClass('hidden').prop('required', false).val('');
+        }
     }
 
+    // --- ตรวจสอบสถานะเปิด-ปิดระบบ (ล็อกทั้งสองแท็บ ยกเว้นแอดมิน) ---
     function checkSystemStatus() {
        $('#personTab').addClass('opacity-50 pointer-events-none');
-       apiCall('getSystemConfig').then(config => {
+
+       google.script.run
+         .withSuccessHandler(config => {
             if (config.status || myAccess.isAdmin) {
-               $('#personTab').removeClass('opacity-50 pointer-events-none'); loadHospDropdown(); loadHospEditDropdown();
-               if (!config.status && myAccess.isAdmin) Swal.fire({ icon: 'info', title: 'ระบบปิดรับข้อมูลทั่วไป', text: 'ขณะนี้ระบบปิดรับข้อมูลจากผู้ใช้ทั่วไป แต่ท่านเข้าใช้งานได้ในฐานะแอดมิน', timer: 3500, showConfirmButton: false });
-            } else { lockDownSystem(config.message); }
-       }).catch(showConnError);
+               $('#personTab').removeClass('opacity-50 pointer-events-none');
+               loadHospDropdown();
+               loadHospEditDropdown();
+               if (!config.status && myAccess.isAdmin) {
+                  Swal.fire({ icon: 'info', title: 'ระบบปิดรับข้อมูลทั่วไป', text: 'ขณะนี้ระบบปิดรับข้อมูลจากผู้ใช้ทั่วไป แต่ท่านเข้าใช้งานได้ในฐานะแอดมิน', timer: 3500, showConfirmButton: false });
+               }
+            } else {
+               lockDownSystem(config.message);
+            }
+         })
+         .withFailureHandler(showConnError)
+         .getSystemConfig();
     }
 
     function lockDownSystem(msg) {
-       $('#personForm').addClass('hidden'); $('.bg-green-50').addClass('hidden'); $('#hospForm').addClass('hidden');
+       $('#personForm').addClass('hidden');
+       $('.bg-green-50').addClass('hidden');
+       $('#hospForm').addClass('hidden');
+
        if ($('#lockMessage').length === 0) {
-          $('#personTab .bg-white').prepend(`<div id="lockMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6"><i class="fas fa-lock text-5xl mb-4"></i><h2 class="text-2xl font-bold mb-2">ระบบปิดรับข้อมูลชั่วคราว</h2><p class="text-lg">${escapeHtml(msg)}</p></div>`);
-          $('#hospTab .bg-white').prepend(`<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6"><i class="fas fa-lock text-5xl mb-4"></i><h2 class="text-2xl font-bold mb-2">ไม่สามารถแก้ไขข้อมูลได้ในขณะนี้</h2><p class="text-lg">${escapeHtml(msg)}</p></div>`);
+          $('#personTab .bg-white').prepend(`
+             <div id="lockMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6">
+                <i class="fas fa-lock text-5xl mb-4"></i>
+                <h2 class="text-2xl font-bold mb-2">ระบบปิดรับข้อมูลชั่วคราว</h2>
+                <p class="text-lg">${escapeHtml(msg)}</p>
+             </div>
+          `);
+          $('#hospTab .bg-white').prepend(`
+             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6">
+                <i class="fas fa-lock text-5xl mb-4"></i>
+                <h2 class="text-2xl font-bold mb-2">ไม่สามารถแก้ไขข้อมูลได้ในขณะนี้</h2>
+                <p class="text-lg">${escapeHtml(msg)}</p>
+             </div>
+          `);
        }
     }
 
     function switchTab(id) {
-       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById('btn-'+id).classList.add('active');
-       if (id === 'statsTab') { setupStatsFilterOptions(); if (!statsLoadedOnce) { loadStatsOverview(); } }
+       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+       document.getElementById(id).classList.remove('hidden');
+       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+       document.getElementById('btn-'+id).classList.add('active');
+       if (id === 'statsTab') {
+          setupStatsFilterOptions();
+          if (!statsLoadedOnce) { loadStatsOverview(); }
+       }
     }
 
     let statsFilterSetup = false;
     function setupStatsFilterOptions() {
-       if (statsFilterSetup) return; statsFilterSetup = true;
+       if (statsFilterSetup) return;
+       statsFilterSetup = true;
        if (!myAccess.isAdmin) {
-          const sel = document.getElementById('statsRegionFilter'); const myOpt = document.createElement('option'); myOpt.value = 'my'; myOpt.textContent = 'เฉพาะโรงพยาบาลของฉัน'; sel.insertBefore(myOpt, sel.firstChild); sel.value = 'my';
+          const sel = document.getElementById('statsRegionFilter');
+          const myOpt = document.createElement('option');
+          myOpt.value = 'my';
+          myOpt.textContent = 'เฉพาะโรงพยาบาลของฉัน';
+          sel.insertBefore(myOpt, sel.firstChild); // แสดงเป็นตัวเลือกแรกสุด
+          sel.value = 'my'; // ค่าเริ่มต้นสำหรับ HOSPITAL/PERSON
        }
     }
 
-    function filterHospitalsForMe(hospitals) { if (myAccess.isAdmin) return hospitals; return hospitals.filter(h => myAccess.hospitalCodes.includes(h[0])); }
+    function filterHospitalsForMe(hospitals) {
+       if (myAccess.isAdmin) return hospitals;
+       return hospitals.filter(h => myAccess.hospitalCodes.includes(h[0]));
+    }
 
     function loadHospDropdown() {
-       apiCall('getHospitalList', { token: sessionToken }).then(hospitals => {
-            const scoped = filterHospitalsForMe(hospitals); const sel = $('#hospitalSearch');
+       google.script.run
+         .withSuccessHandler(hospitals => {
+            const scoped = filterHospitalsForMe(hospitals);
+            const sel = $('#hospitalSearch');
             sel.empty().append('<option value="">ค้นหาด้วยชื่อ หรือ รหัส...</option>');
             scoped.forEach(h => sel.append(`<option value="${escapeHtml(h[0])}" data-code="${escapeHtml(h[0])}" data-name="${escapeHtml(h[1])}" data-reg="${escapeHtml(h[2])}" data-lev="${escapeHtml(h[3])}">[${escapeHtml(h[0])}] ${escapeHtml(h[1])}</option>`));
             sel.select2({ width: '100%' });
+
             sel.off('change').on('change', function() {
                const val = $(this).val();
                if(val) {
-                  const opt = $(this).find(':selected'); $('#personForm').css({'opacity':1, 'pointer-events':'auto', 'filter':'none'}); $('#hiddenHospCode').val(val); $('#hospInfoDisplay').removeClass('hidden'); $('#dispCode').text(opt.data('code')); $('#dispName').text(opt.data('name')); $('#dispRegion').text("เขต "+opt.data('reg')); $('#dispLevel').text(opt.data('lev')); $('#personSelectSection').removeClass('hidden'); loadPersonDropdown(val);
+                  const opt = $(this).find(':selected');
+                  $('#personForm').css({'opacity':1, 'pointer-events':'auto', 'filter':'none'});
+                  $('#hiddenHospCode').val(val);
+                  $('#hospInfoDisplay').removeClass('hidden');
+                  $('#dispCode').text(opt.data('code')); $('#dispName').text(opt.data('name')); $('#dispRegion').text("เขต "+opt.data('reg')); $('#dispLevel').text(opt.data('lev'));
+                  $('#personSelectSection').removeClass('hidden');
+                  loadPersonDropdown(val);
                } else {
-                  $('#personForm').css({'opacity':0.5, 'pointer-events':'none'}); $('#hospInfoDisplay').addClass('hidden'); $('#personSelectSection').addClass('hidden');
+                  $('#personForm').css({'opacity':0.5, 'pointer-events':'none'});
+                  $('#hospInfoDisplay').addClass('hidden');
+                  $('#personSelectSection').addClass('hidden');
                }
             });
-            if (!myAccess.isAdmin && scoped.length === 1) sel.val(scoped[0][0]).trigger('change');
-       }).catch(showConnError);
+
+            // ถ้าเป็นสิทธิ์โรงพยาบาลและมีเพียงแห่งเดียว ให้เลือกอัตโนมัติ
+            if (!myAccess.isAdmin && scoped.length === 1) {
+               sel.val(scoped[0][0]).trigger('change');
+            }
+         })
+         .withFailureHandler(showConnError)
+         .getHospitalList(sessionToken);
     }
 
     function loadPersonDropdown(hospCode) {
        $('#personSearch').empty().append('<option>... กำลังโหลดรายชื่อ ...</option>');
-       apiCall('getPersonnelByHospital', { token: sessionToken, hospitalCode: hospCode }).then(people => {
-            const pSel = $('#personSearch'); pSel.empty();
-            if (myAccess.role !== 'PERSON') pSel.append('<option value="">-- เพิ่มรายชื่อใหม่ (New Entry) --</option>'); else pSel.append('<option value="">-- เลือกชื่อของท่าน --</option>');
-            people.forEach(p => { let name = `${p[8]} ${p[9]} ${p[10]}`; let rowIdx = p[p.length - 1]; pSel.append(`<option value="${rowIdx}" data-json='${escapeHtml(JSON.stringify(p))}'>${escapeHtml(name)}</option>`); });
+
+       google.script.run
+         .withSuccessHandler(people => {
+            const pSel = $('#personSearch');
+            pSel.empty();
+            // บัญชีนักสังคมสงเคราะห์รายบุคคล: ไม่ให้เพิ่มระเบียนใหม่ ไม่ต้องมีตัวเลือก "เพิ่มรายชื่อใหม่"
+            if (myAccess.role !== 'PERSON') {
+               pSel.append('<option value="">-- เพิ่มรายชื่อใหม่ (New Entry) --</option>');
+            } else {
+               pSel.append('<option value="">-- เลือกชื่อของท่าน --</option>');
+            }
+
+            people.forEach(p => {
+               let name = `${p[8]} ${p[9]} ${p[10]}`;
+               let rowIdx = p[p.length - 1];
+               pSel.append(`<option value="${rowIdx}" data-json='${escapeHtml(JSON.stringify(p))}'>${escapeHtml(name)}</option>`);
+            });
+
             pSel.select2({ width: '100%', placeholder: "พิมพ์ชื่อเพื่อค้นหาและแก้ไข..." });
+
             pSel.off('change').on('change', function() {
                const rowId = $(this).val();
-               if(rowId) { const raw = $(this).find(':selected').attr('data-json'); const p = JSON.parse(raw); fillPersonForm(p, rowId); }
-               else { document.getElementById('personForm').reset(); $('#hiddenHospCode').val(hospCode); $('#hiddenRowIndex').val(""); $('#btnSavePerson').html('<i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล'); togglePrefix(); }
+               if(rowId) {
+                  const raw = $(this).find(':selected').attr('data-json');
+                  const p = JSON.parse(raw);
+                  fillPersonForm(p, rowId);
+               } else {
+                  document.getElementById('personForm').reset();
+                  $('#hiddenHospCode').val(hospCode);
+                  $('#hiddenRowIndex').val("");
+                  $('#btnSavePerson').html('<i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล');
+                  togglePrefix();
+               }
             });
-            if (myAccess.role === 'PERSON' && people.length === 1) pSel.val(people[0][people[0].length - 1]).trigger('change');
-       }).catch(showConnError);
+
+            // บัญชีนักสังคมสงเคราะห์: เลือกระเบียนของตนเองให้อัตโนมัติ (จะมีแค่รายการเดียว)
+            if (myAccess.role === 'PERSON' && people.length === 1) {
+               pSel.val(people[0][people[0].length - 1]).trigger('change');
+            }
+         })
+         .withFailureHandler(showConnError)
+         .getPersonnelByHospital(sessionToken, hospCode);
     }
 
     function fillPersonForm(p, rowId) {
-        document.getElementById('hiddenRowIndex').value = rowId; document.getElementById('btnSavePerson').innerHTML = '<i class="fas fa-save mr-2"></i> อัปเดตข้อมูลเดิม';
-        let prefixData = p[8] || 'นาย'; if (['นาย', 'นาง', 'นางสาว'].includes(prefixData)) { $('#f_prefix').val(prefixData); $('#f_prefixOther').val('').addClass('hidden'); } else { $('#f_prefix').val('อื่น ๆ'); $('#f_prefixOther').val(prefixData).removeClass('hidden'); }
-        $('#f_firstName').val(p[9]); $('#f_lastName').val(p[10]);
-        if(p[11]) { let d = new Date(p[11]).toISOString().split('T')[0]; $('#dob').val(d); $('#age').val(calculateDurationDetailed(d)); }
-        $('#f_phone').val(p[13]); $('#f_email').val(p[14]); $('#f_position').val(p[15]);
-        if(p[16]) { let d = new Date(p[16]).toISOString().split('T')[0]; $('#startDate').val(d); $('#tenure').val(calculateDurationDetailed(d)); }
-        if(p[18]) { let d = new Date(p[18]).toISOString().split('T')[0]; $('#levelDate').val(d); $('#levelDur').val(calculateDurationDetailed(d)); }
-        $('#f_empType').val(p[20]); $('#f_degB').val(p[21]); $('#f_degM').val(p[22]); $('#f_degP').val(p[23]); $('#f_hasSw').val(p[24]); $('#cStat').val(p[25]); $('#f_councilNo').val(p[26]);
+        document.getElementById('hiddenRowIndex').value = rowId;
+        document.getElementById('btnSavePerson').innerHTML = '<i class="fas fa-save mr-2"></i> อัปเดตข้อมูลเดิม';
+
+        let prefixData = p[8] || 'นาย';
+        if (['นาย', 'นาง', 'นางสาว'].includes(prefixData)) {
+            $('#f_prefix').val(prefixData);
+            $('#f_prefixOther').val('').addClass('hidden');
+        } else {
+            $('#f_prefix').val('อื่น ๆ');
+            $('#f_prefixOther').val(prefixData).removeClass('hidden');
+        }
+        $('#f_firstName').val(p[9]);
+        $('#f_lastName').val(p[10]);
+
+        if(p[11]) {
+            let d = new Date(p[11]).toISOString().split('T')[0];
+            $('#dob').val(d);
+            $('#age').val(calculateDurationDetailed(d));
+        }
+
+        $('#f_phone').val(p[13]);
+        $('#f_email').val(p[14]);
+        $('#f_position').val(p[15]);
+
+        if(p[16]) {
+            let d = new Date(p[16]).toISOString().split('T')[0];
+            $('#startDate').val(d);
+            $('#tenure').val(calculateDurationDetailed(d));
+        }
+
+        if(p[18]) {
+            let d = new Date(p[18]).toISOString().split('T')[0];
+            $('#levelDate').val(d);
+            $('#levelDur').val(calculateDurationDetailed(d));
+        }
+
+        $('#f_empType').val(p[20]);
+        $('#f_degB').val(p[21]); $('#f_degM').val(p[22]); $('#f_degP').val(p[23]); $('#f_hasSw').val(p[24]);
+        $('#cStat').val(p[25]); $('#f_councilNo').val(p[26]);
         if(p[27]) $('#f_councilExp').val(new Date(p[27]).toISOString().split('T')[0]);
         $('#lStat').val(p[28]); $('#f_licNo').val(p[29]);
         if(p[30]) $('#f_licExp').val(new Date(p[30]).toISOString().split('T')[0]);
-        $('#f_medSWExp').val(p[31]); toggleSec('cStat','cDiv'); toggleSec('lStat','lDiv');
+
+        $('#f_medSWExp').val(p[31]);
+
+        toggleSec('cStat','cDiv'); toggleSec('lStat','lDiv');
     }
 
     function handlePersonSubmit(e) {
        e.preventDefault();
-       let formDataObj = Object.fromEntries(new FormData(e.target)); if (formDataObj.prefix === 'อื่น ๆ') formDataObj.prefix = formDataObj.prefixOther;
+
+       let formDataObj = Object.fromEntries(new FormData(e.target));
+
+       if (formDataObj.prefix === 'อื่น ๆ') {
+           formDataObj.prefix = formDataObj.prefixOther;
+       }
+
        Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('submitPerson', { token: sessionToken, data: formDataObj }).then(res => {
-            if(res.status==='success') { Swal.fire('สำเร็จ', res.message, 'success'); document.getElementById('personForm').reset(); $('#hiddenRowIndex').val(""); $('#personSearch').val("").trigger('change'); togglePrefix(); loadPersonDropdown($('#hiddenHospCode').val()); }
-            else Swal.fire('ไม่สามารถบันทึกได้', res.message, 'error');
-       }).catch(showConnError);
+
+       google.script.run
+         .withSuccessHandler(res => {
+            if(res.status==='success') {
+               Swal.fire('สำเร็จ', res.message, 'success');
+               document.getElementById('personForm').reset();
+               $('#hiddenRowIndex').val("");
+               $('#personSearch').val("").trigger('change');
+               togglePrefix();
+               loadPersonDropdown($('#hiddenHospCode').val());
+            } else Swal.fire('ไม่สามารถบันทึกได้', res.message, 'error');
+         })
+         .withFailureHandler(showConnError)
+         .submitPerson(sessionToken, formDataObj);
     }
 
     function loadHospEditDropdown() {
-       apiCall('getHospitalList', { token: sessionToken }).then(hospitals => {
-            const scoped = filterHospitalsForMe(hospitals); const sel = $('#hospEditSearch');
+       google.script.run
+         .withSuccessHandler(hospitals => {
+            const scoped = filterHospitalsForMe(hospitals);
+            const sel = $('#hospEditSearch');
             sel.empty().append('<option value="">-- ค้นหาเพื่อแก้ไข --</option>');
             scoped.forEach(h => sel.append(`<option value="${escapeHtml(h[0])}" data-all='${escapeHtml(JSON.stringify(h))}'>[${escapeHtml(h[0])}] ${escapeHtml(h[1])}</option>`));
             sel.select2({ width: '100%' });
-            if (!myAccess.isAdmin) $('#f_hospCode').prop('readonly', true).addClass('bg-gray-100');
+
+            if (!myAccess.isAdmin) {
+               $('#f_hospCode').prop('readonly', true).addClass('bg-gray-100');
+            }
+
             sel.off('change').on('change', function() {
                const val = $(this).val();
                if(val) {
-                  const raw = $(this).find(':selected').attr('data-all'); const d = JSON.parse(raw);
-                  $('#f_hospCode').val(d[0]).prop('readonly', true).addClass('bg-gray-100'); $('#f_hospName').val(d[1]); $('#f_region').val(d[2]); $('#f_level').val(d[3]); $('#f_beds').val(d[4]); $('#f_fteReg').val(d[5]); $('#f_fteHosp').val(d[6]); $('#f_vacCivil').val(d[7]); $('#f_vacGov').val(d[8]); $('#f_vacMoph').val(d[9]); $('#f_vacTemp').val(d[10]); $('#f_hospPhone').val(d[12] || ''); $('#f_hospEmail').val(d[13] || '');
-                  if (myAccess.isAdmin) $('#btnResetHospPw').removeClass('hidden').data('code', d[0]);
+                  const raw = $(this).find(':selected').attr('data-all');
+                  const d = JSON.parse(raw);
+                  $('#f_hospCode').val(d[0]).prop('readonly', true).addClass('bg-gray-100');
+                  $('#f_hospName').val(d[1]);
+                  $('#f_region').val(d[2]);
+                  $('#f_level').val(d[3]);
+                  $('#f_beds').val(d[4]);
+                  $('#f_fteReg').val(d[5]);
+                  $('#f_fteHosp').val(d[6]);
+                  $('#f_vacCivil').val(d[7]);
+                  $('#f_vacGov').val(d[8]);
+                  $('#f_vacMoph').val(d[9]);
+                  $('#f_vacTemp').val(d[10]);
+
+                  $('#f_hospPhone').val(d[12] || '');
+                  $('#f_hospEmail').val(d[13] || '');
+
+                  if (myAccess.isAdmin) {
+                     $('#btnResetHospPw').removeClass('hidden').data('code', d[0]);
+                  }
+
                   loadPersonnelTable(val);
                } else {
-                  document.getElementById('hospForm').reset(); if (myAccess.isAdmin) $('#f_hospCode').prop('readonly', false).removeClass('bg-gray-100'); $('#hospPersonList').addClass('hidden'); $('#btnResetHospPw').addClass('hidden');
+                  document.getElementById('hospForm').reset();
+                  if (myAccess.isAdmin) $('#f_hospCode').prop('readonly', false).removeClass('bg-gray-100');
+                  $('#hospPersonList').addClass('hidden');
+                  $('#btnResetHospPw').addClass('hidden');
                }
             });
-            if (!myAccess.isAdmin && scoped.length === 1) sel.val(scoped[0][0]).trigger('change');
-       }).catch(showConnError);
+
+            // ถ้าเป็นสิทธิ์โรงพยาบาลและมีเพียงแห่งเดียว ให้เลือกอัตโนมัติ
+            if (!myAccess.isAdmin && scoped.length === 1) {
+               sel.val(scoped[0][0]).trigger('change');
+            }
+         })
+         .withFailureHandler(showConnError)
+         .getHospitalList(sessionToken);
     }
 
     function loadPersonnelTable(hospCode) {
-       $('#hospPersonList').removeClass('hidden'); $('#hospPersonTableBody').html('<tr><td colspan="4" class="text-center p-4"><span class="inline-spinner mr-2"></span>กำลังโหลดรายชื่อ...</td></tr>');
-       currentHospCode = hospCode; currentPersonAccounts = [];
-       apiCall('getPersonnelByHospital', { token: sessionToken, hospitalCode: hospCode }).then(people => {
+       $('#hospPersonList').removeClass('hidden');
+       $('#hospPersonTableBody').html('<tr><td colspan="4" class="text-center p-4"><span class="inline-spinner mr-2"></span>กำลังโหลดรายชื่อ...</td></tr>');
+
+       currentHospCode = hospCode;
+       currentPersonAccounts = [];
+
+       google.script.run
+         .withSuccessHandler(people => {
             currentPersonnelList = people || [];
-            apiCall('getPersonAccountsByHospital', { token: sessionToken, hospitalCode: hospCode }).then(accounts => {
-                 currentPersonAccounts = accounts || []; renderPersonnelTable();
-            }).catch(() => { renderPersonnelTable(); });
-       }).catch(showConnError);
+            google.script.run
+              .withSuccessHandler(accounts => {
+                 currentPersonAccounts = accounts || [];
+                 renderPersonnelTable();
+              })
+              .withFailureHandler(() => { renderPersonnelTable(); }) // ไม่ให้พังทั้งตารางถ้าดึงสถานะบัญชีไม่สำเร็จ
+              .getPersonAccountsByHospital(sessionToken, hospCode);
+         })
+         .withFailureHandler(showConnError)
+         .getPersonnelByHospital(sessionToken, hospCode);
     }
 
     function renderPersonnelTable() {
-       const tbody = $('#hospPersonTableBody'); tbody.empty();
-       if (currentPersonnelList.length === 0) { tbody.html('<tr><td colspan="4" class="text-center p-4 text-gray-500">ยังไม่มีข้อมูลบุคลากรในระบบ</td></tr>'); return; }
+       const tbody = $('#hospPersonTableBody');
+       tbody.empty();
+
+       if (currentPersonnelList.length === 0) {
+          tbody.html('<tr><td colspan="4" class="text-center p-4 text-gray-500">ยังไม่มีข้อมูลบุคลากรในระบบ</td></tr>');
+          return;
+       }
+
        currentPersonnelList.forEach(p => {
-          let prefix = p[8] || ""; let fname = p[9] || ""; let lname = p[10] || ""; let position = p[15] || "-"; let fullName = `${prefix}${fname} ${lname}`; let rowIdx = p[p.length - 1]; let personUID = p[32] || "";
-          const account = currentPersonAccounts.find(a => a.personUID && a.personUID === personUID); let accountCell;
-          if (account) { accountCell = `<span class="text-green-700 text-xs"><i class="fas fa-check-circle mr-1"></i>${escapeHtml(account.username)}</span><button onclick="resetPersonPassword('${escapeHtml(account.username)}')" class="ml-2 text-xs text-orange-600 border border-orange-200 px-1.5 py-0.5 rounded hover:bg-orange-50" title="รีเซ็ตรหัสผ่าน SW คนนี้"><i class="fas fa-key"></i></button>`; }
-          else { accountCell = `<span class="text-gray-400 text-xs"><i class="fas fa-circle-xmark mr-1"></i>ยังไม่ลงทะเบียน</span>`; }
-          tbody.append(`<tr class="hover:bg-red-50 border-b"><td class="p-2">${escapeHtml(fullName)}</td><td class="p-2 text-sm text-gray-600">${escapeHtml(position)}</td><td class="p-2">${accountCell}</td><td class="p-2 text-center whitespace-nowrap"><button onclick="openTransferModal('${escapeHtml(currentHospCode)}', ${rowIdx}, '${escapeHtml(fullName)}')" class="text-blue-600 border border-blue-200 px-2 rounded hover:bg-blue-50 cursor-pointer mr-1" title="ย้ายไปโรงพยาบาลอื่น"><i class="fas fa-right-left"></i> ย้าย</button><button onclick="deletePerson('${escapeHtml(currentHospCode)}', ${rowIdx})" class="text-red-600 border border-red-200 px-2 rounded hover:bg-red-100 cursor-pointer">ลบ</button></td></tr>`);
+          let prefix = p[8] || "";
+          let fname = p[9] || "";
+          let lname = p[10] || "";
+          let position = p[15] || "-";
+          let fullName = `${prefix}${fname} ${lname}`;
+          let rowIdx = p[p.length - 1];
+          let personUID = p[32] || "";
+
+          const account = currentPersonAccounts.find(a => a.personUID && a.personUID === personUID);
+          let accountCell;
+          if (account) {
+             accountCell = `<span class="text-green-700 text-xs"><i class="fas fa-check-circle mr-1"></i>${escapeHtml(account.username)}</span>
+                <button onclick="resetPersonPassword('${escapeHtml(account.username)}')" class="ml-2 text-xs text-orange-600 border border-orange-200 px-1.5 py-0.5 rounded hover:bg-orange-50" title="รีเซ็ตรหัสผ่าน SW คนนี้">
+                   <i class="fas fa-key"></i>
+                </button>`;
+          } else {
+             accountCell = `<span class="text-gray-400 text-xs"><i class="fas fa-circle-xmark mr-1"></i>ยังไม่ลงทะเบียน</span>`;
+          }
+
+          tbody.append(`
+             <tr class="hover:bg-red-50 border-b">
+                <td class="p-2">${escapeHtml(fullName)}</td>
+                <td class="p-2 text-sm text-gray-600">${escapeHtml(position)}</td>
+                <td class="p-2">${accountCell}</td>
+                <td class="p-2 text-center whitespace-nowrap">
+                   <button onclick="openTransferModal('${escapeHtml(currentHospCode)}', ${rowIdx}, '${escapeHtml(fullName)}')" class="text-blue-600 border border-blue-200 px-2 rounded hover:bg-blue-50 cursor-pointer mr-1" title="ย้ายไปโรงพยาบาลอื่น">
+                      <i class="fas fa-right-left"></i> ย้าย
+                   </button>
+                   <button onclick="deletePerson('${escapeHtml(currentHospCode)}', ${rowIdx})" class="text-red-600 border border-red-200 px-2 rounded hover:bg-red-100 cursor-pointer">ลบ</button>
+                </td>
+             </tr>
+          `);
        });
     }
 
     function resetPersonPassword(username) {
-       Swal.fire({ icon: 'warning', title: 'รีเซ็ตรหัสผ่านของ ' + username + '?', text: 'ระบบจะสุ่มรหัสผ่านชั่วคราวใหม่ให้ กรุณานำไปแจ้ง SW ท่านนี้เอง (ไม่มีการส่งอัตโนมัติ)', showCancelButton: true, confirmButtonText: 'รีเซ็ตรหัสผ่าน', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#ea580c' }).then(result => {
+       Swal.fire({
+          icon: 'warning',
+          title: 'รีเซ็ตรหัสผ่านของ ' + username + '?',
+          text: 'ระบบจะสุ่มรหัสผ่านชั่วคราวใหม่ให้ กรุณานำไปแจ้ง SW ท่านนี้เอง (ไม่มีการส่งอัตโนมัติ)',
+          showCancelButton: true,
+          confirmButtonText: 'รีเซ็ตรหัสผ่าน',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#ea580c'
+       }).then(result => {
           if (result.isConfirmed) {
              Swal.fire({ title: 'กำลังรีเซ็ต...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-             apiCall('resetPersonPassword', { token: sessionToken, personUsername: username }).then(res => {
-                  if (res.status === 'success') { Swal.fire({ icon: 'success', title: 'รีเซ็ตรหัสผ่านสำเร็จ', html: `Username: <b>${escapeHtml(res.username)}</b><br>รหัสผ่านชั่วคราว: <b class="text-lg text-red-600">${escapeHtml(res.tempPassword)}</b><br><span class="text-xs text-gray-500">กรุณาแจ้งรหัสนี้ให้เจ้าตัวเปลี่ยนรหัสผ่านทันทีหลังเข้าสู่ระบบ</span>`, confirmButtonText: 'คัดลอกและปิด' }); }
-                  else { Swal.fire('ไม่สำเร็จ', res.message, 'error'); }
-             }).catch(showConnError);
+             google.script.run
+               .withSuccessHandler(res => {
+                  if (res.status === 'success') {
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'รีเซ็ตรหัสผ่านสำเร็จ',
+                        html: `Username: <b>${escapeHtml(res.username)}</b><br>รหัสผ่านชั่วคราว: <b class="text-lg text-red-600">${escapeHtml(res.tempPassword)}</b><br><span class="text-xs text-gray-500">กรุณาแจ้งรหัสนี้ให้เจ้าตัวเปลี่ยนรหัสผ่านทันทีหลังเข้าสู่ระบบ</span>`,
+                        confirmButtonText: 'คัดลอกและปิด'
+                     });
+                  } else {
+                     Swal.fire('ไม่สำเร็จ', res.message, 'error');
+                  }
+               })
+               .withFailureHandler(showConnError)
+               .resetPersonPassword(sessionToken, username);
           }
        });
     }
 
     function sortPersonnel(type) {
-       const dir = sortDirection[type] === 'asc' ? 'desc' : 'asc'; sortDirection[type] = dir;
-       $('.fas.fa-sort, .fas.fa-sort-up, .fas.fa-sort-down').attr('class', 'fas fa-sort text-gray-400 ml-1'); $(`#sortIcon-${type}`).attr('class', `fas fa-sort-${dir === 'asc' ? 'up' : 'down'} text-blue-600 ml-1`);
-       currentPersonnelList.sort((a, b) => { let valA, valB; if (type === 'name') { valA = `${a[8]}${a[9]}${a[10]}`; valB = `${b[8]}${b[9]}${b[10]}`; } else if (type === 'position') { valA = a[15] || ""; valB = b[15] || ""; } if (valA < valB) return dir === 'asc' ? -1 : 1; if (valA > valB) return dir === 'asc' ? 1 : -1; return 0; });
+       const dir = sortDirection[type] === 'asc' ? 'desc' : 'asc';
+       sortDirection[type] = dir;
+
+       $('.fas.fa-sort, .fas.fa-sort-up, .fas.fa-sort-down').attr('class', 'fas fa-sort text-gray-400 ml-1');
+       $(`#sortIcon-${type}`).attr('class', `fas fa-sort-${dir === 'asc' ? 'up' : 'down'} text-blue-600 ml-1`);
+
+       currentPersonnelList.sort((a, b) => {
+          let valA, valB;
+          if (type === 'name') {
+             valA = `${a[8]}${a[9]}${a[10]}`;
+             valB = `${b[8]}${b[9]}${b[10]}`;
+          } else if (type === 'position') {
+             valA = a[15] || "";
+             valB = b[15] || "";
+          }
+          if (valA < valB) return dir === 'asc' ? -1 : 1;
+          if (valA > valB) return dir === 'asc' ? 1 : -1;
+          return 0;
+       });
        renderPersonnelTable();
     }
 
     function deletePerson(hCode, rIdx) {
-       Swal.fire({ icon: 'warning', title: 'ยืนยันการลบ?', text: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้', showCancelButton: true, confirmButtonText: 'ลบข้อมูล', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#dc2626' }).then((result) => {
+       Swal.fire({
+          icon: 'warning',
+          title: 'ยืนยันการลบ?',
+          text: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้',
+          showCancelButton: true,
+          confirmButtonText: 'ลบข้อมูล',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#dc2626'
+       }).then((result) => {
           if (result.isConfirmed) {
-             apiCall('deletePersonnel', { token: sessionToken, hospitalCode: hCode, rowNumber: rIdx }).then(res => {
-                  if (res.status === 'success') { Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย', timer: 1500, showConfirmButton: false }); loadPersonnelTable(hCode); }
-                  else { Swal.fire('ไม่สามารถลบได้', res.message, 'error'); }
-             }).catch(showConnError);
+             google.script.run
+               .withSuccessHandler(res => {
+                  if (res.status === 'success') {
+                     Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย', timer: 1500, showConfirmButton: false });
+                     loadPersonnelTable(hCode);
+                  } else {
+                     Swal.fire('ไม่สามารถลบได้', res.message, 'error');
+                  }
+               })
+               .withFailureHandler(showConnError)
+               .deletePersonnel(sessionToken, hCode, rIdx);
           }
        });
     }
 
     function openTransferModal(hCode, rIdx, personName) {
        Swal.fire({ title: 'กำลังโหลดรายชื่อโรงพยาบาล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-       apiCall('getHospitalList', { token: sessionToken }).then(hospitals => {
-            const options = hospitals.filter(h => h[0] !== hCode).map(h => `<option value="${escapeHtml(h[0])}">[${escapeHtml(h[0])}] ${escapeHtml(h[1])}</option>`).join('');
+       google.script.run
+         .withSuccessHandler(hospitals => {
+            const options = hospitals
+               .filter(h => h[0] !== hCode)
+               .map(h => `<option value="${escapeHtml(h[0])}">[${escapeHtml(h[0])}] ${escapeHtml(h[1])}</option>`)
+               .join('');
+
             Swal.fire({
-               title: 'ย้ายโรงพยาบาล', html: `<div class="text-left text-sm text-gray-600 mb-3">ย้ายข้อมูลของ <b>${escapeHtml(personName)}</b> ไปยังโรงพยาบาลปลายทาง</div><select id="transferTargetHosp" class="swal2-select" style="width:90%; display:block;"><option value="">-- เลือกโรงพยาบาลปลายทาง --</option>${options}</select>`, confirmButtonText: 'ย้ายข้อมูล', showCancelButton: true, cancelButtonText: 'ยกเลิก', confirmButtonColor: '#2563eb',
-               preConfirm: () => { const target = document.getElementById('transferTargetHosp').value; if (!target) { Swal.showValidationMessage('กรุณาเลือกโรงพยาบาลปลายทาง'); return false; } return target; }
+               title: 'ย้ายโรงพยาบาล',
+               html:
+                 `<div class="text-left text-sm text-gray-600 mb-3">ย้ายข้อมูลของ <b>${escapeHtml(personName)}</b> ไปยังโรงพยาบาลปลายทาง</div>` +
+                 `<select id="transferTargetHosp" class="swal2-select" style="width:90%; display:block;">
+                     <option value="">-- เลือกโรงพยาบาลปลายทาง --</option>
+                     ${options}
+                  </select>`,
+               confirmButtonText: 'ย้ายข้อมูล',
+               showCancelButton: true,
+               cancelButtonText: 'ยกเลิก',
+               confirmButtonColor: '#2563eb',
+               preConfirm: () => {
+                  const target = document.getElementById('transferTargetHosp').value;
+                  if (!target) { Swal.showValidationMessage('กรุณาเลือกโรงพยาบาลปลายทาง'); return false; }
+                  return target;
+               }
             }).then(result => {
                if (result.isConfirmed) {
                   const targetCode = result.value;
-                  Swal.fire({ icon: 'warning', title: 'ยืนยันการย้ายข้อมูล?', text: `ข้อมูลของ ${personName} จะถูกย้ายไปโรงพยาบาลที่เลือกทันที`, showCancelButton: true, confirmButtonText: 'ยืนยันย้าย', cancelButtonText: 'ยกเลิก', confirmButtonColor: '#2563eb' }).then(confirm => {
+                  Swal.fire({
+                     icon: 'warning',
+                     title: 'ยืนยันการย้ายข้อมูล?',
+                     text: `ข้อมูลของ ${personName} จะถูกย้ายไปโรงพยาบาลที่เลือกทันที`,
+                     showCancelButton: true,
+                     confirmButtonText: 'ยืนยันย้าย',
+                     cancelButtonText: 'ยกเลิก',
+                     confirmButtonColor: '#2563eb'
+                  }).then(confirm => {
                      if (confirm.isConfirmed) {
                         Swal.fire({ title: 'กำลังย้ายข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                        apiCall('transferPersonnel', { token: sessionToken, sourceHospitalCode: hCode, rowNumber: rIdx, targetHospitalCode: targetCode }).then(res => {
-                             if (res.status === 'success') { Swal.fire('สำเร็จ', res.message, 'success'); loadPersonnelTable(hCode); }
-                             else { Swal.fire('ไม่สามารถย้ายข้อมูลได้', res.message, 'error'); }
-                        }).catch(showConnError);
+                        google.script.run
+                          .withSuccessHandler(res => {
+                             if (res.status === 'success') {
+                                Swal.fire('สำเร็จ', res.message, 'success');
+                                loadPersonnelTable(hCode);
+                             } else {
+                                Swal.fire('ไม่สามารถย้ายข้อมูลได้', res.message, 'error');
+                             }
+                          })
+                          .withFailureHandler(showConnError)
+                          .transferPersonnel(sessionToken, hCode, rIdx, targetCode);
                      }
                   });
                }
             });
-       }).catch(showConnError);
+         })
+         .withFailureHandler(showConnError)
+         .getHospitalList(sessionToken);
     }
 
     function handleHospSubmit(e) {
-      e.preventDefault(); Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-      apiCall('saveHospitalMaster', { token: sessionToken, data: Object.fromEntries(new FormData(e.target)) }).then(res => {
-           if(res.status==='success') { Swal.fire('สำเร็จ', res.message, 'success'); document.getElementById('hospForm').reset(); $('#hospEditSearch').val(null).trigger('change'); }
-           else { Swal.fire('ไม่สามารถบันทึกได้', res.message, 'error'); }
-      }).catch(showConnError);
+      e.preventDefault();
+      Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      google.script.run
+        .withSuccessHandler(res => {
+           if(res.status==='success') {
+              Swal.fire('สำเร็จ', res.message, 'success');
+              document.getElementById('hospForm').reset();
+              $('#hospEditSearch').val(null).trigger('change');
+           } else {
+              Swal.fire('ไม่สามารถบันทึกได้', res.message, 'error');
+           }
+        })
+        .withFailureHandler(showConnError)
+        .saveHospitalMaster(sessionToken, Object.fromEntries(new FormData(e.target)));
     }
 
-    function calcAge() { const d = document.getElementById('dob').value; if(d) document.getElementById('age').value = calculateDurationDetailed(d); }
-    function calcTenure(inputId, outputId) { const d = document.getElementById(inputId).value; if(d) document.getElementById(outputId).value = calculateDurationDetailed(d); }
-    function calculateDurationDetailed(dateString) { const today = new Date(); const startDate = new Date(dateString); let years = today.getFullYear() - startDate.getFullYear(); let months = today.getMonth() - startDate.getMonth(); if (months < 0 || (months === 0 && today.getDate() < startDate.getDate())) { years--; months += 12; } if (today.getDate() < startDate.getDate()) { months--; } return `${years} ปี ${months} เดือน`; }
+    // --- ฟังก์ชันคำนวณ (ปี + เดือน) ---
+    function calcAge() {
+        const d = document.getElementById('dob').value;
+        if(d) document.getElementById('age').value = calculateDurationDetailed(d);
+    }
+
+    function calcTenure(inputId, outputId) {
+        const d = document.getElementById(inputId).value;
+        if(d) document.getElementById(outputId).value = calculateDurationDetailed(d);
+    }
+
+    function calculateDurationDetailed(dateString) {
+        const today = new Date();
+        const startDate = new Date(dateString);
+        let years = today.getFullYear() - startDate.getFullYear();
+        let months = today.getMonth() - startDate.getMonth();
+
+        if (months < 0 || (months === 0 && today.getDate() < startDate.getDate())) {
+            years--;
+            months += 12;
+        }
+        if (today.getDate() < startDate.getDate()) {
+            months--;
+        }
+        return `${years} ปี ${months} เดือน`;
+    }
+
     function toggleSec(s, d) { const v = $('#'+s).val(); if(v==='ไม่เป็น'||v==='ไม่มี'||v==='') $('#'+d).addClass('hidden'); else $('#'+d).removeClass('hidden'); }
 
     // ===================== แท็บภาพรวมสถิติ (ดูได้ทุกบทบาท) =====================
-    Chart.register(ChartDataLabels); let statsRawData = { personnel: [], hospitals: [] }; let statsCharts = { hosp: null, work: null, pos: null }; let statsLoadedOnce = false;
+    Chart.register(ChartDataLabels);
+    let statsRawData = { personnel: [], hospitals: [] };
+    let statsCharts = { hosp: null, work: null, pos: null };
+    let statsLoadedOnce = false;
+
+    function fmtNum(n) { return (n || 0).toLocaleString('th-TH'); }
+    const statsCalcPct = (val, total) => (total > 0 ? ((val / total) * 100).toFixed(1) : 0) + '%';
 
     function loadStatsOverview(forceRefresh) {
-       document.getElementById('statsLoading').classList.remove('hidden'); document.getElementById('statsContent').classList.add('hidden');
-       apiCall('getDashboardDataPackage', { forceRefresh: !!forceRefresh }).then(res => {
+       document.getElementById('statsLoading').classList.remove('hidden');
+       document.getElementById('statsContent').classList.add('hidden');
+
+       google.script.run
+         .withSuccessHandler(res => {
             document.getElementById('statsLoading').classList.add('hidden');
             if (res.error) { Swal.fire('เกิดข้อผิดพลาด', res.message, 'error'); return; }
-            statsRawData = res; statsLoadedOnce = true; document.getElementById('statsContent').classList.remove('hidden');
-            if (res.generatedAt) { const dt = new Date(res.generatedAt); document.getElementById('statsLastUpdatedText').textContent = dt.toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' }); document.getElementById('statsLastUpdated').classList.remove('hidden'); }
+            statsRawData = res;
+            statsLoadedOnce = true;
+            document.getElementById('statsContent').classList.remove('hidden');
+            if (res.generatedAt) {
+               const dt = new Date(res.generatedAt);
+               document.getElementById('statsLastUpdatedText').textContent = dt.toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+               document.getElementById('statsLastUpdated').classList.remove('hidden');
+            }
             renderStatsOverview();
-       }).catch(showConnError);
+         })
+         .withFailureHandler(showConnError)
+         .getDashboardDataPackage(!!forceRefresh);
     }
 
     function renderStatsOverview() {
-       let pData = statsRawData.personnel; let hData = statsRawData.hospitals; const region = document.getElementById('statsRegionFilter').value;
-       if (region === 'my') { const myCodes = myAccess.hospitalCodes || []; hData = hData.filter(h => myCodes.includes(h[0])); pData = pData.filter(r => myCodes.includes(r[2])); }
-       else if (region !== 'all') { pData = pData.filter(r => r[1] == region); hData = hData.filter(h => h[2] == region); }
+       let pData = statsRawData.personnel;
+       let hData = statsRawData.hospitals;
 
-       document.getElementById('s_statHospTotal').innerText = fmtNum(hData.length); renderStatsHospitalChart(hData);
+       const region = document.getElementById('statsRegionFilter').value;
+       if (region === 'my') {
+          // ตัวเลือก "เฉพาะโรงพยาบาลของฉัน" (มีเฉพาะบัญชี HOSPITAL/PERSON)
+          const myCodes = myAccess.hospitalCodes || [];
+          hData = hData.filter(h => myCodes.includes(h[0]));
+          pData = pData.filter(r => myCodes.includes(r[2]));
+       } else if (region !== 'all') {
+          pData = pData.filter(r => r[1] == region);
+          hData = hData.filter(h => h[2] == region);
+       }
 
-       const total = pData.length; const civil = pData.filter(r => r[20] == 'ข้าราชการ').length; const govEmp = pData.filter(r => ['พนักงานราชการ','พนักงานกระทรวงสาธารณสุข','ลูกจ้างชั่วคราว'].includes(r[20])).length;
+       document.getElementById('s_statHospTotal').innerText = fmtNum(hData.length);
+       renderStatsHospitalChart(hData);
+
+       const total = pData.length;
+       const civil = pData.filter(r => r[20] == 'ข้าราชการ').length;
+       const govEmp = pData.filter(r => ['พนักงานราชการ','พนักงานกระทรวงสาธารณสุข','ลูกจ้างชั่วคราว'].includes(r[20])).length;
+
        let vacCivil=0, vacGov=0, vacMoph=0, vacTemp=0;
-       hData.forEach(h => { vacCivil += (parseInt(h[7])||0); vacGov += (parseInt(h[8])||0); vacMoph += (parseInt(h[9])||0); vacTemp += (parseInt(h[10])||0); });
-       let totalVac = vacCivil + vacGov + vacMoph + vacTemp; let totalFrame = total + totalVac;
+       hData.forEach(h => {
+           vacCivil += (parseInt(h[7])||0); vacGov += (parseInt(h[8])||0);
+           vacMoph += (parseInt(h[9])||0); vacTemp += (parseInt(h[10])||0);
+       });
+       let totalVac = vacCivil + vacGov + vacMoph + vacTemp;
+       let totalFrame = total + totalVac;
 
        document.getElementById('s_statTotal').innerText = fmtNum(total);
        document.getElementById('s_statCivil').innerHTML = `${fmtNum(civil)} <span class="text-sm font-normal text-gray-500">(${statsCalcPct(civil, total)})</span>`;
        document.getElementById('s_statOtherEmp').innerHTML = `${fmtNum(govEmp)} <span class="text-sm font-normal text-gray-500">(${statsCalcPct(govEmp, total)})</span>`;
        document.getElementById('s_statVacancy').innerHTML = `${fmtNum(totalVac)} <span class="text-sm font-normal text-red-400">(${statsCalcPct(totalVac, totalFrame)})</span>`;
 
-       document.getElementById('s_vacCivil').innerText = fmtNum(vacCivil); document.getElementById('s_vacGov').innerText = fmtNum(vacGov); document.getElementById('s_vacMoph').innerText = fmtNum(vacMoph); document.getElementById('s_vacTemp').innerText = fmtNum(vacTemp);
+       document.getElementById('s_vacCivil').innerText = fmtNum(vacCivil);
+       document.getElementById('s_vacGov').innerText = fmtNum(vacGov);
+       document.getElementById('s_vacMoph').innerText = fmtNum(vacMoph);
+       document.getElementById('s_vacTemp').innerText = fmtNum(vacTemp);
+
        renderStatsWorkforceChart(civil, govEmp, totalVac);
 
-       const posCounts = { 'นักสังคมสงเคราะห์เชี่ยวชาญ': 0, 'นักสังคมสงเคราะห์ชำนาญการพิเศษ': 0, 'นักสังคมสงเคราะห์ชำนาญการ': 0, 'นักสังคมสงเคราะห์ปฏิบัติการ': 0, 'นักสังคมสงเคราะห์': 0, 'อื่น ๆ': 0 };
-       pData.forEach(r => { let pos = r[15] || ''; if(pos.includes('เชี่ยวชาญ')) posCounts['นักสังคมสงเคราะห์เชี่ยวชาญ']++; else if(pos.includes('ชำนาญการพิเศษ')) posCounts['นักสังคมสงเคราะห์ชำนาญการพิเศษ']++; else if(pos.includes('ชำนาญการ')) posCounts['นักสังคมสงเคราะห์ชำนาญการ']++; else if(pos.includes('ปฏิบัติการ')) posCounts['นักสังคมสงเคราะห์ปฏิบัติการ']++; else if(pos === 'นักสังคมสงเคราะห์') posCounts['นักสังคมสงเคราะห์']++; else posCounts['อื่น ๆ']++; });
+       const posCounts = {
+           'นักสังคมสงเคราะห์เชี่ยวชาญ': 0, 'นักสังคมสงเคราะห์ชำนาญการพิเศษ': 0,
+           'นักสังคมสงเคราะห์ชำนาญการ': 0, 'นักสังคมสงเคราะห์ปฏิบัติการ': 0,
+           'นักสังคมสงเคราะห์': 0, 'อื่น ๆ': 0
+       };
+       pData.forEach(r => {
+           let pos = r[15] || '';
+           if(pos.includes('เชี่ยวชาญ')) posCounts['นักสังคมสงเคราะห์เชี่ยวชาญ']++;
+           else if(pos.includes('ชำนาญการพิเศษ')) posCounts['นักสังคมสงเคราะห์ชำนาญการพิเศษ']++;
+           else if(pos.includes('ชำนาญการ')) posCounts['นักสังคมสงเคราะห์ชำนาญการ']++;
+           else if(pos.includes('ปฏิบัติการ')) posCounts['นักสังคมสงเคราะห์ปฏิบัติการ']++;
+           else if(pos === 'นักสังคมสงเคราะห์') posCounts['นักสังคมสงเคราะห์']++;
+           else posCounts['อื่น ๆ']++;
+       });
        renderStatsPositionChart(posCounts);
 
        let posHtml = '';
-       for (let [k,v] of Object.entries(posCounts)) { let displayVal = v > 0 ? `<span class="text-indigo-700 font-bold">${fmtNum(v)}</span>` : `<span class="text-gray-300">0</span>`; let pct = v > 0 ? `<span class="text-xs text-gray-500 ml-1">(${statsCalcPct(v, total)})</span>` : ''; posHtml += `<tr><td class="px-4 py-2 text-sm text-gray-700">${escapeHtml(k)}</td><td class="px-4 py-2 text-right font-bold">${displayVal} ${pct}</td></tr>`; }
+       for (let [k,v] of Object.entries(posCounts)) {
+          let displayVal = v > 0 ? `<span class="text-indigo-700 font-bold">${fmtNum(v)}</span>` : `<span class="text-gray-300">0</span>`;
+          let pct = v > 0 ? `<span class="text-xs text-gray-500 ml-1">(${statsCalcPct(v, total)})</span>` : '';
+          posHtml += `<tr><td class="px-4 py-2 text-sm text-gray-700">${escapeHtml(k)}</td><td class="px-4 py-2 text-right font-bold">${displayVal} ${pct}</td></tr>`;
+       }
        document.getElementById('s_tablePositions').innerHTML = posHtml;
 
-       const hasDeg = pData.filter(r => r[24] == 'มี').length; const noDeg = pData.filter(r => r[24] == 'ไม่มี').length;
+       const hasDeg = pData.filter(r => r[24] == 'มี').length;
+       const noDeg = pData.filter(r => r[24] == 'ไม่มี').length;
        document.getElementById('s_statHasDegree').innerHTML = `${fmtNum(hasDeg)} <span class="text-xs text-green-500 font-normal">(${statsCalcPct(hasDeg, total)})</span>`;
        document.getElementById('s_statNoDegree').innerHTML = `${fmtNum(noDeg)} <span class="text-xs text-red-400 font-normal">(${statsCalcPct(noDeg, total)})</span>`;
 
@@ -800,32 +1576,81 @@
        renderStatsMiniTable('s_miniTableCouncil', 25, {'เป็น': 'text-blue-600', 'ไม่เป็น': 'text-gray-500', 'หมดอายุ': 'text-orange-500'}, pData);
     }
 
-    const statsCalcPct = (val, total) => (total > 0 ? ((val / total) * 100).toFixed(1) : 0) + '%';
-
     function renderStatsHospitalChart(hData) {
-        let counts = {}; hData.forEach(h => { let lvl = h[3]||'N/A'; counts[lvl] = (counts[lvl]||0)+1; }); let ctx = document.getElementById('s_chartHospitals').getContext('2d');
+        let counts = {}; hData.forEach(h => { let lvl = h[3]||'N/A'; counts[lvl] = (counts[lvl]||0)+1; });
+        let ctx = document.getElementById('s_chartHospitals').getContext('2d');
         if(statsCharts.hosp) statsCharts.hosp.destroy();
-        statsCharts.hosp = new Chart(ctx, { type: 'doughnut', data: { labels: Object.keys(counts), datasets: [{ data: Object.values(counts), backgroundColor: ['#2dd4bf', '#0d9488', '#115e59', '#14b8a6', '#99f6e4', '#ccfbf1'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } }, datalabels: { color: '#fff', formatter: (v, ctx) => { let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; }); return (v*100 / sum).toFixed(1)+"%"; } } } } });
+        statsCharts.hosp = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: Object.keys(counts), datasets: [{ data: Object.values(counts), backgroundColor: ['#2dd4bf', '#0d9488', '#115e59', '#14b8a6', '#99f6e4', '#ccfbf1'] }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } },
+                    datalabels: {
+                        color: '#fff',
+                        formatter: (value, ctx) => {
+                            let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; });
+                            return (value*100 / sum).toFixed(1)+"%";
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function renderStatsWorkforceChart(civil, other, vac) {
         let ctx = document.getElementById('s_chartWorkforce').getContext('2d');
         if(statsCharts.work) statsCharts.work.destroy();
-        statsCharts.work = new Chart(ctx, { type: 'bar', data: { labels: ['ข้าราชการ', 'พนักงาน/ลูกจ้าง', 'ตำแหน่งว่าง'], datasets: [{ label: 'จำนวน', data: [civil, other, vac], backgroundColor: ['#22c55e', '#a855f7', '#ef4444'], borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', formatter: (v, ctx) => { let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; }); return v + " (" + (v*100 / sum).toFixed(1) + "%)"; } } } } });
+        statsCharts.work = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: ['ข้าราชการ', 'พนักงาน/ลูกจ้าง', 'ตำแหน่งว่าง'], datasets: [{ label: 'จำนวน', data: [civil, other, vac], backgroundColor: ['#22c55e', '#a855f7', '#ef4444'], borderRadius: 5 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        anchor: 'end', align: 'top',
+                        formatter: (value, ctx) => {
+                            let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; });
+                            return value + " (" + (value*100 / sum).toFixed(1) + "%)";
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function renderStatsPositionChart(counts) {
         let ctx = document.getElementById('s_chartPositions').getContext('2d');
         if(statsCharts.pos) statsCharts.pos.destroy();
-        statsCharts.pos = new Chart(ctx, { type: 'bar', data: { labels: Object.keys(counts), datasets: [{ label: 'จำนวน', data: Object.values(counts), backgroundColor: '#6366f1', borderRadius: 4 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', formatter: (v, ctx) => { let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; }); return v > 0 ? (v*100 / sum).toFixed(1) + "%" : ""; } } } } });
+        statsCharts.pos = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: Object.keys(counts), datasets: [{ label: 'จำนวน', data: Object.values(counts), backgroundColor: '#6366f1', borderRadius: 4 }] },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        anchor: 'end', align: 'right',
+                        formatter: (value, ctx) => {
+                            let sum = 0; ctx.chart.data.datasets[0].data.map(d => { sum += d; });
+                            return value > 0 ? (value*100 / sum).toFixed(1) + "%" : "";
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function renderStatsMiniTable(id, idx, colorMap, data) {
         let counts = {}; for(let k in colorMap) counts[k] = 0;
         data.forEach(r => { for(let k in colorMap) if(String(r[idx]).includes(k)) counts[k]++; });
-        let html = ''; let total = data.length;
+        let html = '';
+        let total = data.length;
         for(let [k, css] of Object.entries(colorMap)) {
-            let pct = total > 0 ? ((counts[k]/total)*100).toFixed(1) + '%' : '0%'; html += `<div class="flex justify-between items-center"><span class="${css}">${escapeHtml(k)}</span><div><span class="font-bold mr-1">${fmtNum(counts[k])}</span><span class="text-xs text-gray-400">(${pct})</span></div></div>`;
+            let pct = total > 0 ? ((counts[k]/total)*100).toFixed(1) + '%' : '0%';
+            html += `<div class="flex justify-between items-center"><span class="${css}">${escapeHtml(k)}</span><div><span class="font-bold mr-1">${fmtNum(counts[k])}</span><span class="text-xs text-gray-400">(${pct})</span></div></div>`;
         }
         document.getElementById(id).innerHTML = html;
     }
