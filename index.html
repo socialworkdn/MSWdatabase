@@ -35,7 +35,7 @@
      <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div class="text-center mb-6">
            <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="https://img1.pic.in.th/images/Sealccd991036c7517c8.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+              <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
            </div>
            <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
            <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
@@ -71,7 +71,7 @@
     <div class="container mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center space-x-3">
         <div class="bg-white p-1 rounded-full shadow-md">
-           <img src="https://img1.pic.in.th/images/Sealccd991036c7517c8.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
+           <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
         </div>
         <div>
           <h1 class="text-xl font-bold">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
@@ -423,7 +423,7 @@
     //  เชื่อมต่อ Google Apps Script Web App (JSON API) แทน google.script.run เดิม
     //  ต้องรันบนหน้าเว็บสาธารณะ (เช่น GitHub Pages) เพราะไฟล์นี้ไม่ได้ถูกเสิร์ฟจาก Apps Script อีกต่อไป
     // ==========================================================
-    const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbyJH9OAbEB8L6RlG1OW81f8znc8n4kUiBvXDRR49LkHF-d_E5r7b7brEWQHQN3uqSkL/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
+    const API_BASE_URL = 'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
 
     function callApi(action, args) {
       return fetch(API_BASE_URL, {
@@ -1621,16 +1621,34 @@
         });
     }
 
+    // ป้ายชื่อแบบย่อสำหรับกราฟ (ป้องกันข้อความยาวถูกตัดจนอ่านไม่ออกในพื้นที่จำกัด) — ตารางด้านข้างยังแสดงชื่อเต็มตามปกติ
+    const POSITION_SHORT_LABELS = {
+        'นักสังคมสงเคราะห์เชี่ยวชาญ': 'เชี่ยวชาญ',
+        'นักสังคมสงเคราะห์ชำนาญการพิเศษ': 'ชำนาญการพิเศษ',
+        'นักสังคมสงเคราะห์ชำนาญการ': 'ชำนาญการ',
+        'นักสังคมสงเคราะห์ปฏิบัติการ': 'ปฏิบัติการ',
+        'นักสังคมสงเคราะห์': 'ทั่วไป (ไม่ระบุระดับ)',
+        'อื่น ๆ': 'อื่น ๆ'
+    };
+
     function renderStatsPositionChart(counts) {
         let ctx = document.getElementById('s_chartPositions').getContext('2d');
         if(statsCharts.pos) statsCharts.pos.destroy();
+        const fullLabels = Object.keys(counts);
+        const shortLabels = fullLabels.map(k => POSITION_SHORT_LABELS[k] || k);
         statsCharts.pos = new Chart(ctx, {
             type: 'bar',
-            data: { labels: Object.keys(counts), datasets: [{ label: 'จำนวน', data: Object.values(counts), backgroundColor: '#6366f1', borderRadius: 4 }] },
+            data: { labels: shortLabels, datasets: [{ label: 'จำนวน', data: Object.values(counts), backgroundColor: '#6366f1', borderRadius: 4 }] },
             options: {
                 indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                layout: { padding: { right: 40 } },
+                scales: {
+                    y: { ticks: { autoSkip: false, font: { size: 12 } } },
+                    x: { beginAtZero: true }
+                },
                 plugins: {
                     legend: { display: false },
+                    tooltip: { callbacks: { title: (items) => fullLabels[items[0].dataIndex] } },
                     datalabels: {
                         anchor: 'end', align: 'right',
                         formatter: (value, ctx) => {
