@@ -35,7 +35,7 @@
      <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div class="text-center mb-6">
            <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="https://img1.pic.in.th/images/Sealccd991036c7517c8.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+              <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
            </div>
            <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
            <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
@@ -71,7 +71,7 @@
     <div class="container mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center space-x-3">
         <div class="bg-white p-1 rounded-full shadow-md">
-           <img src="https://img1.pic.in.th/images/Sealccd991036c7517c8.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
+           <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
         </div>
         <div>
           <h1 class="text-xl font-bold">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
@@ -864,7 +864,11 @@
                      ${options}
                   </select>` +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">รายละเอียดเพิ่มเติม (ถ้ามี)</label>' +
-                 '<textarea id="notifyDetails" class="swal2-textarea" style="width:100%; margin:0;" rows="4" placeholder="ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง..." maxlength="1000"></textarea>' +
+                 '<textarea id="notifyDetails" class="swal2-textarea" style="width:100%; margin:0 0 12px 0;" rows="4" placeholder="ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง..." maxlength="1000"></textarea>' +
+                 '<label class="block text-xs font-bold text-gray-600 mb-1">แนบรูปภาพประกอบ (ถ้ามี — JPEG/PNG ไม่เกิน 7MB)</label>' +
+                 '<input type="file" id="notifyImage" accept="image/jpeg,image/png" class="swal2-file" style="width:100%; margin:0;" onchange="previewNotifyImage(this)">' +
+                 '<img id="notifyImagePreview" class="hidden mt-2 rounded border" style="max-height:140px; max-width:100%;">' +
+                 '<p id="notifyImageError" class="hidden text-red-600 text-xs mt-1"></p>' +
                  '</div>',
                confirmButtonText: 'ส่งข้อความ',
                showCancelButton: true,
@@ -874,11 +878,33 @@
                   const topic = document.getElementById('notifyTopic').value;
                   const details = document.getElementById('notifyDetails').value.trim();
                   if (!topic) { Swal.showValidationMessage('กรุณาเลือกเรื่องที่ต้องการแจ้ง/ประสาน'); return false; }
-                  return { topic, details };
+
+                  const fileInput = document.getElementById('notifyImage');
+                  const file = fileInput.files[0];
+                  if (!file) return { topic, details, imageBase64: null, imageMimeType: null };
+
+                  if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                     Swal.showValidationMessage('รองรับเฉพาะไฟล์รูปภาพ JPEG หรือ PNG เท่านั้น');
+                     return false;
+                  }
+                  if (file.size > 7 * 1024 * 1024) {
+                     Swal.showValidationMessage('ไฟล์รูปภาพมีขนาดใหญ่เกินไป (ไม่เกิน 7MB)');
+                     return false;
+                  }
+
+                  return new Promise(resolve => {
+                     const reader = new FileReader();
+                     reader.onload = () => {
+                        const base64 = reader.result.split(',')[1]; // ตัดส่วนหัว data:image/...;base64, ออก เหลือแต่ตัวข้อมูล
+                        resolve({ topic, details, imageBase64: base64, imageMimeType: file.type });
+                     };
+                     reader.onerror = () => { Swal.showValidationMessage('ไม่สามารถอ่านไฟล์รูปภาพได้'); resolve(false); };
+                     reader.readAsDataURL(file);
+                  });
                }
             }).then(result => {
                if (result.isConfirmed) {
-                  Swal.fire({ title: 'กำลังส่งข้อความ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                  Swal.fire({ title: result.value.imageBase64 ? 'กำลังอัปโหลดรูปภาพและส่งข้อความ...' : 'กำลังส่งข้อความ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
                   google.script.run
                     .withSuccessHandler(res => {
                        if (res.status === 'success') {
@@ -888,12 +914,38 @@
                        }
                     })
                     .withFailureHandler(showConnError)
-                    .sendAdminNotification(sessionToken, result.value.topic, result.value.details);
+                    .sendAdminNotification(sessionToken, result.value.topic, result.value.details, result.value.imageBase64, result.value.imageMimeType);
                }
             });
          })
          .withFailureHandler(showConnError)
          .getNotifyTopics();
+    }
+
+    function previewNotifyImage(input) {
+       const preview = document.getElementById('notifyImagePreview');
+       const errorEl = document.getElementById('notifyImageError');
+       errorEl.classList.add('hidden');
+       const file = input.files[0];
+       if (!file) { preview.classList.add('hidden'); return; }
+
+       if (!['image/jpeg', 'image/png'].includes(file.type)) {
+          errorEl.textContent = 'รองรับเฉพาะไฟล์รูปภาพ JPEG หรือ PNG เท่านั้น';
+          errorEl.classList.remove('hidden');
+          input.value = '';
+          preview.classList.add('hidden');
+          return;
+       }
+       if (file.size > 7 * 1024 * 1024) {
+          errorEl.textContent = 'ไฟล์รูปภาพมีขนาดใหญ่เกินไป (ไม่เกิน 7MB)';
+          errorEl.classList.remove('hidden');
+          input.value = '';
+          preview.classList.add('hidden');
+          return;
+       }
+       const reader = new FileReader();
+       reader.onload = () => { preview.src = reader.result; preview.classList.remove('hidden'); };
+       reader.readAsDataURL(file);
     }
 
     function resetHospitalPassword() {
