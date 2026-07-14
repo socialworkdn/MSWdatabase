@@ -848,7 +848,10 @@
     }
 
     // ===================== แจ้ง/ประสานงานแอดมินส่วนกลางผ่าน LINE OA =====================
+    let notifyImageData = null; // { base64, mimeType, fileName, size } — อ่านทันทีตอนเลือกไฟล์ ไม่รอจนกดส่ง (กันปัญหา timing บนมือถือ/iOS)
+
     function openNotifyAdminModal() {
+       notifyImageData = null;
        Swal.fire({ title: 'กำลังโหลด...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
        google.script.run
          .withSuccessHandler(topics => {
@@ -868,6 +871,7 @@
                  '<label class="block text-xs font-bold text-gray-600 mb-1">แนบรูปภาพประกอบ (ถ้ามี — JPEG/PNG ไม่เกิน 7MB)</label>' +
                  '<input type="file" id="notifyImage" accept="image/jpeg,image/png" class="swal2-file" style="width:100%; margin:0;" onchange="previewNotifyImage(this)">' +
                  '<img id="notifyImagePreview" class="hidden mt-2 rounded border" style="max-height:140px; max-width:100%;">' +
+                 '<p id="notifyImageStatus" class="hidden text-green-600 text-xs mt-1"></p>' +
                  '<p id="notifyImageError" class="hidden text-red-600 text-xs mt-1"></p>' +
                  '</div>',
                confirmButtonText: 'ส่งข้อความ',
@@ -878,29 +882,13 @@
                   const topic = document.getElementById('notifyTopic').value;
                   const details = document.getElementById('notifyDetails').value.trim();
                   if (!topic) { Swal.showValidationMessage('กรุณาเลือกเรื่องที่ต้องการแจ้ง/ประสาน'); return false; }
-
-                  const fileInput = document.getElementById('notifyImage');
-                  const file = fileInput.files[0];
-                  if (!file) return { topic, details, imageBase64: null, imageMimeType: null };
-
-                  if (!['image/jpeg', 'image/png'].includes(file.type)) {
-                     Swal.showValidationMessage('รองรับเฉพาะไฟล์รูปภาพ JPEG หรือ PNG เท่านั้น');
-                     return false;
-                  }
-                  if (file.size > 7 * 1024 * 1024) {
-                     Swal.showValidationMessage('ไฟล์รูปภาพมีขนาดใหญ่เกินไป (ไม่เกิน 7MB)');
-                     return false;
-                  }
-
-                  return new Promise(resolve => {
-                     const reader = new FileReader();
-                     reader.onload = () => {
-                        const base64 = reader.result.split(',')[1]; // ตัดส่วนหัว data:image/...;base64, ออก เหลือแต่ตัวข้อมูล
-                        resolve({ topic, details, imageBase64: base64, imageMimeType: file.type });
-                     };
-                     reader.onerror = () => { Swal.showValidationMessage('ไม่สามารถอ่านไฟล์รูปภาพได้'); resolve(false); };
-                     reader.readAsDataURL(file);
-                  });
+                  // ใช้ค่าที่อ่าน/แปลงเป็น base64 ไว้แล้วตอนเลือกไฟล์ (ดูฟังก์ชัน previewNotifyImage) ไม่อ่านไฟล์ซ้ำตอนนี้
+                  return {
+                     topic,
+                     details,
+                     imageBase64: notifyImageData ? notifyImageData.base64 : null,
+                     imageMimeType: notifyImageData ? notifyImageData.mimeType : null
+                  };
                }
             }).then(result => {
                if (result.isConfirmed) {
@@ -925,12 +913,16 @@
     function previewNotifyImage(input) {
        const preview = document.getElementById('notifyImagePreview');
        const errorEl = document.getElementById('notifyImageError');
+       const statusEl = document.getElementById('notifyImageStatus');
        errorEl.classList.add('hidden');
+       statusEl.classList.add('hidden');
+       notifyImageData = null;
+
        const file = input.files[0];
        if (!file) { preview.classList.add('hidden'); return; }
 
        if (!['image/jpeg', 'image/png'].includes(file.type)) {
-          errorEl.textContent = 'รองรับเฉพาะไฟล์รูปภาพ JPEG หรือ PNG เท่านั้น';
+          errorEl.textContent = 'รองรับเฉพาะไฟล์รูปภาพ JPEG หรือ PNG เท่านั้น (ไฟล์นี้เป็น ' + (file.type || 'ไม่ทราบชนิด') + ')';
           errorEl.classList.remove('hidden');
           input.value = '';
           preview.classList.add('hidden');
@@ -943,8 +935,20 @@
           preview.classList.add('hidden');
           return;
        }
+
        const reader = new FileReader();
-       reader.onload = () => { preview.src = reader.result; preview.classList.remove('hidden'); };
+       reader.onload = () => {
+          preview.src = reader.result;
+          preview.classList.remove('hidden');
+          notifyImageData = { base64: reader.result.split(',')[1], mimeType: file.type };
+          statusEl.textContent = '✓ แนบไฟล์แล้ว: ' + file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+          statusEl.classList.remove('hidden');
+       };
+       reader.onerror = () => {
+          errorEl.textContent = 'ไม่สามารถอ่านไฟล์รูปภาพนี้ได้ กรุณาลองไฟล์อื่น';
+          errorEl.classList.remove('hidden');
+          preview.classList.add('hidden');
+       };
        reader.readAsDataURL(file);
     }
 
