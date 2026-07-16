@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <title>ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</title><link rel="icon" type="image/png" href="https://img1.pic.in.th/images/Sealccd991036c7517c8.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -35,7 +36,7 @@
      <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div class="text-center mb-6">
            <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="https://img1.pic.in.th/images/Seal2e63edcfb32bd9c5.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+              <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
            </div>
            <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
            <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
@@ -58,7 +59,7 @@
         </form>
         <div class="border-t mt-5 pt-4 text-center">
            <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-500 hover:text-moph transition">
-              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
+              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard
            </a>
         </div>
      </div>
@@ -68,36 +69,36 @@
   <div id="appContent" class="hidden">
 
   <nav class="bg-moph text-white shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-2">
-      <div class="flex items-center space-x-3">
-        <div class="bg-white p-1 rounded-full shadow-md">
-           <img src="https://img1.pic.in.th/images/Seal2e63edcfb32bd9c5.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
+    <div class="container mx-auto px-3 sm:px-4 py-3 flex justify-between items-center flex-wrap gap-2">
+      <div class="flex items-center space-x-3 min-w-0">
+        <div class="bg-white p-1 rounded-full shadow-md flex-shrink-0">
+           <img src="https://img5.pic.in.th/file/secure-sv1/logo-MOPH270452adfe737af2.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
         </div>
-        <div>
-          <h1 class="text-xl font-bold">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
-          <p class="text-xs text-green-100">สำนักปลัดกระทรวงสาธารณสุข</p>
+        <div class="min-w-0">
+          <h1 class="text-sm sm:text-xl font-bold leading-tight">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
+          <p class="text-xs text-green-100 hidden sm:block">สำนักปลัดกระทรวงสาธารณสุข</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 flex-wrap">
-        <div class="text-xs bg-white/10 px-3 py-1.5 rounded-lg text-right">
-           <div id="userNameText" class="font-medium">-</div>
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        <div class="text-xs bg-white/10 px-2 sm:px-3 py-1.5 rounded-lg text-right">
+           <div id="userNameText" class="font-medium max-w-[110px] sm:max-w-none truncate">-</div>
            <span id="userRoleBadge" class="role-badge">-</span>
         </div>
-        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง">
+        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง">
            <i class="fas fa-paper-plane"></i>
         </button>
-        <button onclick="openChangePasswordModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="เปลี่ยนรหัสผ่าน">
+        <button onclick="openChangePasswordModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="เปลี่ยนรหัสผ่าน">
            <i class="fas fa-key"></i>
         </button>
-        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="จัดการบัญชีแอดมินส่วนกลาง">
+        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="จัดการบัญชีแอดมินส่วนกลาง">
            <i class="fas fa-user-shield"></i>
         </button>
-        <button onclick="handleLogout()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-3 rounded shadow transition" title="ออกจากระบบ">
+        <button onclick="handleLogout()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="ออกจากระบบ">
            <i class="fas fa-sign-out-alt"></i>
         </button>
-        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded shadow transition flex items-center">
-           <i class="fas fa-chart-line mr-2"></i> ไปที่ Dashboard
+        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-3 sm:px-4 rounded shadow transition flex items-center text-xs sm:text-sm whitespace-nowrap">
+           <i class="fas fa-chart-line mr-1 sm:mr-2"></i> <span class="hidden sm:inline">ไปที่ </span>Dashboard
         </a>
       </div>
     </div>
