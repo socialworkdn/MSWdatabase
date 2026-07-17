@@ -863,10 +863,11 @@
                html:
                  '<div class="text-left text-sm">' +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">เรื่องที่ต้องการแจ้ง/ประสาน</label>' +
-                 `<select id="notifyTopic" class="swal2-select" style="width:100%; display:block; margin:0 0 12px 0;">
-                     <option value="">-- เลือกเรื่อง --</option>
-                     ${options}
+                 `<select id="notifyTopic" class="swal2-select" style="width:100%; display:block; margin:0 0 8px 0;" onchange="toggleNotifyTopicHint(this)">
+                 <option value="">-- เลือกเรื่อง --</option>
+                  ${options}
                   </select>` +
+                 '<div id="notifyTopicHint" class="hidden text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded p-2 mb-3"></div>' +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">รายละเอียดเพิ่มเติม (ถ้ามี)</label>' +
                  '<textarea id="notifyDetails" class="swal2-textarea" style="width:100%; margin:0 0 12px 0;" rows="4" placeholder="ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง..." maxlength="1000"></textarea>' +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">แนบรูปภาพประกอบ (ถ้ามี — JPEG/PNG ไม่เกิน 7MB)</label>' +
@@ -910,6 +911,25 @@
          .withFailureHandler(showConnError)
          .getNotifyTopics();
     }
+
+    // แสดงคำอธิบายเพิ่มเติมเมื่อเลือกหัวข้อที่ต้องการข้อมูลเฉพาะ (เช่น การประสานย้ายบุคลากร)
+const NOTIFY_TOPIC_HINTS = {
+   'ประสานงานย้ายบุคลากรระหว่างโรงพยาบาล': 'กรุณาระบุในช่องรายละเอียดด้านล่าง: <b>1. รหัสโรงพยาบาลเดิม 2. ชื่อ-นามสกุลผู้ย้าย 3. รหัสโรงพยาบาลใหม่</b> เพื่อให้แอดมินดำเนินการย้ายข้อมูลได้ถูกต้องและรวดเร็ว'
+};
+
+function toggleNotifyTopicHint(sel) {
+   const hint = document.getElementById('notifyTopicHint');
+   const details = document.getElementById('notifyDetails');
+   const text = NOTIFY_TOPIC_HINTS[sel.value];
+   if (text) {
+      hint.innerHTML = '<i class="fas fa-info-circle mr-1"></i>' + text;
+      hint.classList.remove('hidden');
+      if (details) details.placeholder = 'เช่น: รหัสโรงพยาบาลเดิม 10728, ชื่อ-นามสกุล นายสถาพร อิ่มเอม, รหัสโรงพยาบาลใหม่ 10741';
+   } else {
+      hint.classList.add('hidden');
+      if (details) details.placeholder = 'ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง...';
+   }
+}
 
     function previewNotifyImage(input) {
        const preview = document.getElementById('notifyImagePreview');
