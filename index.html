@@ -59,7 +59,7 @@
         </form>
         <div class="border-t mt-5 pt-4 text-center">
            <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-500 hover:text-moph transition">
-              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard
+              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
            </a>
         </div>
      </div>
@@ -424,7 +424,7 @@
     //  เชื่อมต่อ Google Apps Script Web App (JSON API) แทน google.script.run เดิม
     //  ต้องรันบนหน้าเว็บสาธารณะ (เช่น GitHub Pages) เพราะไฟล์นี้ไม่ได้ถูกเสิร์ฟจาก Apps Script อีกต่อไป
     // ==========================================================
-    const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbyJH9OAbEB8L6RlG1OW81f8znc8n4kUiBvXDRR49LkHF-d_E5r7b7brEWQHQN3uqSkL/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
+    const API_BASE_URL = 'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
 
     function callApi(action, args) {
       return fetch(API_BASE_URL, {
@@ -588,7 +588,7 @@
                sessionStorage.setItem('mswToken', sessionToken);
                myAccess = {
                   role: res.role,
-                  hospitalCodes: res.role === 'HOSPITAL' ? [u] : [],
+                  hospitalCodes: res.hospitalCodes || [],
                   isAdmin: res.role === 'ADMIN',
                   allowed: true,
                   username: u,
@@ -864,8 +864,8 @@
                  '<div class="text-left text-sm">' +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">เรื่องที่ต้องการแจ้ง/ประสาน</label>' +
                  `<select id="notifyTopic" class="swal2-select" style="width:100%; display:block; margin:0 0 8px 0;" onchange="toggleNotifyTopicHint(this)">
-                 <option value="">-- เลือกเรื่อง --</option>
-                  ${options}
+                     <option value="">-- เลือกเรื่อง --</option>
+                     ${options}
                   </select>` +
                  '<div id="notifyTopicHint" class="hidden text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded p-2 mb-3"></div>' +
                  '<label class="block text-xs font-bold text-gray-600 mb-1">รายละเอียดเพิ่มเติม (ถ้ามี)</label>' +
@@ -913,23 +913,23 @@
     }
 
     // แสดงคำอธิบายเพิ่มเติมเมื่อเลือกหัวข้อที่ต้องการข้อมูลเฉพาะ (เช่น การประสานย้ายบุคลากร)
-const NOTIFY_TOPIC_HINTS = {
-   'ประสานงานย้ายบุคลากรระหว่างโรงพยาบาล': 'กรุณาระบุในช่องรายละเอียดด้านล่าง: <b>1. รหัสโรงพยาบาลเดิม 2. ชื่อ-นามสกุลผู้ย้าย 3. รหัสโรงพยาบาลใหม่</b> เพื่อให้แอดมินดำเนินการย้ายข้อมูลได้ถูกต้องและรวดเร็ว'
-};
+    const NOTIFY_TOPIC_HINTS = {
+       'ประสานงานย้ายบุคลากรระหว่างโรงพยาบาล': 'กรุณาระบุในช่องรายละเอียดด้านล่าง: <b>1. รหัสโรงพยาบาลเดิม 2. ชื่อ-นามสกุลผู้ย้าย 3. รหัสโรงพยาบาลใหม่</b> เพื่อให้แอดมินดำเนินการย้ายข้อมูลได้ถูกต้องและรวดเร็ว'
+    };
 
-function toggleNotifyTopicHint(sel) {
-   const hint = document.getElementById('notifyTopicHint');
-   const details = document.getElementById('notifyDetails');
-   const text = NOTIFY_TOPIC_HINTS[sel.value];
-   if (text) {
-      hint.innerHTML = '<i class="fas fa-info-circle mr-1"></i>' + text;
-      hint.classList.remove('hidden');
-      if (details) details.placeholder = 'เช่น: รหัสโรงพยาบาลเดิม 10728, ชื่อ-นามสกุล นายสถาพร อิ่มเอม, รหัสโรงพยาบาลใหม่ 10741';
-   } else {
-      hint.classList.add('hidden');
-      if (details) details.placeholder = 'ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง...';
-   }
-}
+    function toggleNotifyTopicHint(sel) {
+       const hint = document.getElementById('notifyTopicHint');
+       const details = document.getElementById('notifyDetails');
+       const text = NOTIFY_TOPIC_HINTS[sel.value];
+       if (text) {
+          hint.innerHTML = '<i class="fas fa-info-circle mr-1"></i>' + text;
+          hint.classList.remove('hidden');
+          if (details) details.placeholder = 'เช่น: รหัสโรงพยาบาลเดิม 10728, ชื่อ-นามสกุล นายสถาพร อิ่มเอม, รหัสโรงพยาบาลใหม่ 10741';
+       } else {
+          hint.classList.add('hidden');
+          if (details) details.placeholder = 'ระบุรายละเอียดที่ต้องการแจ้งแอดมินส่วนกลาง...';
+       }
+    }
 
     function previewNotifyImage(input) {
        const preview = document.getElementById('notifyImagePreview');
