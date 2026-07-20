@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <title>ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</title><link rel="icon" type="image/png" href="https://img1.pic.in.th/images/Seal12cb4bef0dff4226.png">
+  <title>ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -36,7 +36,7 @@
      <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div class="text-center mb-6">
            <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="https://img1.pic.in.th/images/Seal12cb4bef0dff4226.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+              <img src="Seal.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
            </div>
            <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
            <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
@@ -59,7 +59,7 @@
         </form>
         <div class="border-t mt-5 pt-4 text-center">
            <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-500 hover:text-moph transition">
-              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
+              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard
            </a>
         </div>
      </div>
@@ -72,7 +72,7 @@
     <div class="container mx-auto px-3 sm:px-4 py-3 flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center space-x-3 min-w-0">
         <div class="bg-white p-1 rounded-full shadow-md flex-shrink-0">
-           <img src="https://img1.pic.in.th/images/Seal12cb4bef0dff4226.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
+           <img src="Seal.png" alt="MOPH Logo" class="h-9 w-9 object-contain">
         </div>
         <div class="min-w-0">
           <h1 class="text-sm sm:text-xl font-bold leading-tight">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์ทางการแพทย์</h1>
@@ -424,7 +424,7 @@
     //  เชื่อมต่อ Google Apps Script Web App (JSON API) แทน google.script.run เดิม
     //  ต้องรันบนหน้าเว็บสาธารณะ (เช่น GitHub Pages) เพราะไฟล์นี้ไม่ได้ถูกเสิร์ฟจาก Apps Script อีกต่อไป
     // ==========================================================
-    const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbyJH9OAbEB8L6RlG1OW81f8znc8n4kUiBvXDRR49LkHF-d_E5r7b7brEWQHQN3uqSkL/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
+    const API_BASE_URL = 'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec'; // TODO: แก้เป็น URL Web App ของท่านหลัง Deploy
 
     function callApi(action, args) {
       return fetch(API_BASE_URL, {
