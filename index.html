@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <title>ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</title>
   <link rel="icon" type="image/png" href="Seal.png">
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -14,62 +13,169 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap');
-    body { font-family: 'Sarabun', sans-serif; background-color: #f0fdf4; }
-    .tab-btn.active { border-bottom: 4px solid #15803d; color: #15803d; font-weight: bold; background-color: #dcfce7; }
-    .select2-container .select2-selection--single { height: 42px; padding-top: 6px; border-color: #d1d5db; border-radius: 0.5rem; }
-    .bg-moph { background-color: #006a4e; }
-    .btn-moph { background-color: #006a4e; color: white; }
-    .btn-moph:hover { background-color: #047857; }
-    .role-badge { font-size: 0.7rem; padding: 2px 10px; border-radius: 999px; }
+    /* ===== Design tokens (โทนสีกระทรวงสาธารณสุข) ===== */
+    :root {
+      --moph: #006a4e;          /* primary */
+      --moph-600: #005a42;      /* hover */
+      --moph-50: #ecf7f2;
+      --moph-100: #d3ede1;
+      --ink: #1f2a24;           /* ข้อความหลัก */
+      --ink-muted: #56645d;     /* ข้อความรอง (contrast ≥ 4.5:1 บนพื้นขาว) */
+      --line: #d6ded9;
+      --ring: #0a8a63;
+      --bg: #f3f7f4;
+      --danger: #b42318;
+      --radius: 10px;
+    }
+    body { font-family: 'Sarabun', Tahoma, sans-serif; background-color: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+    /* ===== Focus ที่มองเห็นชัดสำหรับผู้ใช้คีย์บอร์ด ===== */
+    :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
+    .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 100; background: #fff; color: var(--moph); padding: 8px 14px; border-radius: 8px; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    .skip-link:focus { left: 8px; }
+
+    /* ===== ฟอร์ม (เดิมกำหนดด้วย JS ตอนโหลดหน้า → ย้ายมาเป็น CSS เพื่อไม่ทับ class อื่นและไม่กระพริบ) ===== */
+    .label { display: block; font-size: .9rem; font-weight: 500; color: #374151; margin-bottom: .25rem; }
+    .input-field, .input-read {
+      width: 100%; min-height: 44px; margin-top: .25rem; padding: .55rem .75rem;
+      border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
+      box-shadow: 0 1px 2px rgba(16,24,40,.04); transition: border-color .15s, box-shadow .15s;
+    }
+    .input-field:hover { border-color: #b5c3bb; }
+    .input-field:focus { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px rgba(10,138,99,.2); }
+    .input-field[readonly] { background: #f3f4f6; color: #4b5563; cursor: not-allowed; }
+    .input-read { background: var(--moph-50); border-style: dashed; color: var(--moph); font-weight: 600; cursor: default; }
+    .input-field.hidden { display: none; }
+
+    /* ===== ปุ่ม ===== */
+    .bg-moph { background-color: var(--moph); }
+    .text-moph { color: var(--moph); }
+    .btn-moph { background-color: var(--moph); color: #fff; min-height: 44px; cursor: pointer; transition: background-color .2s, box-shadow .2s, transform .2s; }
+    .btn-moph:hover { background-color: var(--moph-600); box-shadow: 0 6px 16px rgba(0,106,78,.25); }
+    .btn-moph:active { transform: translateY(1px); }
+    .btn-moph:disabled { opacity: .65; cursor: wait; }
+    .nav-icon-btn { min-width: 40px; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+    button, [role="button"], a { cursor: pointer; }
+
+    /* ===== แท็บ ===== */
+    .tab-btn { color: #4b5563; border-bottom: 3px solid transparent; font-weight: 500; }
+    .tab-btn:hover { color: var(--moph); }
+    .tab-btn.active { border-bottom-color: var(--moph); color: var(--moph); font-weight: 700; background-color: var(--moph-50); }
+
+    /* ===== หัวข้อส่วนของฟอร์ม ===== */
+    .section-title { display: flex; align-items: center; gap: .6rem; font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
+    .section-num { width: 30px; height: 30px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: .9rem; color: #fff; flex-shrink: 0; }
+
+    /* ===== Select2 ให้กลมกลืนกับ input อื่น ===== */
+    .select2-container .select2-selection--single { height: 44px; border-color: var(--line); border-radius: 8px; display: flex; align-items: center; }
+    .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 42px; padding-left: 12px; color: var(--ink); }
+    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 42px; }
+    .select2-container--default.select2-container--focus .select2-selection--single,
+    .select2-container--default.select2-container--open .select2-selection--single { border-color: var(--ring); box-shadow: 0 0 0 3px rgba(10,138,99,.2); }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] { background-color: var(--moph); }
+    .select2-dropdown { border-color: var(--line); border-radius: 8px; overflow: hidden; font-family: 'Sarabun', Tahoma, sans-serif; }
+    .select2-search__field { border-radius: 6px; padding: 6px 8px !important; }
+
+    /* ===== Badge บทบาทผู้ใช้ ===== */
+    .role-badge { font-size: 0.72rem; padding: 2px 10px; border-radius: 999px; font-weight: 600; white-space: nowrap; display: inline-block; }
     .role-admin { background-color: #fef3c7; color: #92400e; }
     .role-hospital { background-color: #dbeafe; color: #1e40af; }
     .role-person { background-color: #ede9fe; color: #6d28d9; }
-    .inline-spinner { display:inline-block; width:14px; height:14px; border:2px solid #d1d5db; border-top-color:#15803d; border-radius:50%; animation: spin .7s linear infinite; }
+
+    /* ===== การ์ดสถิติ ===== */
+    .stat-card { background: #fff; border-radius: 14px; border: 1px solid #e3ebe6; box-shadow: 0 1px 3px rgba(16,24,40,.05); }
+
+    /* ===== SweetAlert2 ธีมกระทรวง (ปุ่มที่กำหนดสีเองเช่นปุ่มลบสีแดง ยังคงสีเดิม เพราะ inline style มีลำดับสูงกว่า) ===== */
+    .swal2-popup { font-family: 'Sarabun', Tahoma, sans-serif !important; border-radius: 16px !important; }
+    .swal2-title { font-size: 1.3rem !important; color: var(--ink) !important; }
+    .swal2-styled.swal2-confirm { background-color: var(--moph); border-radius: 8px !important; min-height: 44px; }
+    .swal2-styled.swal2-cancel { border-radius: 8px !important; min-height: 44px; }
+    .swal2-input, .swal2-select, .swal2-textarea { border-radius: 8px !important; font-family: inherit !important; font-size: 1rem !important; }
+    .swal2-input { height: 44px !important; margin: .5em auto !important; width: 100% !important; max-width: 22em; box-sizing: border-box; }
+    .swal2-input:focus, .swal2-select:focus, .swal2-textarea:focus { border-color: var(--ring) !important; box-shadow: 0 0 0 3px rgba(10,138,99,.2) !important; }
+    .swal-field-label { display:block; text-align:left; font-size:.8rem; font-weight:600; color:#4b5563; max-width: 22em; margin: .6em auto -.2em; }
+
+    /* ===== ช่องรหัสผ่านพร้อมปุ่มแสดง/ซ่อน ===== */
+    .pw-wrap { position: relative; }
+    .pw-toggle { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; color: #6b7280; border-radius: 8px; }
+    .pw-toggle:hover { color: var(--moph); background: var(--moph-50); }
+
+    .inline-spinner { display:inline-block; width:14px; height:14px; border:2px solid #d1d5db; border-top-color: var(--moph); border-radius:50%; animation: spin .7s linear infinite; vertical-align: -2px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== เคารพการตั้งค่าลดการเคลื่อนไหว ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
   </style>
+  <!-- Tailwind CSS แบบ build ล่วงหน้า (แทน cdn.tailwindcss.com ซึ่งไม่แนะนำให้ใช้กับระบบจริง)
+       วางไว้หลัง <style> ด้านบน เพื่อให้ utility class (เช่น bg-gray-100, text-center) มีผลเหนือ .input-field เหมือนเดิม
+       หากแก้ไข class ใน index.html ให้ build ใหม่: npx tailwindcss@3 -c tailwind.config.js -i tailwind.src.css -o tailwind.css --minify -->
+  <link rel="stylesheet" href="tailwind.css">
 </head>
 <body>
 
   <!-- ===================== หน้าจอเข้าสู่ระบบ ===================== -->
-  <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4" style="background: linear-gradient(135deg,#ecfdf5,#d1fae5);">
-     <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <div class="text-center mb-6">
-           <div class="bg-green-50 w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
-              <img src="Seal.png" alt="MOPH Logo" class="h-10 w-10 object-contain">
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4" style="background: radial-gradient(1200px 600px at 10% -10%, #d3ede1 0%, transparent 60%), radial-gradient(900px 500px at 110% 110%, #cfe9dc 0%, transparent 55%), #f3f7f4;">
+     <main class="w-full max-w-md">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
+           <div class="bg-moph px-8 pt-8 pb-6 text-center text-white" style="background-image: linear-gradient(135deg,#00563f,#006a4e 55%,#0a8a63);">
+              <div class="bg-white w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center shadow-lg ring-4 ring-white/30">
+                 <img src="Seal.png" alt="ตรากระทรวงสาธารณสุข" class="h-16 w-16 object-contain">
+              </div>
+              <h1 class="text-lg sm:text-xl font-bold leading-snug">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
+              <p class="text-sm text-green-100">สำนักงานปลัดกระทรวงสาธารณสุข</p>
            </div>
-           <h1 class="text-lg font-bold text-moph">ระบบบันทึกข้อมูลนักสังคมสงเคราะห์</h1>
-           <p class="text-xs text-gray-500">สำนักปลัดกระทรวงสาธารณสุข</p>
+
+           <form id="loginForm" onsubmit="handleLogin(event)" class="px-6 sm:px-8 pt-6 pb-6">
+              <div class="mb-4">
+                 <label for="loginUsername" class="block text-sm font-semibold text-gray-700 mb-1">ชื่อผู้ใช้งาน (Username)</label>
+                 <div class="relative">
+                    <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+                    <input type="text" id="loginUsername" required autocomplete="username" inputmode="text" class="input-field !mt-0 !pl-9" placeholder="รหัสโรงพยาบาล 5 หลัก หรือ Username">
+                 </div>
+              </div>
+              <div class="mb-2">
+                 <label for="loginPassword" class="block text-sm font-semibold text-gray-700 mb-1">รหัสผ่าน (Password)</label>
+                 <div class="relative pw-wrap">
+                    <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+                    <input type="password" id="loginPassword" required autocomplete="current-password" class="input-field !mt-0 !pl-9 !pr-12" placeholder="รหัสผ่าน">
+                    <button type="button" class="pw-toggle" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="แสดงรหัสผ่าน" aria-pressed="false"><i class="fas fa-eye" aria-hidden="true"></i></button>
+                 </div>
+              </div>
+              <p id="loginError" class="hidden text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm my-3" role="alert" aria-live="assertive"><i class="fas fa-exclamation-circle mr-1" aria-hidden="true"></i><span></span></p>
+              <button type="submit" id="btnLogin" class="w-full btn-moph font-bold py-3 rounded-lg shadow mt-3"><i class="fas fa-sign-in-alt mr-2" aria-hidden="true"></i> เข้าสู่ระบบ</button>
+
+              <div class="flex items-center gap-3 my-4 text-xs text-gray-500"><span class="flex-1 h-px bg-gray-200"></span>ยังไม่มีบัญชี?<span class="flex-1 h-px bg-gray-200"></span></div>
+
+              <button type="button" onclick="openRegisterModal()" class="w-full bg-white border-2 border-green-200 text-moph font-bold py-2.5 rounded-lg hover:bg-green-50 hover:border-green-300 transition min-h-[44px]">
+                 <i class="fas fa-user-plus mr-2" aria-hidden="true"></i> นักสังคมสงเคราะห์ลงทะเบียนบัญชีใหม่
+              </button>
+
+              <details class="mt-4 text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg">
+                 <summary class="px-3 py-2.5 font-semibold cursor-pointer select-none"><i class="fas fa-circle-info text-moph mr-1" aria-hidden="true"></i> รหัสผ่านเริ่มต้นสำหรับโรงพยาบาล</summary>
+                 <p class="px-3 pb-3 leading-relaxed">รหัสผ่านเริ่มต้นของแต่ละโรงพยาบาล คือ <b>sw</b> ตามด้วยรหัสโรงพยาบาล 5 หลัก<br>(เช่น รหัส 10670 → รหัสผ่าน <code class="bg-white border rounded px-1">sw10670</code>)<br>สามารถเปลี่ยนรหัสผ่านได้เองหลังเข้าสู่ระบบ</p>
+              </details>
+           </form>
         </div>
-        <form id="loginForm" onsubmit="handleLogin(event)">
-           <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1">ชื่อผู้ใช้งาน (Username)</label>
-              <input type="text" id="loginUsername" required autocomplete="username" class="w-full border border-gray-300 rounded-md p-2.5 focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="รหัสโรงพยาบาล 5 หลัก (หรือ Username แอดมิน)">
-           </div>
-           <div class="mb-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน (Password)</label>
-              <input type="password" id="loginPassword" required autocomplete="current-password" class="w-full border border-gray-300 rounded-md p-2.5 focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="รหัสผ่าน">
-           </div>
-           <p id="loginError" class="hidden text-red-600 text-sm mb-3"><i class="fas fa-exclamation-circle mr-1"></i><span></span></p>
-           <button type="submit" id="btnLogin" class="w-full btn-moph font-bold py-2.5 rounded-lg shadow hover:opacity-90 transition"><i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ</button>
-           <button type="button" onclick="openRegisterModal()" class="w-full mt-3 bg-white border border-green-300 text-moph font-bold py-2.5 rounded-lg hover:bg-green-50 transition">
-              <i class="fas fa-user-plus mr-2"></i> นักสังคมสงเคราะห์ลงทะเบียนบัญชีใหม่
-           </button>
-           <p class="text-xs text-gray-400 mt-4 text-center leading-relaxed">รหัสผ่านเริ่มต้นของแต่ละโรงพยาบาล คือ <b>sw</b> ตามด้วยรหัสโรงพยาบาล 5 หลัก<br>(เช่น รหัส 10670 → รหัสผ่าน sw10670)<br>สามารถเปลี่ยนรหัสผ่านได้เองหลังเข้าสู่ระบบ</p>
-        </form>
-        <div class="border-t mt-5 pt-4 text-center">
-           <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-500 hover:text-moph transition">
-              <i class="fas fa-chart-line mr-2"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
+        <div class="mt-5 text-center">
+           <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="inline-flex items-center text-sm text-gray-600 hover:text-moph transition bg-white/70 px-4 py-2 rounded-full border border-green-100 min-h-[40px]">
+              <i class="fas fa-chart-line mr-2" aria-hidden="true"></i> ดูภาพรวมสถิติที่ Dashboard (ไม่ต้องเข้าสู่ระบบ)
            </a>
         </div>
-     </div>
+     </main>
   </div>
 
   <!-- ===================== เนื้อหาระบบ (แสดงหลังล็อกอินสำเร็จ) ===================== -->
   <div id="appContent" class="hidden">
+  <a href="#mainContent" class="skip-link">ข้ามไปยังเนื้อหาหลัก</a>
 
-  <nav class="bg-moph text-white shadow-lg sticky top-0 z-50">
+  <nav class="bg-moph text-white shadow-lg sticky top-0 z-50" style="background-image: linear-gradient(90deg,#00563f,#006a4e 60%,#0a7a58);" aria-label="แถบเมนูหลัก">
     <div class="container mx-auto px-3 sm:px-4 py-3 flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center space-x-3 min-w-0">
         <div class="bg-white p-1 rounded-full shadow-md flex-shrink-0">
@@ -86,68 +192,72 @@
            <div id="userNameText" class="font-medium max-w-[110px] sm:max-w-none truncate">-</div>
            <span id="userRoleBadge" class="role-badge">-</span>
         </div>
-        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง">
-           <i class="fas fa-paper-plane"></i>
+        <button id="btnNotifyAdmin" onclick="openNotifyAdminModal()" class="nav-icon-btn hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded-lg transition" title="แจ้ง/ประสานงานแอดมินส่วนกลาง" aria-label="แจ้ง/ประสานงานแอดมินส่วนกลาง">
+           <i class="fas fa-paper-plane" aria-hidden="true"></i><span class="hidden lg:inline ml-1.5">แจ้งแอดมิน</span>
         </button>
-        <button onclick="openChangePasswordModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="เปลี่ยนรหัสผ่าน">
-           <i class="fas fa-key"></i>
+        <button onclick="openChangePasswordModal()" class="nav-icon-btn bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded-lg transition" title="เปลี่ยนรหัสผ่าน" aria-label="เปลี่ยนรหัสผ่าน">
+           <i class="fas fa-key" aria-hidden="true"></i>
         </button>
-        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="จัดการบัญชีแอดมินส่วนกลาง">
-           <i class="fas fa-user-shield"></i>
+        <button id="btnManageAdmins" onclick="openManageAdminsModal()" class="nav-icon-btn hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded-lg transition" title="จัดการบัญชีแอดมินส่วนกลาง" aria-label="จัดการบัญชีแอดมินส่วนกลาง">
+           <i class="fas fa-user-shield" aria-hidden="true"></i>
         </button>
-        <button onclick="handleLogout()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded shadow transition" title="ออกจากระบบ">
-           <i class="fas fa-sign-out-alt"></i>
+        <button onclick="handleLogout()" class="nav-icon-btn bg-white/10 hover:bg-red-500/80 text-white text-xs font-bold py-2 px-2.5 sm:px-3 rounded-lg transition" title="ออกจากระบบ" aria-label="ออกจากระบบ">
+           <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
         </button>
-        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-3 sm:px-4 rounded shadow transition flex items-center text-xs sm:text-sm whitespace-nowrap">
-           <i class="fas fa-chart-line mr-1 sm:mr-2"></i> <span class="hidden sm:inline">ไปที่ </span>Dashboard
+        <a href="https://socialworkdn.github.io/MSWDashboard/" target="_top" class="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold py-2 px-3 sm:px-4 rounded-lg shadow transition flex items-center text-xs sm:text-sm whitespace-nowrap min-h-[40px]">
+           <i class="fas fa-chart-line mr-1 sm:mr-2" aria-hidden="true"></i> <span class="hidden sm:inline">ไปที่ </span>Dashboard
         </a>
       </div>
     </div>
   </nav>
 
-  <div class="bg-white shadow border-b">
-    <div class="container mx-auto flex overflow-x-auto">
-      <button onclick="switchTab('hospTab')" id="btn-hospTab" class="tab-btn active px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
-        <i class="fas fa-hospital mr-2"></i>จัดการข้อมูลโรงพยาบาล
+  <div class="bg-white shadow-sm border-b">
+    <div class="container mx-auto flex overflow-x-auto" role="tablist" aria-label="เมนูการทำงาน">
+      <button onclick="switchTab('hospTab')" id="btn-hospTab" role="tab" aria-selected="true" aria-controls="hospTab" class="tab-btn active px-5 sm:px-6 py-3.5 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-hospital mr-2" aria-hidden="true"></i>จัดการข้อมูลโรงพยาบาล
       </button>
 
-      <button onclick="switchTab('personTab')" id="btn-personTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
-        <i class="fas fa-user-nurse mr-2"></i>บันทึก/แก้ไขข้อมูลนักสังคมสงเคราะห์
+      <button onclick="switchTab('personTab')" id="btn-personTab" role="tab" aria-selected="false" aria-controls="personTab" class="tab-btn px-5 sm:px-6 py-3.5 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-user-nurse mr-2" aria-hidden="true"></i>บันทึก/แก้ไขข้อมูลนักสังคมสงเคราะห์
       </button>
 
-      <button onclick="switchTab('statsTab')" id="btn-statsTab" class="tab-btn px-6 py-4 whitespace-nowrap hover:bg-green-50 transition">
-        <i class="fas fa-chart-bar mr-2"></i>ภาพรวมสถิติ
+      <button onclick="switchTab('statsTab')" id="btn-statsTab" role="tab" aria-selected="false" aria-controls="statsTab" class="tab-btn px-5 sm:px-6 py-3.5 whitespace-nowrap hover:bg-green-50 transition">
+        <i class="fas fa-chart-bar mr-2" aria-hidden="true"></i>ภาพรวมสถิติ
       </button>
     </div>
   </div>
 
-  <div class="container mx-auto px-4 py-8 pb-20">
+  <main id="mainContent" tabindex="-1" class="container mx-auto px-3 sm:px-4 py-6 sm:py-8 pb-20">
 
-    <div id="statsTab" class="tab-content hidden">
-       <div class="flex flex-wrap items-center justify-between gap-3 mb-6 max-w-5xl mx-auto">
-          <div id="statsLastUpdated" class="text-xs text-gray-500 bg-white px-3 py-1.5 rounded-lg border hidden">
-             <i class="fas fa-clock mr-1"></i> อัปเดตล่าสุด: <span id="statsLastUpdatedText">-</span>
+    <div id="statsTab" class="tab-content hidden" role="tabpanel" aria-labelledby="btn-statsTab">
+       <div class="flex flex-wrap items-end justify-between gap-3 mb-6 max-w-5xl mx-auto">
+          <div>
+             <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-chart-pie text-moph mr-2" aria-hidden="true"></i>ภาพรวมสถิติ</h2>
+             <div id="statsLastUpdated" class="text-xs text-gray-500 mt-1 hidden">
+                <i class="fas fa-clock mr-1" aria-hidden="true"></i> อัปเดตล่าสุด: <span id="statsLastUpdatedText">-</span>
+             </div>
           </div>
           <div class="flex items-center gap-2 ml-auto">
-             <button onclick="loadStatsOverview(true)" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-xs font-bold py-2 px-3 rounded shadow-sm transition">
-                <i class="fas fa-sync-alt mr-1 text-blue-600"></i> รีเฟรช
-             </button>
-             <select id="statsRegionFilter" onchange="renderStatsOverview()" class="border-gray-300 border rounded-md p-2 text-sm shadow-sm">
+             <label for="statsRegionFilter" class="sr-only">เลือกขอบเขตข้อมูล</label>
+             <select id="statsRegionFilter" onchange="renderStatsOverview()" class="input-field !mt-0 !w-auto text-sm">
                 <option value="all">แสดงข้อมูลทั่วประเทศ</option>
-                <script>for(let i=1;i<=12;i++) document.write(`<option value="${i}">เขตสุขภาพที่ ${i}</option>`);</script>
              </select>
+             <button onclick="loadStatsOverview(true)" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 text-sm font-semibold px-3 rounded-lg shadow-sm transition min-h-[44px]" aria-label="รีเฟรชข้อมูลสถิติ">
+                <i class="fas fa-sync-alt mr-1 text-moph" aria-hidden="true"></i> รีเฟรช
+             </button>
           </div>
        </div>
 
-       <div id="statsLoading" class="text-center py-16">
-          <i class="fas fa-spinner fa-spin text-4xl text-moph"></i>
+       <div id="statsLoading" class="text-center py-16" role="status" aria-live="polite">
+          <i class="fas fa-spinner fa-spin text-4xl text-moph" aria-hidden="true"></i>
           <p class="mt-3 text-gray-500 text-sm">กำลังโหลดข้อมูลสถิติ...</p>
        </div>
 
        <div id="statsContent" class="hidden max-w-5xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div class="bg-white p-6 rounded-xl shadow border-t-4 border-teal-600 flex flex-col justify-center items-center">
-                  <div class="text-gray-500">จำนวนโรงพยาบาลทั้งหมด</div>
+              <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-teal-600 flex flex-col justify-center items-center">
+                  <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-700 flex items-center justify-center mb-2"><i class="fas fa-hospital text-xl" aria-hidden="true"></i></div>
+                  <div class="text-gray-600">จำนวนโรงพยาบาลทั้งหมด</div>
                   <div class="text-4xl font-bold text-teal-700 mt-2" id="s_statHospTotal">0</div>
                   <div class="text-xs text-gray-400 mt-1">แห่ง</div>
               </div>
@@ -228,33 +338,38 @@
     </div>
 
 
-    <div id="personTab" class="tab-content hidden">
-      <div class="bg-white p-8 rounded-xl shadow-sm max-w-5xl mx-auto border border-gray-100">
+    <div id="personTab" class="tab-content hidden" role="tabpanel" aria-labelledby="btn-personTab">
+      <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm max-w-5xl mx-auto border border-gray-100">
 
-        <div class="bg-green-50 border border-green-100 p-6 rounded-xl mb-8">
-           <label class="block text-lg font-bold text-moph mb-2">เลือกโรงพยาบาลต้นสังกัด</label>
+        <div class="bg-green-50 border border-green-100 p-5 sm:p-6 rounded-xl mb-8">
+           <label for="hospitalSearch" class="flex items-center gap-2 text-lg font-bold text-moph mb-2"><span class="section-num bg-moph" aria-hidden="true"><i class="fas fa-hospital text-xs"></i></span>เลือกโรงพยาบาลต้นสังกัด</label>
            <select id="hospitalSearch" class="w-full" style="width: 100%;"><option value="">ค้นหา...</option></select>
 
-           <div id="hospInfoDisplay" class="hidden mt-4 p-4 bg-white rounded border border-green-200 shadow-sm text-sm mb-4">
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div><strong>รหัสโรงพยาบาล:</strong> <span id="dispCode" class="text-blue-600 font-bold">-</span></div>
-                  <div><strong>ชื่อโรงพยาบาล:</strong> <span id="dispName" class="font-bold">-</span></div>
-                  <div><strong>เขตสุขภาพ:</strong> <span id="dispRegion">-</span></div>
-                  <div><strong>ระดับ:</strong> <span id="dispLevel">-</span></div>
-              </div>
+           <div id="hospInfoDisplay" class="hidden mt-4 p-4 bg-white rounded-lg border border-green-200 shadow-sm text-sm mb-4">
+              <dl class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div><dt class="text-xs text-gray-500">รหัสโรงพยาบาล</dt><dd id="dispCode" class="text-blue-700 font-bold">-</dd></div>
+                  <div><dt class="text-xs text-gray-500">ชื่อโรงพยาบาล</dt><dd id="dispName" class="font-bold">-</dd></div>
+                  <div><dt class="text-xs text-gray-500">เขตสุขภาพ</dt><dd id="dispRegion">-</dd></div>
+                  <div><dt class="text-xs text-gray-500">ระดับ</dt><dd id="dispLevel">-</dd></div>
+              </dl>
            </div>
 
            <div id="personSelectSection" class="hidden border-t border-green-200 pt-4">
-              <label class="block text-lg font-bold text-orange-600 mb-2">เลือกชื่อเพื่อแก้ไขข้อมูลเดิม (หรือปล่อยว่างเพื่อเพิ่มใหม่)</label>
+              <label for="personSearch" class="flex items-center gap-2 text-lg font-bold text-orange-700 mb-1"><span class="section-num bg-orange-500" aria-hidden="true"><i class="fas fa-user-pen text-xs"></i></span>เลือกชื่อเพื่อแก้ไขข้อมูลเดิม</label>
+              <p class="text-xs text-gray-600 mb-2">หรือเลือก "เพิ่มรายชื่อใหม่" เพื่อบันทึกบุคลากรคนใหม่</p>
               <select id="personSearch" class="w-full" style="width:100%"><option value="">-- เพิ่มรายชื่อใหม่ (New Entry) --</option></select>
            </div>
         </div>
 
+        <div id="personFormHint" class="mb-6 text-sm text-gray-600 bg-gray-50 border border-dashed border-gray-300 rounded-lg p-3 text-center"><i class="fas fa-arrow-up mr-1" aria-hidden="true"></i> กรุณาเลือกโรงพยาบาลด้านบนก่อน จึงจะกรอกแบบฟอร์มได้</div>
+
         <form id="personForm" onsubmit="handlePersonSubmit(event)" class="opacity-50 pointer-events-none transition" style="filter: grayscale(1);">
            <input type="hidden" name="selectedHospitalCode" id="hiddenHospCode">
            <input type="hidden" name="rowIndex" id="hiddenRowIndex">
+           <input type="hidden" name="personUID" id="hiddenPersonUID"><!-- ใช้อ้างอิงระเบียนแทนเลขแถว -->
 
-           <h3 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-green-500 pl-3">ส่วนที่ 1: ข้อมูลส่วนบุคคล</h3>
+           <p class="text-xs text-gray-600 mb-4">ช่องที่มีเครื่องหมาย <span class="text-red-600 font-bold">*</span> จำเป็นต้องกรอก</p>
+           <h3 class="section-title"><span class="section-num bg-green-600" aria-hidden="true">1</span>ข้อมูลส่วนบุคคล</h3>
            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
               <div>
                 <label class="label">คำนำหน้า <span class="text-red-500">*</span></label>
@@ -308,7 +423,7 @@
               </div>
            </div>
 
-           <h3 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-yellow-500 pl-3">ส่วนที่ 2: เกี่ยวกับสภาวิชาชีพฯ</h3>
+           <h3 class="section-title"><span class="section-num bg-yellow-500" aria-hidden="true">2</span>เกี่ยวกับสภาวิชาชีพฯ</h3>
            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 bg-yellow-50 p-5 rounded-lg border border-yellow-100">
                <div class="md:col-span-2">
                    <label class="label font-bold text-yellow-800">สถานะสมาชิกสภาวิชาชีพสังคมสงเคราะห์</label>
@@ -337,17 +452,17 @@
                </div>
            </div>
 
-           <div class="text-center">
-             <button type="submit" id="btnSavePerson" class="btn-moph font-bold py-3 px-10 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล</button>
+           <div class="text-center sticky bottom-3 z-10">
+             <button type="submit" id="btnSavePerson" class="btn-moph font-bold py-3 px-10 rounded-full shadow-lg"><i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล</button>
            </div>
         </form>
       </div>
     </div>
 
-    <div id="hospTab" class="tab-content block">
-      <div class="bg-white p-8 rounded-xl shadow-sm max-w-4xl mx-auto border border-green-100">
-        <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
-           <label class="block text-sm font-bold text-blue-800 mb-2">ค้นหาโรงพยาบาลเพื่อแก้ไข/อัปเดต (หรือปล่อยว่างเพื่อเพิ่มใหม่)</label>
+    <div id="hospTab" class="tab-content block" role="tabpanel" aria-labelledby="btn-hospTab">
+      <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm max-w-4xl mx-auto border border-green-100">
+        <div class="bg-blue-50 p-4 sm:p-5 rounded-xl mb-6 border border-blue-200">
+           <label for="hospEditSearch" class="flex items-center gap-2 text-sm font-bold text-blue-900 mb-2"><i class="fas fa-magnifying-glass" aria-hidden="true"></i>ค้นหาโรงพยาบาลเพื่อแก้ไข/อัปเดต (หรือปล่อยว่างเพื่อเพิ่มใหม่)</label>
            <select id="hospEditSearch" class="w-full" style="width: 100%;"><option></option></select>
            <p id="newHospHint" class="text-xs text-gray-500 mt-2 hidden"><i class="fas fa-info-circle mr-1"></i>เฉพาะแอดมินส่วนกลางเท่านั้นที่เพิ่มโรงพยาบาลใหม่ได้ ท่านสามารถแก้ไขได้เฉพาะโรงพยาบาลของท่านเท่านั้น</p>
            <button type="button" id="btnResetHospPw" onclick="resetHospitalPassword()" class="hidden mt-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold py-2 px-3 rounded transition">
@@ -364,7 +479,7 @@
             <div class="md:col-span-2"><label class="label">ชื่อโรงพยาบาล</label><input type="text" name="hospitalName" id="f_hospName" class="input-field" required></div>
             <div><label class="label"><i class="fas fa-phone-alt mr-1"></i> เบอร์โทรศัพท์หน่วยงาน</label><input type="text" name="hospPhone" id="f_hospPhone" class="input-field" placeholder="02-xxx-xxxx"></div>
             <div><label class="label"><i class="fas fa-envelope mr-1"></i> Email หน่วยงาน</label><input type="email" name="hospEmail" id="f_hospEmail" class="input-field" placeholder="example@moph.go.th"></div>
-            <div><label class="label">เขตสุขภาพ</label><select name="hospitalRegion" id="f_region" class="input-field" required><option value="">เลือก</option><script>for(let i=1;i<=12;i++) document.write(`<option value="${i}">เขต ${i}</option>`);</script></select></div>
+            <div><label class="label">เขตสุขภาพ</label><select name="hospitalRegion" id="f_region" class="input-field" required><option value="">เลือก</option></select></div>
             <div><label class="label">ระดับ</label><select name="hospitalLevel" id="f_level" class="input-field">
               <option value="S (โรงพยาบาลชุมชน)">S (โรงพยาบาลชุมชน)</option>
                   <option value="S+ (โรงพยาบาลชุมชนพลัส)">S+ (โรงพยาบาลชุมชนพลัส)</option>
@@ -391,33 +506,36 @@
             </div>
 
           </div>
-          <div class="mt-6 text-center"><button type="submit" id="btnSaveHosp" class="btn-moph font-bold py-3 px-8 rounded shadow hover:scale-105 transition"><i class="fas fa-save mr-2"></i> บันทึกข้อมูลโรงพยาบาล</button></div>
+          <div class="mt-6 text-center"><button type="submit" id="btnSaveHosp" class="btn-moph font-bold py-3 px-8 rounded-lg shadow"><i class="fas fa-save mr-2"></i> บันทึกข้อมูลโรงพยาบาล</button></div>
         </form>
 
         <div id="hospPersonList" class="hidden border-t pt-6">
-           <h3 class="text-lg font-bold text-red-700 mb-4"><i class="fas fa-users-cog mr-2"></i>รายชื่อบุคลากรในสังกัด (กดปุ่มถังขยะเพื่อลบ)</h3>
-           <div class="overflow-x-auto">
-              <table class="min-w-full text-sm divide-y divide-gray-200 border">
-                 <thead class="bg-gray-100">
+           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-users-cog mr-2 text-moph" aria-hidden="true"></i>รายชื่อบุคลากรในสังกัด <span id="hospPersonCount" class="ml-1 text-sm font-semibold bg-green-100 text-green-800 rounded-full px-2.5 py-0.5"></span></h3>
+              <p class="text-xs text-gray-500">คลิกหัวคอลัมน์เพื่อเรียงลำดับ • ใช้ปุ่ม "ย้าย" หรือ "ลบ" ในคอลัมน์จัดการ</p>
+           </div>
+           <div class="overflow-x-auto rounded-xl border border-gray-200">
+              <table class="min-w-full sm:min-w-0 w-full text-sm divide-y divide-gray-200" style="min-width:640px;">
+                 <thead class="bg-gray-50 text-gray-700">
                     <tr>
-                       <th onclick="sortPersonnel('name')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">
-                          ชื่อ-สกุล <i id="sortIcon-name" class="fas fa-sort text-gray-400 ml-1"></i>
+                       <th scope="col" class="p-0 text-left" aria-sort="none" id="th-name">
+                          <button type="button" onclick="sortPersonnel('name')" class="w-full text-left px-3 py-3 font-semibold hover:bg-gray-100 select-none">ชื่อ-สกุล <i id="sortIcon-name" class="fas fa-sort text-gray-400 ml-1" aria-hidden="true"></i></button>
                        </th>
-                       <th onclick="sortPersonnel('position')" class="p-2 text-left cursor-pointer hover:bg-gray-200 select-none">
-                          ตำแหน่ง <i id="sortIcon-position" class="fas fa-sort text-gray-400 ml-1"></i>
+                       <th scope="col" class="p-0 text-left" aria-sort="none" id="th-position">
+                          <button type="button" onclick="sortPersonnel('position')" class="w-full text-left px-3 py-3 font-semibold hover:bg-gray-100 select-none">ตำแหน่ง <i id="sortIcon-position" class="fas fa-sort text-gray-400 ml-1" aria-hidden="true"></i></button>
                        </th>
-                       <th class="p-2 text-left">บัญชี SW</th>
-                       <th class="p-2 text-center">จัดการ</th>
+                       <th scope="col" class="px-3 py-3 text-left font-semibold">บัญชี SW</th>
+                       <th scope="col" class="px-3 py-3 text-center font-semibold">จัดการ</th>
                     </tr>
                  </thead>
-                 <tbody id="hospPersonTableBody" class="divide-y divide-gray-200"></tbody>
+                 <tbody id="hospPersonTableBody" class="divide-y divide-gray-100 bg-white"></tbody>
               </table>
            </div>
         </div>
       </div>
     </div>
 
-  </div>
+  </main>
   </div> <!-- /#appContent -->
 
   <script>
@@ -474,9 +592,45 @@
     };
     // ==========================================================
 
-    const inputClass = "w-full border-gray-300 rounded-md shadow-sm border p-2 mt-1";
-    document.querySelectorAll('.input-field').forEach(el => el.className = inputClass);
-    document.querySelectorAll('.label').forEach(el => el.className = "block text-sm font-medium text-gray-700");
+    // หมายเหตุ: เดิมใช้ JS เขียนทับ className ของ .input-field / .label ตอนโหลดหน้า ซึ่งทำให้ class อื่นหายไป
+    // (เช่น "hidden" ของช่องระบุคำนำหน้าอื่น ๆ ทำให้ช่องนี้แสดงตั้งแต่แรก) — ย้ายไปกำหนดใน CSS แทนแล้ว
+
+    // เติมตัวเลือกเขตสุขภาพ 1-12 (แทน document.write เดิม)
+    (function populateRegionOptions() {
+       const statsSel = document.getElementById('statsRegionFilter');
+       const formSel = document.getElementById('f_region');
+       for (let i = 1; i <= 12; i++) {
+          statsSel.add(new Option(`เขตสุขภาพที่ ${i}`, String(i)));
+          formSel.add(new Option(`เขต ${i}`, String(i)));
+       }
+    })();
+
+    // แสดง/ซ่อนรหัสผ่าน
+    function togglePasswordVisibility(inputId, btn) {
+       const input = document.getElementById(inputId);
+       if (!input) return;
+       const show = input.type === 'password';
+       input.type = show ? 'text' : 'password';
+       btn.setAttribute('aria-pressed', String(show));
+       btn.setAttribute('aria-label', show ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+       btn.innerHTML = `<i class="fas ${show ? 'fa-eye-slash' : 'fa-eye'}" aria-hidden="true"></i>`;
+    }
+
+    // คัดลอกข้อความลงคลิปบอร์ด (รองรับเบราว์เซอร์เก่าด้วย fallback)
+    function copyToClipboard(text) {
+       if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+       }
+       return new Promise((resolve, reject) => {
+          const ta = document.createElement('textarea');
+          ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy') ? resolve() : reject(); } catch (e) { reject(e); } finally { document.body.removeChild(ta); }
+       });
+    }
+
+    // Toast สั้น ๆ สำหรับแจ้งผลที่ไม่สำคัญมาก (ปิดเองใน 3 วินาที)
+    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
 
     let currentPersonnelList = [];
     let currentPersonAccounts = [];
@@ -617,11 +771,12 @@
                }
             } else {
                $('#loginError').removeClass('hidden').find('span').text(res.message);
+               $('#loginPassword').trigger('focus').trigger('select');
             }
          })
          .withFailureHandler(err => {
             $('#btnLogin').prop('disabled', false).html('<i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ');
-            $('#loginError').removeClass('hidden').find('span').text('เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+            $('#loginError').removeClass('hidden').find('span').text('เชื่อมต่อไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่อีกครั้ง');
          })
          .login(u, p);
     }
@@ -683,14 +838,22 @@
        Swal.fire({
           title: 'ลงทะเบียนบัญชีนักสังคมสงเคราะห์',
           html:
-            '<div class="text-left text-xs text-gray-500 mb-2">กรอกข้อมูลให้ตรงกับที่บันทึกไว้ในระบบ (ให้โรงพยาบาลของท่านตรวจสอบได้หากมีปัญหา)</div>' +
-            '<input id="regHospCode" class="swal2-input" placeholder="รหัสโรงพยาบาล 5 หลัก" maxlength="5">' +
+            '<div class="text-left text-sm text-gray-600 bg-green-50 border border-green-100 rounded-lg p-3 mb-2"><i class="fas fa-circle-info text-moph mr-1"></i>กรอกข้อมูลให้ตรงกับที่บันทึกไว้ในระบบ (ให้โรงพยาบาลของท่านตรวจสอบได้หากมีปัญหา)</div>' +
+            '<div class="text-left text-xs font-bold text-moph mt-3 mb-1" style="max-width:22em;margin-left:auto;margin-right:auto;">ขั้นที่ 1 • ยืนยันตัวตน</div>' +
+            '<label for="regHospCode" class="swal-field-label">รหัสโรงพยาบาล</label>' +
+            '<input id="regHospCode" class="swal2-input" placeholder="รหัสโรงพยาบาล 5 หลัก" maxlength="5" inputmode="numeric">' +
+            '<label for="regFirstName" class="swal-field-label">ชื่อ</label>' +
             '<input id="regFirstName" class="swal2-input" placeholder="ชื่อ (ไม่ต้องมีคำนำหน้า)">' +
+            '<label for="regLastName" class="swal-field-label">นามสกุล</label>' +
             '<input id="regLastName" class="swal2-input" placeholder="นามสกุล">' +
-            '<hr style="margin:12px 0;">' +
-            '<input id="regUsername" class="swal2-input" placeholder="ตั้ง Username (4-30 ตัวอักษร)" autocomplete="off">' +
-            '<input id="regPassword" type="password" class="swal2-input" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">' +
-            '<input id="regPassword2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password">',
+            '<hr style="margin:16px 0 4px;">' +
+            '<div class="text-left text-xs font-bold text-moph mt-3 mb-1" style="max-width:22em;margin-left:auto;margin-right:auto;">ขั้นที่ 2 • ตั้งชื่อผู้ใช้และรหัสผ่าน</div>' +
+            '<label for="regUsername" class="swal-field-label">Username</label>' +
+            '<input id="regUsername" class="swal2-input" placeholder="4-30 ตัวอักษร (a-z, 0-9, _ . -)" autocomplete="off">' +
+            '<label for="regPassword" class="swal-field-label">รหัสผ่าน</label>' +
+            '<input id="regPassword" type="password" class="swal2-input" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="new-password">' +
+            '<label for="regPassword2" class="swal-field-label">ยืนยันรหัสผ่าน</label>' +
+            '<input id="regPassword2" type="password" class="swal2-input" placeholder="พิมพ์รหัสผ่านอีกครั้ง" autocomplete="new-password">',
           confirmButtonText: 'ลงทะเบียน',
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
@@ -732,9 +895,12 @@
        Swal.fire({
           title: 'เปลี่ยนรหัสผ่าน',
           html:
+            '<label for="swOldPw" class="swal-field-label">รหัสผ่านเดิม</label>' +
             '<input id="swOldPw" type="password" class="swal2-input" placeholder="รหัสผ่านเดิม" autocomplete="current-password">' +
-            '<input id="swNewPw" type="password" class="swal2-input" placeholder="รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">' +
-            '<input id="swNewPw2" type="password" class="swal2-input" placeholder="ยืนยันรหัสผ่านใหม่" autocomplete="new-password">',
+            '<label for="swNewPw" class="swal-field-label">รหัสผ่านใหม่</label>' +
+            '<input id="swNewPw" type="password" class="swal2-input" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="new-password">' +
+            '<label for="swNewPw2" class="swal-field-label">ยืนยันรหัสผ่านใหม่</label>' +
+            '<input id="swNewPw2" type="password" class="swal2-input" placeholder="พิมพ์รหัสผ่านใหม่อีกครั้ง" autocomplete="new-password">',
           confirmButtonText: 'บันทึกรหัสผ่านใหม่',
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
@@ -774,17 +940,18 @@
     }
 
     function renderManageAdminsDialog(admins) {
+       // ใช้ data-attribute + event delegation แทน onclick="...('ชื่อ')" เพื่อกันชื่อที่มีเครื่องหมาย ' ทำให้ปุ่มพัง/ถูกแทรกสคริปต์
        const rowsHtml = admins.map(a => `
           <tr class="border-b">
-             <td class="py-1.5 text-left">${escapeHtml(a.username)}</td>
-             <td class="py-1.5 text-left text-gray-500">${escapeHtml(a.name)}</td>
-             <td class="py-1.5 text-center">
+             <td class="py-2 text-left font-medium">${escapeHtml(a.username)}</td>
+             <td class="py-2 text-left text-gray-600">${escapeHtml(a.name)}</td>
+             <td class="py-2 text-center">
                 ${a.active
-                   ? `<span class="text-green-600 text-xs">ใช้งานอยู่</span>`
-                   : `<span class="text-red-500 text-xs">ถูกระงับ</span>`}
+                   ? `<span class="inline-flex items-center gap-1 text-green-700 bg-green-50 rounded-full px-2 py-0.5 text-xs"><i class="fas fa-circle text-[6px]"></i>ใช้งานอยู่</span>`
+                   : `<span class="inline-flex items-center gap-1 text-red-700 bg-red-50 rounded-full px-2 py-0.5 text-xs"><i class="fas fa-circle text-[6px]"></i>ถูกระงับ</span>`}
              </td>
-             <td class="py-1.5 text-center">
-                <button onclick="toggleAdminActive('${escapeHtml(a.username)}', ${a.active ? 'false' : 'true'})" class="text-xs border px-2 py-1 rounded ${a.active ? 'text-red-600 border-red-200 hover:bg-red-50' : 'text-green-600 border-green-200 hover:bg-green-50'}">
+             <td class="py-2 text-center">
+                <button type="button" data-action="toggle-admin" data-username="${escapeHtml(a.username)}" data-make-active="${a.active ? 'false' : 'true'}" class="text-xs border px-2.5 py-1.5 rounded-lg ${a.active ? 'text-red-700 border-red-200 hover:bg-red-50' : 'text-green-700 border-green-200 hover:bg-green-50'}">
                    ${a.active ? 'ระงับ' : 'เปิดใช้งาน'}
                 </button>
              </td>
@@ -803,13 +970,19 @@
             </div>
             <hr class="mb-3">
             <div class="text-left text-sm font-bold text-gray-700 mb-2">เพิ่มแอดมินคนใหม่</div>` +
-            '<input id="newAdminUsername" class="swal2-input" placeholder="Username (4-30 ตัวอักษร)" autocomplete="off">' +
-            '<input id="newAdminName" class="swal2-input" placeholder="ชื่อ-นามสกุล">' +
-            '<input id="newAdminPassword" type="password" class="swal2-input" placeholder="รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password">',
+            '<input id="newAdminUsername" class="swal2-input" placeholder="Username (4-30 ตัวอักษร)" autocomplete="off" aria-label="Username แอดมินใหม่">' +
+            '<input id="newAdminName" class="swal2-input" placeholder="ชื่อ-นามสกุล" aria-label="ชื่อ-นามสกุลแอดมินใหม่">' +
+            '<input id="newAdminPassword" type="password" class="swal2-input" placeholder="รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" autocomplete="new-password" aria-label="รหัสผ่านแอดมินใหม่">',
           confirmButtonText: 'เพิ่มแอดมิน',
           showCancelButton: true,
           cancelButtonText: 'ปิด',
           focusConfirm: false,
+          didOpen: (popup) => {
+             popup.addEventListener('click', (ev) => {
+                const btn = ev.target.closest('[data-action="toggle-admin"]');
+                if (btn) toggleAdminActive(btn.dataset.username, btn.dataset.makeActive === 'true');
+             });
+          },
           preConfirm: () => {
              const uname = document.getElementById('newAdminUsername').value.trim();
              const name = document.getElementById('newAdminName').value.trim();
@@ -1035,18 +1208,20 @@
        $('#personForm').addClass('hidden');
        $('.bg-green-50').addClass('hidden');
        $('#hospForm').addClass('hidden');
+       $('#personFormHint').addClass('hidden');
 
        if ($('#lockMessage').length === 0) {
-          $('#personTab .bg-white').prepend(`
-             <div id="lockMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6">
-                <i class="fas fa-lock text-5xl mb-4"></i>
+          // [แก้ไข] เดิมใช้ '#personTab .bg-white' ซึ่งจับกล่องสีขาวด้านในหลายกล่อง ทำให้ข้อความซ้ำ — ระบุเฉพาะการ์ดหลักของแท็บ
+          $('#personTab > .bg-white').prepend(`
+             <div id="lockMessage" role="alert" class="bg-red-50 border border-red-200 text-red-800 p-8 rounded-xl text-center mb-6">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center"><i class="fas fa-lock text-3xl text-red-600" aria-hidden="true"></i></div>
                 <h2 class="text-2xl font-bold mb-2">ระบบปิดรับข้อมูลชั่วคราว</h2>
                 <p class="text-lg">${escapeHtml(msg)}</p>
              </div>
           `);
-          $('#hospTab .bg-white').prepend(`
-             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-8 rounded shadow-lg text-center mb-6">
-                <i class="fas fa-lock text-5xl mb-4"></i>
+          $('#hospTab > .bg-white').prepend(`
+             <div role="alert" class="bg-red-50 border border-red-200 text-red-800 p-8 rounded-xl text-center mb-6">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center"><i class="fas fa-lock text-3xl text-red-600" aria-hidden="true"></i></div>
                 <h2 class="text-2xl font-bold mb-2">ไม่สามารถแก้ไขข้อมูลได้ในขณะนี้</h2>
                 <p class="text-lg">${escapeHtml(msg)}</p>
              </div>
@@ -1057,8 +1232,9 @@
     function switchTab(id) {
        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
        document.getElementById(id).classList.remove('hidden');
-       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+       document.querySelectorAll('.tab-btn').forEach(el => { el.classList.remove('active'); el.setAttribute('aria-selected', 'false'); });
        document.getElementById('btn-'+id).classList.add('active');
+       document.getElementById('btn-'+id).setAttribute('aria-selected', 'true');
        if (id === 'statsTab') {
           setupStatsFilterOptions();
           if (!statsLoadedOnce) { loadStatsOverview(); }
@@ -1098,13 +1274,15 @@
                if(val) {
                   const opt = $(this).find(':selected');
                   $('#personForm').css({'opacity':1, 'pointer-events':'auto', 'filter':'none'});
+                  $('#personFormHint').addClass('hidden');
                   $('#hiddenHospCode').val(val);
                   $('#hospInfoDisplay').removeClass('hidden');
                   $('#dispCode').text(opt.data('code')); $('#dispName').text(opt.data('name')); $('#dispRegion').text("เขต "+opt.data('reg')); $('#dispLevel').text(opt.data('lev'));
                   $('#personSelectSection').removeClass('hidden');
                   loadPersonDropdown(val);
                } else {
-                  $('#personForm').css({'opacity':0.5, 'pointer-events':'none'});
+                  $('#personForm').css({'opacity':0.5, 'pointer-events':'none', 'filter':'grayscale(1)'});
+                  $('#personFormHint').removeClass('hidden');
                   $('#hospInfoDisplay').addClass('hidden');
                   $('#personSelectSection').addClass('hidden');
                }
@@ -1150,7 +1328,7 @@
                } else {
                   document.getElementById('personForm').reset();
                   $('#hiddenHospCode').val(hospCode);
-                  $('#hiddenRowIndex').val("");
+                  $('#hiddenRowIndex').val(""); $('#hiddenPersonUID').val("");
                   $('#btnSavePerson').html('<i class="fas fa-check-circle mr-2"></i> บันทึกข้อมูล');
                   togglePrefix();
                }
@@ -1167,6 +1345,7 @@
 
     function fillPersonForm(p, rowId) {
         document.getElementById('hiddenRowIndex').value = rowId;
+        document.getElementById('hiddenPersonUID').value = p[32] || '';
         document.getElementById('btnSavePerson').innerHTML = '<i class="fas fa-save mr-2"></i> อัปเดตข้อมูลเดิม';
 
         let prefixData = p[8] || 'นาย';
@@ -1230,7 +1409,7 @@
             if(res.status==='success') {
                Swal.fire('สำเร็จ', res.message, 'success');
                document.getElementById('personForm').reset();
-               $('#hiddenRowIndex').val("");
+               $('#hiddenRowIndex').val(""); $('#hiddenPersonUID').val("");
                $('#personSearch').val("").trigger('change');
                togglePrefix();
                loadPersonDropdown($('#hiddenHospCode').val());
@@ -1320,9 +1499,10 @@
     function renderPersonnelTable() {
        const tbody = $('#hospPersonTableBody');
        tbody.empty();
+       $('#hospPersonCount').text(currentPersonnelList.length + ' คน');
 
        if (currentPersonnelList.length === 0) {
-          tbody.html('<tr><td colspan="4" class="text-center p-4 text-gray-500">ยังไม่มีข้อมูลบุคลากรในระบบ</td></tr>');
+          tbody.html('<tr><td colspan="4" class="text-center p-8 text-gray-500"><i class="fas fa-user-slash text-2xl text-gray-300 block mb-2" aria-hidden="true"></i>ยังไม่มีข้อมูลบุคลากรในระบบ</td></tr>');
           return;
        }
 
@@ -1337,30 +1517,47 @@
 
           const account = currentPersonAccounts.find(a => a.personUID && a.personUID === personUID);
           let accountCell;
+          // ใช้ data-attribute + event delegation (ดู bindPersonnelTableActions) แทน onclick ที่ฝังชื่อลงในสตริง JS
+          // เดิม: ชื่อที่มีเครื่องหมาย ' (เช่น ชื่อภาษาอังกฤษ O'Brien) ทำให้ปุ่มพัง และเสี่ยงต่อการแทรกสคริปต์
           if (account) {
-             accountCell = `<span class="text-green-700 text-xs"><i class="fas fa-check-circle mr-1"></i>${escapeHtml(account.username)}</span>
-                <button onclick="resetPersonPassword('${escapeHtml(account.username)}')" class="ml-2 text-xs text-orange-600 border border-orange-200 px-1.5 py-0.5 rounded hover:bg-orange-50" title="รีเซ็ตรหัสผ่าน SW คนนี้">
-                   <i class="fas fa-key"></i>
+             accountCell = `<span class="inline-flex items-center text-green-800 bg-green-50 rounded-full px-2 py-0.5 text-xs"><i class="fas fa-check-circle mr-1" aria-hidden="true"></i>${escapeHtml(account.username)}</span>
+                <button type="button" data-action="reset-pw" data-username="${escapeHtml(account.username)}" class="ml-1 text-xs text-orange-700 border border-orange-200 w-8 h-8 rounded-lg hover:bg-orange-50 align-middle" title="รีเซ็ตรหัสผ่าน SW คนนี้" aria-label="รีเซ็ตรหัสผ่านของ ${escapeHtml(account.username)}">
+                   <i class="fas fa-key" aria-hidden="true"></i>
                 </button>`;
           } else {
-             accountCell = `<span class="text-gray-400 text-xs"><i class="fas fa-circle-xmark mr-1"></i>ยังไม่ลงทะเบียน</span>`;
+             accountCell = `<span class="inline-flex items-center text-gray-600 bg-gray-100 rounded-full px-2 py-0.5 text-xs"><i class="fas fa-circle-xmark mr-1" aria-hidden="true"></i>ยังไม่ลงทะเบียน</span>`;
           }
 
           tbody.append(`
-             <tr class="hover:bg-red-50 border-b">
-                <td class="p-2">${escapeHtml(fullName)}</td>
-                <td class="p-2 text-sm text-gray-600">${escapeHtml(position)}</td>
-                <td class="p-2">${accountCell}</td>
-                <td class="p-2 text-center whitespace-nowrap">
-                   <button onclick="openTransferModal('${escapeHtml(currentHospCode)}', ${rowIdx}, '${escapeHtml(fullName)}')" class="text-blue-600 border border-blue-200 px-2 rounded hover:bg-blue-50 cursor-pointer mr-1" title="ย้ายไปโรงพยาบาลอื่น">
-                      <i class="fas fa-right-left"></i> ย้าย
+             <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 font-medium text-gray-800">${escapeHtml(fullName)}</td>
+                <td class="px-3 py-2.5 text-sm text-gray-600">${escapeHtml(position)}</td>
+                <td class="px-3 py-2.5 whitespace-nowrap">${accountCell}</td>
+                <td class="px-3 py-2.5 text-center whitespace-nowrap">
+                   <button type="button" data-action="transfer" data-row="${escapeHtml(rowIdx)}" data-uid="${escapeHtml(personUID)}" data-name="${escapeHtml(fullName)}" class="text-blue-700 border border-blue-200 px-2.5 py-1.5 rounded-lg hover:bg-blue-50 mr-1 text-xs font-semibold" title="ย้ายไปโรงพยาบาลอื่น">
+                      <i class="fas fa-right-left mr-1" aria-hidden="true"></i>ย้าย
                    </button>
-                   <button onclick="deletePerson('${escapeHtml(currentHospCode)}', ${rowIdx})" class="text-red-600 border border-red-200 px-2 rounded hover:bg-red-100 cursor-pointer">ลบ</button>
+                   <button type="button" data-action="delete" data-row="${escapeHtml(rowIdx)}" data-uid="${escapeHtml(personUID)}" data-name="${escapeHtml(fullName)}" class="text-red-700 border border-red-200 px-2.5 py-1.5 rounded-lg hover:bg-red-50 text-xs font-semibold" title="ลบรายชื่อนี้">
+                      <i class="fas fa-trash-can mr-1" aria-hidden="true"></i>ลบ
+                   </button>
                 </td>
              </tr>
           `);
        });
     }
+
+    // ผูก event ครั้งเดียวที่ tbody — ทำงานกับทุกแถวที่ render ใหม่ภายหลังด้วย
+    (function bindPersonnelTableActions() {
+       document.getElementById('hospPersonTableBody').addEventListener('click', (ev) => {
+          const btn = ev.target.closest('button[data-action]');
+          if (!btn) return;
+          const action = btn.dataset.action;
+          const rowIdx = parseInt(btn.dataset.row, 10);
+          if (action === 'reset-pw') resetPersonPassword(btn.dataset.username);
+          else if (action === 'transfer') openTransferModal(currentHospCode, rowIdx, btn.dataset.name, btn.dataset.uid);
+          else if (action === 'delete') deletePerson(currentHospCode, rowIdx, btn.dataset.name, btn.dataset.uid);
+       });
+    })();
 
     function resetPersonPassword(username) {
        Swal.fire({
@@ -1380,8 +1577,20 @@
                      Swal.fire({
                         icon: 'success',
                         title: 'รีเซ็ตรหัสผ่านสำเร็จ',
-                        html: `Username: <b>${escapeHtml(res.username)}</b><br>รหัสผ่านชั่วคราว: <b class="text-lg text-red-600">${escapeHtml(res.tempPassword)}</b><br><span class="text-xs text-gray-500">กรุณาแจ้งรหัสนี้ให้เจ้าตัวเปลี่ยนรหัสผ่านทันทีหลังเข้าสู่ระบบ</span>`,
-                        confirmButtonText: 'คัดลอกและปิด'
+                        html: `<div class="text-left bg-gray-50 border rounded-lg p-4 text-sm space-y-2">
+                                 <div class="flex justify-between gap-3"><span class="text-gray-600">Username</span><b>${escapeHtml(res.username)}</b></div>
+                                 <div class="flex justify-between items-center gap-3"><span class="text-gray-600">รหัสผ่านชั่วคราว</span><code class="text-lg font-bold text-red-700 bg-white border rounded px-2 py-0.5 tracking-wider">${escapeHtml(res.tempPassword)}</code></div>
+                               </div>
+                               <p class="text-xs text-gray-600 mt-3">กรุณาแจ้งรหัสนี้ให้เจ้าตัวเปลี่ยนรหัสผ่านทันทีหลังเข้าสู่ระบบ</p>`,
+                        confirmButtonText: '<i class="fas fa-copy mr-1"></i> คัดลอกและปิด'
+                     }).then(r => {
+                        // [แก้ไข] เดิมปุ่มชื่อ "คัดลอกและปิด" แต่ไม่ได้คัดลอกจริง
+                        if (r.isConfirmed) {
+                           const text = `Username: ${res.username}\nรหัสผ่านชั่วคราว: ${res.tempPassword}`;
+                           copyToClipboard(text)
+                             .then(() => Toast.fire({ icon: 'success', title: 'คัดลอกรหัสผ่านชั่วคราวแล้ว' }))
+                             .catch(() => Swal.fire({ icon: 'warning', title: 'คัดลอกอัตโนมัติไม่สำเร็จ', html: `กรุณาจดรหัสผ่านชั่วคราวด้วยตนเอง<br><code class="text-lg font-bold text-red-700">${escapeHtml(res.tempPassword)}</code>` }));
+                        }
                      });
                   } else {
                      Swal.fire('ไม่สำเร็จ', res.message, 'error');
@@ -1398,35 +1607,43 @@
        sortDirection[type] = dir;
 
        $('.fas.fa-sort, .fas.fa-sort-up, .fas.fa-sort-down').attr('class', 'fas fa-sort text-gray-400 ml-1');
-       $(`#sortIcon-${type}`).attr('class', `fas fa-sort-${dir === 'asc' ? 'up' : 'down'} text-blue-600 ml-1`);
+       $(`#sortIcon-${type}`).attr('class', `fas fa-sort-${dir === 'asc' ? 'up' : 'down'} text-moph ml-1`);
+       $('#th-name, #th-position').attr('aria-sort', 'none');
+       $(`#th-${type}`).attr('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
 
+       // เรียงตามตัวอักษรไทยให้ถูกต้องด้วย localeCompare('th') (เดิมใช้ < > ซึ่งเรียงตามรหัสอักขระ)
+       const collator = new Intl.Collator('th');
        currentPersonnelList.sort((a, b) => {
           let valA, valB;
           if (type === 'name') {
-             valA = `${a[8]}${a[9]}${a[10]}`;
-             valB = `${b[8]}${b[9]}${b[10]}`;
+             // เรียงตามชื่อ-นามสกุล (ไม่รวมคำนำหน้า เพื่อให้ "นาย/นาง/นางสาว" ไม่ทำให้ลำดับแยกกลุ่ม)
+             valA = `${a[9] || ''} ${a[10] || ''}`;
+             valB = `${b[9] || ''} ${b[10] || ''}`;
           } else if (type === 'position') {
              valA = a[15] || "";
              valB = b[15] || "";
           }
-          if (valA < valB) return dir === 'asc' ? -1 : 1;
-          if (valA > valB) return dir === 'asc' ? 1 : -1;
-          return 0;
+          const cmp = collator.compare(valA, valB);
+          return dir === 'asc' ? cmp : -cmp;
        });
        renderPersonnelTable();
     }
 
-    function deletePerson(hCode, rIdx) {
+    function deletePerson(hCode, rIdx, personName, personUID) {
        Swal.fire({
           icon: 'warning',
           title: 'ยืนยันการลบ?',
-          text: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้',
+          html: (personName ? `ลบรายชื่อ <b>${escapeHtml(personName)}</b> ออกจากระบบ<br>` : '') +
+                '<span class="text-red-700">การลบข้อมูลนี้ไม่สามารถกู้คืนได้</span>' +
+                '<br><span class="text-xs text-gray-500">หากบุคลากรย้ายสังกัด แนะนำให้ใช้ปุ่ม "ย้าย" แทนการลบ</span>',
           showCancelButton: true,
           confirmButtonText: 'ลบข้อมูล',
           cancelButtonText: 'ยกเลิก',
-          confirmButtonColor: '#dc2626'
+          confirmButtonColor: '#dc2626',
+          focusCancel: true
        }).then((result) => {
           if (result.isConfirmed) {
+             Swal.fire({ title: 'กำลังลบข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
              google.script.run
                .withSuccessHandler(res => {
                   if (res.status === 'success') {
@@ -1437,12 +1654,12 @@
                   }
                })
                .withFailureHandler(showConnError)
-               .deletePersonnel(sessionToken, hCode, rIdx);
+               .deletePersonnel(sessionToken, hCode, rIdx, personUID || '');
           }
        });
     }
 
-    function openTransferModal(hCode, rIdx, personName) {
+    function openTransferModal(hCode, rIdx, personName, personUID) {
        Swal.fire({ title: 'กำลังโหลดรายชื่อโรงพยาบาล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
        google.script.run
          .withSuccessHandler(hospitals => {
@@ -1455,10 +1672,15 @@
                title: 'ย้ายโรงพยาบาล',
                html:
                  `<div class="text-left text-sm text-gray-600 mb-3">ย้ายข้อมูลของ <b>${escapeHtml(personName)}</b> ไปยังโรงพยาบาลปลายทาง</div>` +
-                 `<select id="transferTargetHosp" class="swal2-select" style="width:90%; display:block;">
+                 `<label for="transferTargetHosp" class="block text-left text-xs font-bold text-gray-600 mb-1">โรงพยาบาลปลายทาง (พิมพ์ชื่อหรือรหัสเพื่อค้นหา)</label>
+                  <select id="transferTargetHosp" class="swal2-select" style="width:100%; display:block; margin:0;">
                      <option value="">-- เลือกโรงพยาบาลปลายทาง --</option>
                      ${options}
                   </select>`,
+               didOpen: (popup) => {
+                  // ใช้ Select2 ให้ค้นหาได้ (รายชื่อโรงพยาบาลมีจำนวนมาก) — ค่าที่เลือกยังอ่านจาก <select> เดิมได้ตามปกติ
+                  $('#transferTargetHosp').select2({ width: '100%', dropdownParent: $(popup), placeholder: '-- เลือกโรงพยาบาลปลายทาง --' });
+               },
                confirmButtonText: 'ย้ายข้อมูล',
                showCancelButton: true,
                cancelButtonText: 'ยกเลิก',
@@ -1492,7 +1714,7 @@
                              }
                           })
                           .withFailureHandler(showConnError)
-                          .transferPersonnel(sessionToken, hCode, rIdx, targetCode);
+                          .transferPersonnel(sessionToken, hCode, rIdx, targetCode, personUID || '');
                      }
                   });
                }
